@@ -1,8 +1,6 @@
 use csv;
 use serde::{Deserialize, Serialize};
 
-use std::io;
-
 #[derive(Debug, Deserialize, Serialize)]
 struct Item {
     #[serde(rename = "Item Name")]
@@ -14,7 +12,7 @@ struct Item {
 }
 
 fn main() {
-    let mut reader = csv::Reader::from_reader(io::stdin());
+    let mut reader = csv::Reader::from_path("Item.csv").expect("Unable to open file");
     for result in reader.deserialize() {
         let record: Item = result.expect("a CSV record");
         println!("{:?}", record);
