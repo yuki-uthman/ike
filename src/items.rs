@@ -4,8 +4,14 @@ use serde::{Deserialize, Serialize};
 pub struct Items(Vec<Item>);
 
 impl Items {
-    pub fn new() -> Self {
-        load("assets/Item.csv")
+    pub fn load(filename: &str) -> Items {
+        let mut reader = csv::Reader::from_path(filename).expect("Unable to open file");
+        let mut items = Vec::new();
+        for result in reader.deserialize() {
+            let record: Item = result.expect("a CSV record");
+            items.push(record);
+        }
+        Items(items)
     }
 
     pub fn get(&self, name: &str) -> Option<&Item> {
@@ -21,14 +27,4 @@ pub struct Item {
     price: String,
     #[serde(rename = "Purchase Rate")]
     cost: String,
-}
-
-fn load(filename: &str) -> Items {
-    let mut reader = csv::Reader::from_path(filename).expect("Unable to open file");
-    let mut items = Vec::new();
-    for result in reader.deserialize() {
-        let record: Item = result.expect("a CSV record");
-        items.push(record);
-    }
-    Items(items)
 }
