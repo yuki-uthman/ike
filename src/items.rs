@@ -5,7 +5,7 @@ pub struct Items(Vec<Item>);
 
 impl Items {
     pub fn new() -> Self {
-        load("Item.csv")
+        load("assets/Item.csv")
     }
 
     pub fn get(&self, name: &str) -> Option<&Item> {
