@@ -1,0 +1,1684 @@
+Invoice Date,Invoice ID,Invoice Number,Invoice Status,Customer ID,Customer Name,Is Inclusive Tax,Due Date,PurchaseOrder,Currency Code,Exchange Rate,Discount Type,Is Discount Before Tax,Template Name,Entity Discount Percent,SubTotal,Total,Balance,Adjustment,Adjustment Description,Expected Payment Date,Last Payment Date,Payment Terms,Payment Terms Label,Notes,Terms & Conditions,Entity Discount Amount,Shipping Charge,Shipping Charge Tax ID,Shipping Charge Tax Amount,Shipping Charge Tax Name,Shipping Charge Tax %,Shipping Charge Tax Type,Item Name,Item Desc,Quantity,Discount,Discount Amount,Item Total,Usage unit,Item Price,Product ID,Sales Order Number,Expense Reference ID,Recurrence Name,PayPal,Authorize.Net,Google Checkout,Payflow Pro,Stripe,Paytm,2Checkout,Braintree,Forte,WorldPay,Payments Pro,Square,WePay,Razorpay,GoCardless,Partial Payments,Billing Attention,Billing Address,Billing Street2,Billing City,Billing State,Billing Country,Billing Code,Billing Phone,Billing Fax,Shipping Attention,Shipping Address,Shipping Street2,Shipping City,Shipping State,Shipping Country,Shipping Code,Shipping Fax,Shipping Phone Number,SKU,Project ID,Project Name,Round Off,Sales person,Subject,Primary Contact EmailID,Primary Contact Mobile,Primary Contact Phone,Estimate Number,Custom Charges,Shipping Bill#,Shipping Bill Date,Shipping Bill Total,PortCode,Account,Account Code,Tax ID,Item Tax,Item Tax %,Item Tax Amount,Item Tax Type
+2023-05-07,3262759000002505781,INV-002726,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,92.59,102.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,2.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,50,0.00,0.000,92.59,pcs,2.00,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000583,,,,,,Sales,,3262759000001582001,GST,8.00,7.41,ItemAmount
+2023-05-07,3262759000002505904,INV-002727,Closed,3262759000000562931,DOLphin View Cafe,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,111.11,120.00,0.00,0.00,Adjustment,,2023-05-13,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Food wrap paper plain 12x12 inch  1x100pcsx20pkt,,200,0.00,0.000,111.11,pcs,0.60,3262759000000085406,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
+2023-05-07,3262759000002505918,INV-002728,Closed,3262759000002505932,ENDHERI SUN SET,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,972.22,1050.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,S SIZE SPRAY PAINT STEEL WIRE STAND L490XW430XH1360MM,,1,0.00,0.000,972.22,pcs,1050.00,3262759000000322042,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,77.78,ItemAmount
+2023-05-07,3262759000002505951,INV-002729,Closed,3262759000002505879,Uraha Mini Mart,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,513.89,555.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Purple 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410329,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000587,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-07,3262759000002505951,INV-002729,Closed,3262759000002505879,Uraha Mini Mart,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,513.89,555.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000587,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Strawberry,,1,0.00,0.000,157.41,pcs,170.00,3262759000000090064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.59,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Blueberry,,1,0.00,0.000,157.41,pcs,170.00,3262759000000090037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.59,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Chocolate,,2,0.00,0.000,314.81,pcs,170.00,3262759000000090028,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,25.19,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,paper bag Brown  SOS 8 1x1200pcs,,100,0.00,0.000,106.48,pcs,1.15,3262759000000085433,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.52,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,45cn aluminium foil roll,,2,0.00,0.000,537.04,,290.00,3262759000002484377,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,42.96,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container R20 Round Container,,50,0.00,0.000,162.04,pcs,3.50,3262759000000090442,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.96,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T250 Round,,50,0.00,0.000,129.63,pcs,2.80,3262759000000091037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,10.37,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PAPER BAG BROWN  28CM,4KG 240PCS,240,0.00,0.000,222.22,,1.00,3262759000002148094,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,17.78,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" Slat Hook White",,1,0.00,0.000,23.15,,25.00,3262759000000738089,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,1.85,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PAPER BAG BROWN  32CM,4KG 240PCS,240,0.00,0.000,222.22,,1.00,3262759000002148103,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,17.78,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 83241 With Lid 2410Ml 1 x 200pcs UAE,,200,0.00,0.000,1111.11,pcs,6.00,3262759000000085469,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,88.89,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 1850ml 400pcs 83185,,400,0.00,0.000,1103.70,pcs,2.98,3262759000000094005,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,88.30,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 3200ml 100pcs  73365,,100,0.00,0.000,736.11,pcs,7.95,3262759000000085181,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,58.89,ItemAmount
+2023-05-07,3262759000002505973,INV-002730,Closed,3262759000000741072,THOUM,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,5333.33,5732.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Vegetable Oil 18 Liter Best Brand,,1,0.00,0.000,350.00,,350.00,3262759000001381021,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,,,,,
+2023-05-07,3262759000002523032,INV-002731,Closed,3262759000002523021,Prolife,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,509.26,550.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet BBQ,,1,0.00,0.000,254.63,,275.00,3262759000002364011,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002523032,INV-002731,Closed,3262759000002523021,Prolife,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,509.26,550.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002523109,INV-002732,Closed,3262759000002523098,Afun mart,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,254.63,275.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002524001,INV-002733,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1296.29,1400.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Basket Stand,,1,0.00,0.000,972.22,pcs,1050.00,3262759000000090388,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,77.78,ItemAmount
+2023-05-07,3262759000002524001,INV-002733,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1296.29,1400.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,NET 1250X900,,1,0.00,0.000,324.07,,350.00,3262759000000930349,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,25.93,ItemAmount
+2023-05-07,3262759000002524065,INV-002734,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1787.04,1930.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,STEEL FRONT BARRIER 900MM,,30,0.00,0.000,694.44,pcs,25.00,3262759000000085136,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,55.56,ItemAmount
+2023-05-07,3262759000002524065,INV-002734,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1787.04,1930.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,50,0.00,0.000,555.56,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,44.44,ItemAmount
+2023-05-07,3262759000002524065,INV-002734,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1787.04,1930.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"6"" SLAT BOARD HOOK STEEL",,30,0.00,0.000,277.78,pcs,10.00,3262759000000085028,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,22.22,ItemAmount
+2023-05-07,3262759000002524065,INV-002734,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,1787.04,1930.00,0.00,0.00,Adjustment,,2023-05-07,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"12"" Slat Hook 12 inch",,20,0.00,0.000,259.26,pcs,14.00,3262759000000774442,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-07,3262759000002524107,INV-002735,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2703.70,2920.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,TROLLEY STAND 5 LAYER BLACK 600X510X1470,,1,0.00,0.000,1731.48,,1870.00,3262759000001690937,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,138.52,ItemAmount
+2023-05-07,3262759000002524107,INV-002735,Closed,3262759000000078001,Sales,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2703.70,2920.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Basket Stand,,1,0.00,0.000,972.22,pcs,1050.00,3262759000000090388,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,77.78,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Blue 6 x 1 liter,,1,0.00,0.000,254.63,,275.00,3262759000002364074,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Pink 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410316,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Purple 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410329,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Sakura 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410347,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Floor Cleaner Bottle Lavender 6 x 900 ml,,1,0.00,0.000,152.78,,165.00,3262759000002410369,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Floor Cleaner Bottle Rose 6 x 900 ml,,1,0.00,0.000,152.78,,165.00,3262759000002410378,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Floor Cleaner Bottle Apple 6 x 900 ml,,1,0.00,0.000,152.78,,165.00,3262759000002364083,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Soft Rose ( Pink ) 12 doz,,1,0.00,0.000,74.07,,80.00,3262759000002410218,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,5.93,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Blue Peony 12 doz x 75 gr,,1,0.00,0.000,74.07,,80.00,3262759000002364020,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,5.93,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wings Porcelain Cleaner Bottle Blue 6 x 780 ml,,3,0.00,0.000,402.78,,145.00,3262759000002367001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,32.22,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Chocolate Nitto 20 x 10 x 17 gr,,3,0.00,0.000,1000.00,,360.00,3262759000002364047,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,80.00,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Brown food wrap paper 1x100pcs,,1,0.00,0.000,74.07,pcs,80.00,3262759000000085397,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,5.93,ItemAmount
+2023-05-07,3262759000002524229,INV-002736,Closed,3262759000002506111,Gemanafushi Supermart P9,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,3648.15,3940.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Food wrap paper plain 12x12 inch  1x100pcsx20pkt,,1,0.00,0.000,46.30,pcs,50.00,3262759000000085406,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,Seamax Boat North Habour,7792101,,,,,,,,,,0.00,,,,,,EST-000582,,,,,,Sales,,3262759000001582001,GST,8.00,3.70,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PEELED TOMATO 12X400GRAM,,1,0.00,0.000,206.48,,223.00,3262759000002148175,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,16.52,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tomato Sauce 24x340G,,1,0.00,0.000,212.96,,230.00,3262759000002410891,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,17.04,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"Clamshell 6"" hamburger",,500,0.00,0.000,925.93,,2.00,3262759000002367083,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,74.07,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box Large,,2,0.00,0.000,138.89,pcs,75.00,3262759000000092055,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,11.11,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box Medium,,2,0.00,0.000,101.85,pcs,55.00,3262759000000092064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,8.15,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box Small,,2,0.00,0.000,64.81,pcs,35.00,3262759000000092073,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,5.19,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,pizza box 12 inch,,100,0.00,0.000,416.67,,4.50,3262759000001885981,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,33.33,ItemAmount
+2023-05-07,3262759000002524277,INV-002737,Closed,3262759000002084564,funhaa/dhigurah Code: I-7,true,2023-05-07,,MVR,1.00,item_level,true,Compact,0.00,2243.52,2423.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box XL 390x245x155mm,,2,0.00,0.000,175.93,pcs,95.00,3262759000000774401,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000584,,,,,,Sales,,3262759000001582001,GST,8.00,14.07,ItemAmount
+2023-05-08,3262759000002527059,INV-002738,Closed,3262759000000471169,Amore the island cafe ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1324.07,1430.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Chocolate,,4,0.00,0.000,629.63,pcs,170.00,3262759000000090028,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000591,,,,,,Sales,,3262759000001582001,GST,8.00,50.37,ItemAmount
+2023-05-08,3262759000002527059,INV-002738,Closed,3262759000000471169,Amore the island cafe ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1324.07,1430.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Vanilla,,2,0.00,0.000,314.81,pcs,170.00,3262759000000090019,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000591,,,,,,Sales,,3262759000001582001,GST,8.00,25.19,ItemAmount
+2023-05-08,3262759000002527059,INV-002738,Closed,3262759000000471169,Amore the island cafe ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1324.07,1430.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Mango,,1,0.00,0.000,157.41,pcs,170.00,3262759000000369225,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000591,,,,,,Sales,,3262759000001582001,GST,8.00,12.59,ItemAmount
+2023-05-08,3262759000002527059,INV-002738,Closed,3262759000000471169,Amore the island cafe ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1324.07,1430.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,paper cup 4oz,,1000,0.00,0.000,222.22,,0.24,3262759000001946872,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000591,,,,,,Sales,,3262759000001582001,GST,8.00,17.78,ItemAmount
+2023-05-08,3262759000002527151,INV-002739,Closed,3262759000000116001,Sales ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,925.93,1000.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"7"" Plate Sugar Cane",,1000,0.00,0.000,925.93,,1.00,3262759000002367146,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,.,,,,,,,,,,,0.00,,,,,,EST-000594,,,,,,Sales,,3262759000001582001,GST,8.00,74.07,ItemAmount
+2023-05-08,3262759000002527293,INV-002740,Closed,3262759000002524207,KH - Arcade,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,462.96,500.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"NET HOOK 6"" STEEL",,50,0.00,0.000,462.96,pcs,10.00,3262759000000085064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,37.04,ItemAmount
+2023-05-08,3262759000002528070,INV-002741,Closed,3262759000002528045,TN mart,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,578.70,625.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Roll Chocolate 40 grams x 20 packet,,1,0.00,0.000,319.44,,345.00,3262759000002364092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000599,,,,,,Sales,,3262759000001582001,GST,8.00,25.56,ItemAmount
+2023-05-08,3262759000002528070,INV-002741,Closed,3262759000002528045,TN mart,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,578.70,625.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Blue 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002364074,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000599,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-08,3262759000002528150,INV-002742,Closed,3262759000002385137,Honey mart,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1463.89,1581.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK STEEL 2.0M 6 TIER Single,,1,0.00,0.000,1463.89,pcs,1581.00,3262759000000085001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000598,,,,,,Sales,,3262759000001582001,GST,8.00,117.11,ItemAmount
+2023-05-08,3262759000002527307,INV-002743,Closed,3262759000001608719,Seera 7634770,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1157.41,1250.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,1000,0.00,0.000,1157.41,pcs,1.25,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,92.59,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Blue 6 x 1 liter,,10,0.00,0.000,2546.30,,275.00,3262759000002364074,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,203.70,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,1,0.00,0.000,305.56,,330.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,24.44,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,277.78,,300.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,22.22,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Conduit Holhi 20mm,,1,0.00,0.000,152.78,,165.00,3262759000002117145,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Connduit Holhi 25mm,,1,0.00,0.000,218.52,,236.00,3262759000001088001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,17.48,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Floor Cleaner Bottle Rose 6 x 900 ml,,1,0.00,0.000,152.78,,165.00,3262759000002410378,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Clamshell 450ml,,1000,0.00,0.000,1296.30,,1.40,3262759000002367101,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,103.70,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"9"" Plate Sugar Cane",,500,0.00,0.000,648.15,,1.40,3262759000002367128,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,51.85,ItemAmount
+2023-05-08,3262759000002528216,INV-002744,Closed,3262759000002527215,MHD B-13,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,5931.50,6406.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,30,0.00,0.000,333.33,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000595,,,,,,Sales,,3262759000001582001,GST,8.00,26.67,ItemAmount
+2023-05-08,3262759000002524344,INV-002745,Draft,3262759000001109001,"Aapoint 
+B/12",true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,2444.43,2640.00,2640.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Blue Peony 12 doz x 75 gr,,11,0.00,0.000,814.81,,80.00,3262759000002364020,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,65.19,ItemAmount
+2023-05-08,3262759000002524344,INV-002745,Draft,3262759000001109001,"Aapoint 
+B/12",true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,2444.43,2640.00,2640.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Camelia ( White ) 12 doz,,11,0.00,0.000,814.81,,80.00,3262759000002410200,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,65.19,ItemAmount
+2023-05-08,3262759000002524344,INV-002745,Draft,3262759000001109001,"Aapoint 
+B/12",true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,2444.43,2640.00,2640.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Soft Rose ( Pink ) 12 doz,,11,0.00,0.000,814.81,,80.00,3262759000002410218,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,65.19,ItemAmount
+2023-05-08,3262759000002530001,INV-002746,Closed,3262759000002209757,GET IT,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,625.00,675.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"Clamshell 9""×6""",,250,0.00,0.000,625.00,,2.70,3262759000002367110,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,50.00,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,2,0.00,0.000,462.96,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,3262759000001582001,GST,8.00,37.04,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,2,0.00,0.000,509.26,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,3262759000001582001,GST,8.00,40.74,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Roll Chocolate 40 grams x 20 packet,,1,0.00,0.000,319.44,,345.00,3262759000002364092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,3262759000001582001,GST,8.00,25.56,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PEANUT BUTTER CRUNCHY 12X510GRAM,,12,0.00,0.000,324.07,,29.16666,3262759000002148193,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,3262759000001582001,GST,8.00,25.93,ItemAmount
+2023-05-08,3262759000002530059,INV-002747,Closed,3262759000002528003,Hill Mart Plus E 10 Rasmaadhoo,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1847.21,1995.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,,MAIT,1,0.00,0.000,0.00,,0.00,,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000596,,,,,,Sales,,,,,,
+2023-05-08,3262759000002530089,INV-002748,Closed,3262759000001514661,Sun Valley O-10   9990412,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,3363.15,3632.20,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"Clamshell 9""×6""",,250,0.00,0.000,625.00,,2.70,3262759000002367110,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,50.00,ItemAmount
+2023-05-08,3262759000002530089,INV-002748,Closed,3262759000001514661,Sun Valley O-10   9990412,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,3363.15,3632.20,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T250 Round,,500,0.00,0.000,833.33,pcs,1.80,3262759000000091037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,66.67,ItemAmount
+2023-05-08,3262759000002530089,INV-002748,Closed,3262759000001514661,Sun Valley O-10   9990412,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,3363.15,3632.20,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PAPER BAG 10X6X22CM 2.4KG,,760,0.00,0.000,330.74,,0.47,3262759000001657544,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,26.46,ItemAmount
+2023-05-08,3262759000002530089,INV-002748,Closed,3262759000001514661,Sun Valley O-10   9990412,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,3363.15,3632.20,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"7"" Plate Sugar Cane",,1000,0.00,0.000,925.93,,1.00,3262759000002367146,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,74.07,ItemAmount
+2023-05-08,3262759000002530089,INV-002748,Closed,3262759000001514661,Sun Valley O-10   9990412,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,3363.15,3632.20,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"9"" Plate Sugar Cane",,500,0.00,0.000,648.15,,1.40,3262759000002367128,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,51.85,ItemAmount
+2023-05-08,3262759000002530111,INV-002749,Closed,3262759000001608719,Seera 7634770,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1157.41,1250.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,1000,0.00,0.000,1157.41,pcs,1.25,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,92.59,ItemAmount
+2023-05-08,3262759000002530231,INV-002750,Closed,3262759000000408261,THEDHUI,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,9027.78,9750.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,BLOCKBOARD 1220x2440x18mm GLOSSY DOUBLE SIDE LAMINATE,,15,0.00,0.000,9027.78,pcs,650.00,3262759000000085271,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,722.22,ItemAmount
+2023-05-08,3262759000002530337,INV-002751,Closed,3262759000000116001,Sales ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,486.11,525.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,.,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-08,3262759000002530337,INV-002751,Closed,3262759000000116001,Sales ,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,486.11,525.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,.,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-08,3262759000002530364,INV-002752,Closed,3262759000002530353,Seenaa Villa Store,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1225.92,1324.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"9"" Plate Sugar Cane",,500,0.00,0.000,648.15,,1.40,3262759000002367128,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,51.85,ItemAmount
+2023-05-08,3262759000002530364,INV-002752,Closed,3262759000002530353,Seenaa Villa Store,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1225.92,1324.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Paper Cup 6.5oz,,1000,0.00,0.000,333.33,pcs,0.36,3262759000000211056,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,26.67,ItemAmount
+2023-05-08,3262759000002530364,INV-002752,Closed,3262759000002530353,Seenaa Villa Store,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1225.92,1324.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"NET HOOK 10"" STEEL",,12,0.00,0.000,133.33,pcs,12.00,3262759000000085073,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,10.67,ItemAmount
+2023-05-08,3262759000002530364,INV-002752,Closed,3262759000002530353,Seenaa Villa Store,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1225.92,1324.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"NET HOOK 6"" STEEL",,12,0.00,0.000,111.11,pcs,10.00,3262759000000085064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
+2023-05-08,3262759000002534071,INV-002753,Closed,3262759000002524207,KH - Arcade,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,462.96,500.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"6"" SLAT BOARD HOOK STEEL",,50,0.00,0.000,462.96,pcs,10.00,3262759000000085028,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000590,,,,,,Sales,,3262759000001582001,GST,8.00,37.04,ItemAmount
+2023-05-08,3262759000002534209,INV-002754,Closed,3262759000002534199,Laiyya A-7,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1636.11,1767.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"ROUND PAPER PLATE 9"" 12X100PCS",,12,0.00,0.000,532.41,,47.917,3262759000001656126,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,42.59,ItemAmount
+2023-05-08,3262759000002534209,INV-002754,Closed,3262759000002534199,Laiyya A-7,true,2023-05-08,,MVR,1.00,item_level,true,Compact,0.00,1636.11,1767.00,0.00,0.00,Adjustment,,2023-05-08,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 1850ml 400pcs 83185,,400,0.00,0.000,1103.70,pcs,2.98,3262759000000094005,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,88.30,ItemAmount
+2023-05-09,3262759000002534547,INV-002755,Closed,3262759000000365041,EPAZOTE RESTAURANT,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1296.30,1400.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"9"" Plate Sugar Cane",,1000,0.00,0.000,1296.30,,1.40,3262759000002367128,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,103.70,ItemAmount
+2023-05-09,3262759000002534607,INV-002756,Closed,3262759000000378025,Ehkala Packaging,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,4148.15,4480.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8325 With Lid 250ML 1 x 1000pcs,,3000,0.00,0.000,2111.11,pcs,0.76,3262759000000085190,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,168.89,ItemAmount
+2023-05-09,3262759000002534607,INV-002756,Closed,3262759000000378025,Ehkala Packaging,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,4148.15,4480.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 430ml 1000pcs 8342,,2000,0.00,0.000,2037.04,pcs,1.10,3262759000000085199,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,162.96,ItemAmount
+2023-05-09,3262759000002534684,INV-002757,Closed,3262759000002534673,I DHAN,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,2500.00,2700.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,7,0.00,0.000,1750.00,,270.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,140.00,ItemAmount
+2023-05-09,3262759000002534684,INV-002757,Closed,3262759000002534673,I DHAN,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,2500.00,2700.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,3,0.00,0.000,750.00,,270.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,60.00,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet BBQ,,1,0.00,0.000,254.63,,275.00,3262759000002364011,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box Small,,5,0.00,0.000,162.04,pcs,35.00,3262759000000092073,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,12.96,ItemAmount
+2023-05-09,3262759000002534717,INV-002758,Closed,3262759000002534700,Zoom trade B-08,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1388.89,1500.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Tool Box Medium,,5,0.00,0.000,254.63,pcs,55.00,3262759000000092064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000585,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-09,3262759000002536001,INV-002759,Closed,3262759000002534747,Blue moon / L.fonadhoo Idrees moosa 9921523,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,43869.44,47379.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK STEEL 2.0M 6 TIER Single,,7,0.00,0.000,10247.22,pcs,1581.00,3262759000000085001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000592,,,,,,Sales,,3262759000001582001,GST,8.00,819.78,ItemAmount
+2023-05-09,3262759000002536001,INV-002759,Closed,3262759000002534747,Blue moon / L.fonadhoo Idrees moosa 9921523,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,43869.44,47379.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK STEEL 1.8M 5 TIER Double,,14,0.00,0.000,31072.22,pcs,2397.00,3262759000000085010,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000592,,,,,,Sales,,3262759000001582001,GST,8.00,2485.78,ItemAmount
+2023-05-09,3262759000002536001,INV-002759,Closed,3262759000002534747,Blue moon / L.fonadhoo Idrees moosa 9921523,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,43869.44,47379.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK END SHELF SET (ROUND) STEEL,,2,0.00,0.000,2550.00,pcs,1377.00,3262759000000085019,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000592,,,,,,Sales,,3262759000001582001,GST,8.00,204.00,ItemAmount
+2023-05-09,3262759000002536025,INV-002760,Closed,3262759000000078001,Sales,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,622.22,672.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PAPER BAG BROWN  28CM,4KG 240PCS,960,0.00,0.000,622.22,,0.70,3262759000002148094,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,49.78,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,2,0.00,0.000,509.26,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,40.74,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"9"" Plate Sugar Cane",,500,0.00,0.000,648.15,,1.40,3262759000002367128,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,51.85,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"7"" Plate Sugar Cane",,1000,0.00,0.000,925.93,,1.00,3262759000002367146,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,74.07,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,1,0.00,0.000,11.11,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,0.89,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,12oz Soup bowl,,500,0.00,0.000,416.67,,0.90,3262759000002367182,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,33.33,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Chocolate Nitto 20 x 10 x 17 gr,,3,0.00,0.000,1000.00,,360.00,3262759000002364047,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,80.00,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Roll Chocolate 40 grams x 20 packet,,2,0.00,0.000,787.04,,425.00,3262759000002364092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,62.96,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T250 Round,,150,0.00,0.000,305.56,pcs,2.20,3262759000000091037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,24.44,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T6 Round 15Cm,,300,0.00,0.000,250.00,pcs,0.90,3262759000000091055,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.00,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,1,0.00,0.000,11.11,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,0.89,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder White Coffee,,1,0.00,0.000,157.41,,170.00,3262759000002380053,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.59,ItemAmount
+2023-05-09,3262759000002539001,INV-002761,Closed,3262759000002307125,Jizee i.3,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,5179.65,5594.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Milkshake Powder Cookies & Cream,,1,0.00,0.000,157.41,,170.00,3262759000002380026,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.59,ItemAmount
+2023-05-09,3262759000002539048,INV-002762,Closed,3262759000002539037,best yumnu,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,666.66,720.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Mop Cotton Normal White FJ300 A53,,12,0.00,0.000,333.33,pcs,30.00,3262759000001274824,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,26.67,ItemAmount
+2023-05-09,3262759000002539048,INV-002762,Closed,3262759000002539037,best yumnu,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,666.66,720.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Broom 844 A65,,12,0.00,0.000,333.33,pcs,30.00,3262759000001274914,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,26.67,ItemAmount
+2023-05-09,3262759000002540027,INV-002763,Closed,3262759000002540057,Huru Ihas A-9,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,3958.34,4275.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,L SIZE SPRAY PAINT STEEL WIRE STAND 900X430X1400MM,,2,0.00,0.000,2500.00,pcs,1350.00,3262759000000322001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,200.00,ItemAmount
+2023-05-09,3262759000002540027,INV-002763,Closed,3262759000002540057,Huru Ihas A-9,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,3958.34,4275.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,SLAT BOARD 4X8FT 15MM 11 ALU,,1,0.00,0.000,902.78,pcs,975.00,3262759000000085289,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,72.22,ItemAmount
+2023-05-09,3262759000002540027,INV-002763,Closed,3262759000002540057,Huru Ihas A-9,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,3958.34,4275.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,50,0.00,0.000,555.56,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,44.44,ItemAmount
+2023-05-09,3262759000002540254,INV-002764,Closed,3262759000002484628,Rakizu Mart,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,254.63,275.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-09,3262759000002540422,INV-002765,Closed,3262759000000078001,Sales,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,1666.67,1800.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,150,0.00,0.000,1666.67,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,133.33,ItemAmount
+2023-05-09,3262759000002540482,INV-002766,Closed,3262759000000078001,Sales,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,152.78,165.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Mop Cotton Normal Colored DB350 A54,,1,0.00,0.000,32.41,pcs,35.00,3262759000001274833,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,2.59,ItemAmount
+2023-05-09,3262759000002540482,INV-002766,Closed,3262759000000078001,Sales,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,152.78,165.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Broom 844 A65,,1,0.00,0.000,37.04,pcs,40.00,3262759000001274914,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,2.96,ItemAmount
+2023-05-09,3262759000002540482,INV-002766,Closed,3262759000000078001,Sales,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,152.78,165.00,0.00,0.00,Adjustment,,2023-05-09,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Mopping Bucket A41,,1,0.00,0.000,83.33,pcs,90.00,3262759000001274752,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,6.67,ItemAmount
+2023-05-09,3262759000002540563,INV-002767,Closed,3262759000002540552,Mukbang Trade,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,486.11,525.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,1,0.00,0.000,254.63,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-09,3262759000002540563,INV-002767,Closed,3262759000002540552,Mukbang Trade,true,2023-05-09,,MVR,1.00,item_level,true,Compact,0.00,486.11,525.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-10,3262759000002540733,INV-002768,Closed,3262759000002540717,Blueriver  // B-12 // 7913150,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,333.33,360.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,30,0.00,0.000,333.33,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000607,,,,,,Sales,,3262759000001582001,GST,8.00,26.67,ItemAmount
+2023-05-10,3262759000002540821,INV-002769,Closed,3262759000000810001,PROCURE Plus,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,185.19,200.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"NET HOOK 6"" STEEL",,20,0.00,0.000,185.19,pcs,10.00,3262759000000085064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,14.81,ItemAmount
+2023-05-10,3262759000002540835,INV-002770,Closed,3262759000002540799,COSYLODGE/NAIFARU G-2/7791450,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,259.26,280.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Blue 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002364074,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000608,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-10,3262759000002540945,INV-002771,Closed,3262759000000078001,Sales,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,111.11,120.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container R4 Round,,100,0.00,0.000,111.11,pcs,1.20,3262759000000090478,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
+2023-05-10,3262759000002544003,INV-002772,Draft,3262759000001188017,DKT M7,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1111.11,1200.00,1200.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,THERMAL PRINTER RECEIPT 58MM XPRINTER,,1,0.00,0.000,1111.11,,1200.00,3262759000002410820,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,88.89,ItemAmount
+2023-05-10,3262759000002544051,INV-002773,Closed,3262759000002544041,Address:Ammaday Finolhu 7692061- 7894435,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,328.71,355.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Conduit Holhi 20mm,,1,0.00,0.000,152.78,,165.00,3262759000002117145,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-10,3262759000002544051,INV-002773,Closed,3262759000002544041,Address:Ammaday Finolhu 7692061- 7894435,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,328.71,355.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Connduit Holhi 25mm,,1,0.00,0.000,175.93,,190.00,3262759000001088001,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,14.07,ItemAmount
+2023-05-10,3262759000002544067,INV-002774,Closed,3262759000000562931,DOLphin View Cafe,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,120.37,130.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wooden ice cream spoon,,200,0.00,0.000,120.37,,0.65,3262759000002367218,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,9.63,ItemAmount
+2023-05-10,3262759000002544175,INV-002775,Closed,3262759000002544165,AALEE SHOP,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1629.63,1760.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Blue 6 x 1 liter,,2,0.00,0.000,518.52,,280.00,3262759000002364074,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,41.48,ItemAmount
+2023-05-10,3262759000002544175,INV-002775,Closed,3262759000002544165,AALEE SHOP,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1629.63,1760.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Pink 6 x 1 liter,,2,0.00,0.000,518.52,,280.00,3262759000002410316,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,41.48,ItemAmount
+2023-05-10,3262759000002544175,INV-002775,Closed,3262759000002544165,AALEE SHOP,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1629.63,1760.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Red 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410338,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-10,3262759000002544175,INV-002775,Closed,3262759000002544165,AALEE SHOP,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1629.63,1760.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Soklin Detergent Liquid Bottle Red 6 x 1 liter,,1,0.00,0.000,259.26,,280.00,3262759000002410338,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.74,ItemAmount
+2023-05-10,3262759000002544175,INV-002775,Closed,3262759000002544165,AALEE SHOP,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1629.63,1760.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Lux Body Soap Soft Rose ( Pink ) 12 doz,,1,0.00,0.000,74.07,,80.00,3262759000002410218,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,5.93,ItemAmount
+2023-05-10,3262759000002544206,INV-002776,Closed,3262759000000078001,Sales,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1159.26,1252.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,FIN LINE 280 ML GLASS,,20,0.00,0.000,222.22,,12.00,3262759000001522990,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,17.78,ItemAmount
+2023-05-10,3262759000002544206,INV-002776,Closed,3262759000000078001,Sales,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1159.26,1252.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,IVORY LONG DRINK 460 ML GLASS,,20,0.00,0.000,648.15,,35.00,3262759000001527044,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,51.85,ItemAmount
+2023-05-10,3262759000002544206,INV-002776,Closed,3262759000000078001,Sales,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1159.26,1252.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Steel Spoon,,24,0.00,0.000,111.11,,5.00,3262759000001541767,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
+2023-05-10,3262759000002544206,INV-002776,Closed,3262759000000078001,Sales,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1159.26,1252.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,KIWI,,24,0.00,0.000,177.78,,8.00,3262759000002544197,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,14.22,ItemAmount
+2023-05-10,3262759000002544237,INV-002777,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,10134.25,10945.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,20,0.00,0.000,5000.00,,270.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,400.00,ItemAmount
+2023-05-10,3262759000002544237,INV-002777,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,10134.25,10945.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,10,0.00,0.000,2500.00,,270.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,200.00,ItemAmount
+2023-05-10,3262759000002544237,INV-002777,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,10134.25,10945.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,10,0.00,0.000,2314.81,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,185.19,ItemAmount
+2023-05-10,3262759000002544237,INV-002777,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,10134.25,10945.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Roll Chocolate 40 grams x 20 packet,,1,0.00,0.000,319.44,,345.00,3262759000002364092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,25.56,ItemAmount
+2023-05-10,3262759000002544385,INV-002778,Closed,3262759000000741072,THOUM,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,106.48,115.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,paper bag Brown  SOS 8 1x1200pcs,,100,0.00,0.000,106.48,pcs,1.15,3262759000000085433,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.52,ItemAmount
+2023-05-10,3262759000002544539,INV-002779,Closed,3262759000001211058,Sp trade,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,4166.67,4500.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wooden ice cream spoon,,10000,0.00,0.000,4166.67,,0.45,3262759000002367218,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000609,,,,,,Sales,,3262759000001582001,GST,8.00,333.33,ItemAmount
+2023-05-10,3262759000002544605,INV-002780,Closed,3262759000001460001,FINE BAKE ,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1018.52,1100.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 430ml 1000pcs 8342,,1000,0.00,0.000,1018.52,pcs,1.10,3262759000000085199,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,81.48,ItemAmount
+2023-05-10,3262759000002544673,INV-002781,Draft,3262759000000378025,Ehkala Packaging,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,4212.97,4550.00,4550.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"Clamshell 8""",,1000,0.00,0.000,1666.67,,1.80,3262759000002367092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,133.33,ItemAmount
+2023-05-10,3262759000002544673,INV-002781,Draft,3262759000000378025,Ehkala Packaging,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,4212.97,4550.00,4550.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,wood spoon 1x100,,5000,0.00,0.000,2546.30,,0.55,3262759000002283424,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,203.70,ItemAmount
+2023-05-10,3262759000002544689,INV-002782,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,2500.00,2700.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet BBQ,,10,0.00,0.000,2500.00,,270.00,3262759000002364011,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,200.00,ItemAmount
+2023-05-10,3262759000002544793,INV-002783,Closed,3262759000001968175,Busy biz k8 7916013,true,2023-05-10,,MVR,1.00,item_level,true,Compact,0.00,1663.89,1797.00,0.00,0.00,Adjustment,,2023-05-10,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MATTRESS 9 CM,,3,0.00,0.000,1663.89,pcs,599.00,3262759000000085208,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,133.11,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,10000,0.00,0.000,11574.07,pcs,1.25,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,925.93,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 83241 With Lid 2410Ml 1 x 200pcs UAE,,1000,0.00,0.000,5555.56,pcs,6.00,3262759000000085469,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,444.44,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 3200ml 100pcs  73365,,500,0.00,0.000,3680.56,pcs,7.95,3262759000000085181,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,294.44,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8325 With Lid 250ML 1 x 1000pcs,,5000,0.00,0.000,3518.52,pcs,0.76,3262759000000085190,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,281.48,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 1850ml 400pcs 83185,,2000,0.00,0.000,5518.52,pcs,2.98,3262759000000094005,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,441.48,ItemAmount
+2023-05-11,3262759000002549001,INV-002784,Closed,3262759000000996177,THE GLUTEN,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,34939.82,37735.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminium Foil Box 430ml 1000pcs 8342,,5000,0.00,0.000,5092.59,pcs,1.10,3262759000000085199,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,407.41,ItemAmount
+2023-05-11,3262759000002549025,INV-002785,Closed,3262759000000546001,Food Bank,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,212.96,230.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container R16 480Ml 50*10Pcs,,50,0.00,0.000,101.85,pcs,2.20,3262759000000090433,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.15,ItemAmount
+2023-05-11,3262759000002549025,INV-002785,Closed,3262759000000546001,Food Bank,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,212.96,230.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container R4 Round,,100,0.00,0.000,111.11,pcs,1.20,3262759000000090478,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
+2023-05-11,3262759000002549091,INV-002786,Closed,3262759000000078001,Sales,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,407.41,440.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Paper Bag #6 Square Bottom,,400,0.00,0.000,407.41,,1.10,3262759000001274146,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,32.59,ItemAmount
+2023-05-11,3262759000002549145,INV-002787,Draft,3262759000000700014,Shawarma,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,625.00,675.00,675.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"Clamshell 9""×6""",,250,0.00,0.000,625.00,,2.70,3262759000002367110,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,50.00,ItemAmount
+2023-05-11,3262759000002549159,INV-002788,Closed,3262759000001885971,Bissufuraa  N.Holhudhoo  7794688,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,277.77,300.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Paper Bag #6 Square Bottom,,200,0.00,0.000,203.70,,1.10,3262759000001274146,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,16.30,ItemAmount
+2023-05-11,3262759000002549159,INV-002788,Closed,3262759000001885971,Bissufuraa  N.Holhudhoo  7794688,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,277.77,300.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Paper Bag Size 4 V Bottom,,200,0.00,0.000,74.07,,0.40,3262759000001088088,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,5.93,ItemAmount
+2023-05-11,3262759000002549175,INV-002789,Closed,3262759000002371099,Ujaalaa Maldives pvt ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1222.22,1320.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,TOILET ROLL 2 PLY 1X10,200 SHEETS ROLL,10,0.00,0.000,472.22,,51.00,3262759000002148139,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,37.78,ItemAmount
+2023-05-11,3262759000002549175,INV-002789,Closed,3262759000002371099,Ujaalaa Maldives pvt ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1222.22,1320.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,NAPKIN PAPER 30X30 1X40,,40,0.00,0.000,287.04,,7.75,3262759000002148130,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,22.96,ItemAmount
+2023-05-11,3262759000002549175,INV-002789,Closed,3262759000002371099,Ujaalaa Maldives pvt ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1222.22,1320.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-11,3262759000002549175,INV-002789,Closed,3262759000002371099,Ujaalaa Maldives pvt ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1222.22,1320.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-11,3262759000002551107,INV-002790,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,8703.70,9400.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet Chilli,16 x 140 gr,16,0.00,0.000,4074.07,,275.00,3262759000002410187,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000610,,,,,,Sales,,3262759000001582001,GST,8.00,325.93,ItemAmount
+2023-05-11,3262759000002551107,INV-002790,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,8703.70,9400.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet BBQ,,20,0.00,0.000,4629.63,,250.00,3262759000002364011,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000610,,,,,,Sales,,3262759000001582001,GST,8.00,370.37,ItemAmount
+2023-05-11,3262759000002551145,INV-002791,Closed,3262759000002551129,zovee Collection  Parcel number: 979-9239  Island: Gdh thinadhoo/ Q10,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1310.19,1415.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,SLAT BOARD 4X8FT 15MM 11 ALU,,1,0.00,0.000,902.78,pcs,975.00,3262759000000085289,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000588,,,,,,Sales,,3262759000001582001,GST,8.00,72.22,ItemAmount
+2023-05-11,3262759000002551145,INV-002791,Closed,3262759000002551129,zovee Collection  Parcel number: 979-9239  Island: Gdh thinadhoo/ Q10,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1310.19,1415.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"10"" SLAT BOARD HOOK STEEL",,20,0.00,0.000,222.22,pcs,12.00,3262759000000085037,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000588,,,,,,Sales,,3262759000001582001,GST,8.00,17.78,ItemAmount
+2023-05-11,3262759000002551145,INV-002791,Closed,3262759000002551129,zovee Collection  Parcel number: 979-9239  Island: Gdh thinadhoo/ Q10,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,1310.19,1415.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"6"" SLAT BOARD HOOK STEEL",,20,0.00,0.000,185.19,pcs,10.00,3262759000000085028,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000588,,,,,,Sales,,3262759000001582001,GST,8.00,14.81,ItemAmount
+2023-05-11,3262759000002551169,INV-002792,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,550.92,595.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,1,0.00,0.000,231.48,,250.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,18.52,ItemAmount
+2023-05-11,3262759000002551169,INV-002792,Closed,3262759000002544226,Alihava Constrution And Trading Pvt Ltd,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,550.92,595.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Wafer Roll Chocolate 40 grams x 20 packet,,1,0.00,0.000,319.44,,345.00,3262759000002364092,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,25.56,ItemAmount
+2023-05-11,3262759000002551246,INV-002793,Closed,3262759000002551235,OUNKURI MART  7750240,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,532.41,575.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Chuba Cassava chips Packet BBQ,,1,0.00,0.000,254.63,,275.00,3262759000002364011,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,20.37,ItemAmount
+2023-05-11,3262759000002551246,INV-002793,Closed,3262759000002551235,OUNKURI MART  7750240,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,532.41,575.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Brush Toilet A42 CJ-1601,,12,0.00,0.000,277.78,pcs,25.00,3262759000001274761,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,22.22,ItemAmount
+2023-05-11,3262759000002551426,INV-002794,Closed,3262759000002551410,Oivaru / h.dh nolhivaranfaru /9991074,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,6658.33,7191.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK STEEL 1.8M 5 TIER Double,,3,0.00,0.000,6658.33,pcs,2397.00,3262759000000085010,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000602,,,,,,Sales,,3262759000001582001,GST,8.00,532.67,ItemAmount
+2023-05-11,3262759000002551532,INV-002795,Closed,3262759000002417858,Carnival Cafe 7317696,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,6740.74,7280.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,RD8A SHELF 900X350MM WITH CLIP ONLY,,26,0.00,0.000,6740.74,pcs,280.00,3262759000001290031,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000612,,,,,,Sales,,3262759000001582001,GST,8.00,539.26,ItemAmount
+2023-05-11,3262759000002551552,INV-002796,Closed,3262759000002551129,zovee Collection  Parcel number: 979-9239  Island: Gdh thinadhoo/ Q10,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,902.78,975.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,SLAT BOARD 4X8FT 15MM 11 ALU,,1,0.00,0.000,902.78,pcs,975.00,3262759000000085289,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,72.22,ItemAmount
+2023-05-11,3262759000002554005,INV-002797,Closed,3262759000000993059,Coffee Break,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,833.33,900.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T6 Round 15Cm,,1000,0.00,0.000,833.33,pcs,0.90,3262759000000091055,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,66.67,ItemAmount
+2023-05-11,3262759000002554098,INV-002798,Closed,3262759000002554087,Jifudi investment,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,5217.59,5635.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn Chilli 16 x 140 gr,,18,0.00,0.000,4083.33,,245.00,3262759000002364038,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,326.67,ItemAmount
+2023-05-11,3262759000002554098,INV-002798,Closed,3262759000002554087,Jifudi investment,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,5217.59,5635.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Maitos Tortilla Chips Packet Corn BBQ 16 x 140 gr,,5,0.00,0.000,1134.26,,245.00,3262759000002364029,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,90.74,ItemAmount
+2023-05-11,3262759000002554124,INV-002799,Closed,3262759000002554114,Dhafgraa  R.kaado I-3  9860077,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,5364.82,5794.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,MART RACK STEEL 1.8M 5 TIER Double,,2,0.00,0.000,4438.89,pcs,2397.00,3262759000000085010,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,355.11,ItemAmount
+2023-05-11,3262759000002554124,INV-002799,Closed,3262759000002554114,Dhafgraa  R.kaado I-3  9860077,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,5364.82,5794.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Mart Shelf 285MM----2C# WITH  CLIP BRACKET,,4,0.00,0.000,925.93,pcs,250.00,3262759000000322452,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,74.07,ItemAmount
+2023-05-11,3262759000002554258,INV-002800,Closed,3262759000001602078,Bodu Foshi,true,2023-05-11,,MVR,1.00,item_level,true,Compact,0.00,18958.33,20475.00,0.00,0.00,Adjustment,,2023-05-11,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,SLAT BOARD 4X8FT 15MM 11 ALU,,21,0.00,0.000,18958.33,pcs,975.00,3262759000000085289,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000615,,,,,,Sales,,3262759000001582001,GST,8.00,1516.67,ItemAmount
+2023-05-12,3262759000002567011,INV-002801,Closed,3262759000002567001,Relxy E18,true,2023-05-12,,MVR,1.00,item_level,true,Compact,0.00,2671.30,2885.00,0.00,0.00,Adjustment,,2023-05-12,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Broom 1315,,24,0.00,0.000,888.89,pcs,40.00,3262759000001274734,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,71.11,ItemAmount
+2023-05-12,3262759000002567011,INV-002801,Closed,3262759000002567001,Relxy E18,true,2023-05-12,,MVR,1.00,item_level,true,Compact,0.00,2671.30,2885.00,0.00,0.00,Adjustment,,2023-05-12,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,1000,0.00,0.000,1157.41,pcs,1.25,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,92.59,ItemAmount
+2023-05-12,3262759000002567011,INV-002801,Closed,3262759000002567001,Relxy E18,true,2023-05-12,,MVR,1.00,item_level,true,Compact,0.00,2671.30,2885.00,0.00,0.00,Adjustment,,2023-05-12,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Brush Toilet A42 CJ-1601,,6,0.00,0.000,194.44,pcs,35.00,3262759000001274761,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,15.56,ItemAmount
+2023-05-12,3262759000002567011,INV-002801,Closed,3262759000002567001,Relxy E18,true,2023-05-12,,MVR,1.00,item_level,true,Compact,0.00,2671.30,2885.00,0.00,0.00,Adjustment,,2023-05-12,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,duspin 044,,6,0.00,0.000,277.78,,50.00,3262759000002321995,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,22.22,ItemAmount
+2023-05-12,3262759000002567011,INV-002801,Closed,3262759000002567001,Relxy E18,true,2023-05-12,,MVR,1.00,item_level,true,Compact,0.00,2671.30,2885.00,0.00,0.00,Adjustment,,2023-05-12,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,wood spoon 1x100,,300,0.00,0.000,152.78,,0.55,3262759000002283424,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,12.22,ItemAmount
+2023-05-13,3262759000002567167,INV-002802,Draft,3262759000002567145,haveeree café k-3,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,155.56,168.00,168.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,PAPER BAG BROWN  28CM,4KG 240PCS,240,0.00,0.000,155.56,,0.70,3262759000002148094,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000617,,,,,,Sales,,3262759000001582001,GST,8.00,12.44,ItemAmount
+2023-05-13,3262759000002567206,INV-002803,Draft,3262759000002567195,Kanz Maldives,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,833.33,900.00,900.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container T6 Round 15Cm,,1000,0.00,0.000,833.33,pcs,0.90,3262759000000091055,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,66.67,ItemAmount
+2023-05-13,3262759000002567220,INV-002804,Closed,3262759000000078001,Sales,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,870.37,940.00,0.00,0.00,Adjustment,,2023-05-13,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,CASH DRAWER REGISTER 5 COMPARTMENT,,1,0.00,0.000,870.37,pcs,940.00,3262759000002388064,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,69.63,ItemAmount
+2023-05-13,3262759000002567258,INV-002805,Closed,3262759000002567234,R.S.R fenfushi I-08,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,1111.11,1200.00,0.00,0.00,Adjustment,,2023-05-13,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,"NET HOOK 10"" STEEL",,100,0.00,0.000,1111.11,pcs,12.00,3262759000000085073,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,EST-000616,,,,,,Sales,,3262759000001582001,GST,8.00,88.89,ItemAmount
+2023-05-13,3262759000002567370,INV-002806,Draft,3262759000002528045,TN mart,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,1268.52,1370.00,1370.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Aluminum Foil Box 8389 With Lid 890ml 1 x 1000pcs,,1000,0.00,0.000,1157.41,pcs,1.25,3262759000000085172,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,92.59,ItemAmount
+2023-05-13,3262759000002567370,INV-002806,Draft,3262759000002528045,TN mart,true,2023-05-13,,MVR,1.00,item_level,true,Compact,0.00,1268.52,1370.00,1370.00,0.00,Adjustment,,,0,Due on Receipt,Thank you for your business.,"Please transfer payments to:
+
+Bank of Maldives MVR Account
+Account number : 7703 70001 1001 
+Name: MRH Investment Pvt Ltd
+
+Confirm goods before transportation.
+Goods are non refundable.",0.0,0.00,,,,,,Round Container R4 Round,,100,0.00,0.000,111.11,pcs,1.20,3262759000000090478,,,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,,,,,,,,,,,,,,,,,,,,0.00,,,,,,,,,,,,Sales,,3262759000001582001,GST,8.00,8.89,ItemAmount
