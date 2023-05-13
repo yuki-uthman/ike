@@ -1,17 +1,18 @@
 use serde::{Deserialize, Serialize};
+use crate::result::Result;
 
 #[derive(Debug)]
 pub struct Items(Vec<Item>);
 
 impl Items {
-    pub fn load(filename: &str) -> Items {
-        let mut reader = csv::Reader::from_path(filename).expect("Unable to open file");
+    pub fn load(filename: &str) -> Result<Items> {
+        let mut reader = csv::Reader::from_path(filename)?;
         let mut items = Vec::new();
         for result in reader.deserialize() {
-            let record: Item = result.expect("a CSV record");
+            let record: Item = result?;
             items.push(record);
         }
-        Items(items)
+        Ok(Items(items))
     }
 
     pub fn get(&self, name: &str) -> Option<&Item> {
