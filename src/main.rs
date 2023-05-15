@@ -1,6 +1,6 @@
-use shop::items::Items;
+use shop::invoices::Invoices;
 
 fn main() {
-    let items = Items::new("assets/Item.csv");
-    println!("{:#?}", items);
+    let invoices = Invoices::new("assets/Invoice.csv");
+    println!("{:#?}", invoices)
 }
