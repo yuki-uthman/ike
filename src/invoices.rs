@@ -4,12 +4,19 @@ use serde::Deserialize;
 use crate::records::Records;
 use crate::result::Result;
 
+#[derive(Debug, PartialEq)]
+enum Status {
+    Draft,
+    Closed,
+    Overdue,
+}
+
 #[derive(Debug, Deserialize)]
 pub struct Invoice {
     #[serde(rename = "Invoice Date", deserialize_with = "deserialize_date")]
     date: Date,
-    #[serde(rename = "Invoice Status")]
-    status: String,
+    #[serde(rename = "Invoice Status", deserialize_with = "deserialize_status")]
+    status: Status,
     #[serde(rename = "Item Name")]
     product: String,
     #[serde(rename = "Quantity")]
@@ -23,6 +30,20 @@ where
     let s = String::deserialize(deserializer).unwrap();
     Ok(Date::parse_from_str(&s, "%Y-%m-%d").unwrap())
 }
+
+fn deserialize_status<'de, D>(deserializer: D) -> std::result::Result<Status, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let status = String::deserialize(deserializer).unwrap();
+    match status.as_str() {
+        "Draft" => Ok(Status::Draft),
+        "Closed" => Ok(Status::Closed),
+        "Overdue" => Ok(Status::Overdue),
+        _ => Err(serde::de::Error::custom("invalid status")),
+    }
+}
+
 
 #[derive(Debug)]
 pub struct Invoices(Vec<Invoice>);
