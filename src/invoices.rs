@@ -1,18 +1,27 @@
-use serde::{Deserialize, Serialize};
+use chrono::NaiveDate as Date;
+use serde::Deserialize;
 
 use crate::records::Records;
 use crate::result::Result;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize)]
 pub struct Invoice {
-    #[serde(rename = "Invoice Date")]
-    date: String,
+    #[serde(rename = "Invoice Date", deserialize_with = "deserialize_date")]
+    date: Date,
     #[serde(rename = "Invoice Status")]
     status: String,
     #[serde(rename = "Item Name")]
     product: String,
     #[serde(rename = "Quantity")]
     quantity: i32,
+}
+
+fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer).unwrap();
+    Ok(Date::parse_from_str(&s, "%Y-%m-%d").unwrap())
 }
 
 #[derive(Debug)]
