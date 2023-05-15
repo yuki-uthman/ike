@@ -25,7 +25,7 @@ impl From<Vec<Item>> for Items {
 
 impl Items {
     pub fn new(filename: &'static str) -> Result<Self> {
-        Ok(Items::load(filename)?)
+        Ok(Self::load(filename)?)
     }
 
     pub fn get(&self, name: &str) -> Option<&Item> {

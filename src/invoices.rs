@@ -57,7 +57,7 @@ impl From<Vec<Invoice>> for Invoices {
 
 impl Invoices {
     pub fn new(filename: &'static str) -> Result<Self> {
-        Ok(Invoices::load(filename)?)
+        Ok(Self::load(filename)?)
     }
 
     /// Returns a vector of invoices after the given date,
