@@ -66,6 +66,10 @@ impl Invoices {
         self.0.iter().filter(|invoice| invoice.date > date).collect()
     }
 
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
     pub fn closed(&self) -> Vec<&Invoice> {
         self.0.iter().filter(|invoice| invoice.status == Status::Closed).collect()
     }
