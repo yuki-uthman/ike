@@ -38,4 +38,10 @@ impl Invoices {
     pub fn new(filename: &'static str) -> Result<Self> {
         Ok(Invoices::load(filename)?)
     }
+
+    /// Returns a vector of invoices after the given date,
+    /// excluding the given date.
+    pub fn after(&self, date: Date) -> Vec<&Invoice> {
+        self.0.iter().filter(|invoice| invoice.date > date).collect()
+    }
 }
