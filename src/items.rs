@@ -24,8 +24,14 @@ impl From<Vec<Item>> for Items {
 }
 
 impl Items {
-    pub fn get(&self, name: &str) -> Option<&Item> {
-        self.0.iter().find(|item| item.name == name)
+    pub fn contains(&self, name: &str) -> Result<Vec<&Item>> {
+        let mut matches = Vec::new();
+        for item in &self.0 {
+            if item.name.contains(name) {
+                matches.push(item);
+            }
+        }
+        Ok(matches)
     }
 }
 
