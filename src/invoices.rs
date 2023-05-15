@@ -65,4 +65,8 @@ impl Invoices {
     pub fn after(&self, date: Date) -> Vec<&Invoice> {
         self.0.iter().filter(|invoice| invoice.date > date).collect()
     }
+
+    pub fn closed(&self) -> Vec<&Invoice> {
+        self.0.iter().filter(|invoice| invoice.status == Status::Closed).collect()
+    }
 }
