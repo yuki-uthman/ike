@@ -20,7 +20,7 @@ pub struct Invoice {
     #[serde(rename = "Item Name")]
     product: String,
     #[serde(rename = "Quantity")]
-    quantity: i32,
+    quantity: usize,
 }
 
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
@@ -72,5 +72,16 @@ impl Invoices {
 
     pub fn closed(&self) -> Vec<&Invoice> {
         self.0.iter().filter(|invoice| invoice.status == Status::Closed).collect()
+    }
+
+    pub fn count(&self, product: &str) -> usize {
+        let filtered_invoices = self.0.iter().filter(|invoice| invoice.product == product);
+        let mut count: usize = 0;
+        for invoice in filtered_invoices {
+            if invoice.product == product {
+                count += invoice.quantity;
+            }
+        }
+        count
     }
 }
