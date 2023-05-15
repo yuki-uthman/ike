@@ -1,6 +1,7 @@
+use shop::records::Records;
 use shop::invoices::Invoices;
 
 fn main() {
-    let invoices = Invoices::new("assets/Invoice.csv");
     println!("{:#?}", invoices)
+    let invoices = Invoices::load("assets/Invoice.csv").unwrap();
 }

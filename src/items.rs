@@ -24,10 +24,6 @@ impl From<Vec<Item>> for Items {
 }
 
 impl Items {
-    pub fn new(filename: &'static str) -> Result<Self> {
-        Ok(Self::load(filename)?)
-    }
-
     pub fn get(&self, name: &str) -> Option<&Item> {
         self.0.iter().find(|item| item.name == name)
     }

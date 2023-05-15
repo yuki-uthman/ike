@@ -56,10 +56,6 @@ impl From<Vec<Invoice>> for Invoices {
 }
 
 impl Invoices {
-    pub fn new(filename: &'static str) -> Result<Self> {
-        Ok(Self::load(filename)?)
-    }
-
     /// Returns a vector of invoices after the given date,
     /// excluding the given date.
     pub fn after(&self, date: Date) -> Vec<&Invoice> {
