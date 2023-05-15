@@ -1,22 +1,11 @@
-use std::fmt::{Debug, Display};
+use thiserror;
 
-use csv;
-
-#[derive(Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum Error {
-    CsvError(csv::Error),
+    #[error("{source}: {filename}")]
+    FileNotFound { source: csv::Error, filename: &'static str},
+
+    #[error("{source}")]
+    DeserializeFailed { source: csv::Error },
 }
 
-impl Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match *self {
-            Error::CsvError(ref err) => write!(f, "{}", err),
-        }
-    }
-}
-
-impl From<csv::Error> for Error {
-    fn from(err: csv::Error) -> Error {
-        Error::CsvError(err)
-    }
-}

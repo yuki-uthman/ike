@@ -1,15 +1,18 @@
 use serde::{Deserialize, Serialize};
+
+use crate::error::Error;
 use crate::result::Result;
 
 #[derive(Debug)]
 pub struct Items(Vec<Item>);
 
 impl Items {
-    pub fn load(filename: &str) -> Result<Items> {
-        let mut reader = csv::Reader::from_path(filename)?;
+    pub fn load(filename: &'static str) -> Result<Items> {
+        let mut reader = csv::Reader::from_path(filename)
+            .map_err(|source| Error::FileNotFound { source, filename })?;
         let mut items = Vec::new();
         for result in reader.deserialize() {
-            let record: Item = result?;
+            let record: Item = result.map_err(|source| Error::DeserializeFailed { source })?;
             items.push(record);
         }
         Ok(Items(items))
