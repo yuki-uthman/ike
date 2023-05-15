@@ -1,17 +1,23 @@
 use serde::{Deserialize, Serialize};
 
-use crate::records::Loader;
+use crate::records::Records;
 use crate::result::Result;
 
 #[derive(Debug)]
 pub struct Items(Vec<Item>);
 
-impl Loader<Item> for Items {}
+impl From<Vec<Item>> for Items {
+    fn from(vec: Vec<Item>) -> Items {
+        Items(vec)
+    }
+}
+
+impl Records<Item> for Items {}
 
 impl Items {
-    pub fn new(filename: &'static str) -> Result<Items> {
+    pub fn new(filename: &'static str) -> Result<Self> {
         let items = Items::load(filename)?;
-        Ok(Self(items))
+        Ok(items)
     }
 
     pub fn get(&self, name: &str) -> Option<&Item> {
