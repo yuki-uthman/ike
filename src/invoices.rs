@@ -4,14 +4,14 @@ use serde::Deserialize;
 use crate::records::Records;
 use crate::result::Result;
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 enum Status {
     Draft,
     Closed,
     Overdue,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Invoice {
     #[serde(rename = "Invoice Date", deserialize_with = "deserialize_date")]
     date: Date,
@@ -55,11 +55,22 @@ impl From<Vec<Invoice>> for Invoices {
     }
 }
 
+impl FromIterator<Invoice> for Invoices {
+    fn from_iter<I: IntoIterator<Item = Invoice>>(iter: I) -> Self {
+        let mut vec = Vec::new();
+        for invoice in iter {
+            vec.push(invoice);
+        }
+        Invoices(vec)
+    }
+}
+
 impl Invoices {
     /// Returns a vector of invoices after the given date,
     /// excluding the given date.
-    pub fn after(&self, date: Date) -> Vec<&Invoice> {
-        self.0.iter().filter(|invoice| invoice.date > date).collect()
+    pub fn after(&self, date: &str) -> Self {
+        let date = Date::parse_from_str(date, "%Y-%m-%d").unwrap();
+        self.0.clone().into_iter().filter(|invoice| invoice.date > date).collect()
     }
 
     pub fn len(&self) -> usize {
