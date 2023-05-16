@@ -11,6 +11,8 @@ pub struct Item {
     price: String,
     #[serde(rename = "Purchase Rate")]
     cost: String,
+    #[serde(rename = "Quantity")]
+    quantity: usize,
 }
 
 #[derive(Debug)]
