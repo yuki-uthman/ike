@@ -1,5 +1,6 @@
 use chrono::NaiveDate as Date;
 use serde::Deserialize;
+use std::ops::Deref;
 
 use crate::records::Records;
 
@@ -28,6 +29,14 @@ impl Records<Inventory> for Inventories {}
 impl From<Vec<Inventory>> for Inventories {
     fn from(vec: Vec<Inventory>) -> Inventories {
         Inventories(vec)
+    }
+}
+
+impl Deref for Inventories {
+    type Target = Vec<Inventory>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
