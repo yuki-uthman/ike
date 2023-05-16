@@ -89,7 +89,7 @@ impl Items {
 
     pub fn get(&self, item_name: &str) -> Result<&Item> {
         for item in &self.0 {
-            if item.name.contains(item_name) {
+            if item.name == item_name {
                 return Ok(item);
             }
         }
@@ -98,7 +98,7 @@ impl Items {
 
     pub fn get_mut(&mut self, item_name: &str) -> Result<&mut Item> {
         for item in &mut self.0 {
-            if item.name.contains(item_name) {
+            if item.name == item_name {
                 return Ok(item);
             }
         }
