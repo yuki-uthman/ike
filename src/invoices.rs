@@ -80,9 +80,10 @@ impl Invoices {
         self.0.len()
     }
 
-    pub fn closed(&self) -> Vec<&Invoice> {
+    pub fn closed(&self) -> Self {
         self.0
-            .iter()
+            .clone()
+            .into_iter()
             .filter(|invoice| invoice.status == Status::Closed)
             .collect()
     }
