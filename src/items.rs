@@ -86,5 +86,23 @@ impl Items {
         }
         Ok(matches)
     }
+
+    pub fn get(&self, item_name: &str) -> Result<&Item> {
+        for item in &self.0 {
+            if item.name.contains(item_name) {
+                return Ok(item);
+            }
+        }
+        panic!("item not found: {}", item_name);
+    }
+
+    pub fn get_mut(&mut self, item_name: &str) -> Result<&mut Item> {
+        for item in &mut self.0 {
+            if item.name.contains(item_name) {
+                return Ok(item);
+            }
+        }
+        panic!("item not found: {}", item_name);
+    }
 }
 
