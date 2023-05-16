@@ -24,7 +24,7 @@ impl From<Vec<Item>> for Items {
 }
 
 impl Items {
-    pub fn contains(&self, name: &str) -> Result<Vec<&Item>> {
+    pub fn find_all(&self, name: &str) -> Result<Vec<&Item>> {
         let mut matches = Vec::new();
         for item in &self.0 {
             if item.name.contains(name) {
