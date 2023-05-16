@@ -67,8 +67,7 @@ impl FromIterator<Invoice> for Invoices {
 impl Invoices {
     /// Returns a vector of invoices after the given date,
     /// excluding the given date.
-    pub fn after(&self, date: &str) -> Self {
-        let date = Date::parse_from_str(date, "%Y-%m-%d").unwrap();
+    pub fn after(&self, date: Date) -> Self {
         self.0
             .clone()
             .into_iter()
