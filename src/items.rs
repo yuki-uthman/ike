@@ -27,6 +27,45 @@ where
     }
 }
 
+
+impl Item {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn price(&self) -> &str {
+        &self.price
+    }
+
+    pub fn cost(&self) -> &str {
+        &self.cost
+    }
+
+    pub fn quantity(&self) -> isize {
+        self.quantity
+    }
+
+    pub fn set_name(&mut self, name: &str) -> &mut Self {
+        self.name = name.to_string();
+        self
+    }
+
+    pub fn set_price(&mut self, price: &str) -> &mut Self {
+        self.price = price.to_string();
+        self
+    }
+
+    pub fn set_cost(&mut self, cost: &str) -> &mut Self {
+        self.cost = cost.to_string();
+        self
+    }
+
+    pub fn set_quantity(&mut self, quantity: isize) -> &mut Self {
+        self.quantity = quantity;
+        self
+    }
+}
+
 #[derive(Debug)]
 pub struct Items(Vec<Item>);
 
