@@ -44,7 +44,6 @@ where
     }
 }
 
-
 #[derive(Debug)]
 pub struct Invoices(Vec<Invoice>);
 
@@ -70,7 +69,11 @@ impl Invoices {
     /// excluding the given date.
     pub fn after(&self, date: &str) -> Self {
         let date = Date::parse_from_str(date, "%Y-%m-%d").unwrap();
-        self.0.clone().into_iter().filter(|invoice| invoice.date > date).collect()
+        self.0
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.date > date)
+            .collect()
     }
 
     pub fn len(&self) -> usize {
@@ -78,7 +81,10 @@ impl Invoices {
     }
 
     pub fn closed(&self) -> Vec<&Invoice> {
-        self.0.iter().filter(|invoice| invoice.status == Status::Closed).collect()
+        self.0
+            .iter()
+            .filter(|invoice| invoice.status == Status::Closed)
+            .collect()
     }
 
     pub fn count(&self, product: &str) -> usize {

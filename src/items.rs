@@ -27,7 +27,6 @@ where
     }
 }
 
-
 impl Item {
     pub fn name(&self) -> &str {
         &self.name
@@ -105,4 +104,3 @@ impl Items {
         panic!("item not found: {}", item_name);
     }
 }
-
