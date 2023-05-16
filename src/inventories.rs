@@ -14,6 +14,20 @@ pub struct Inventory {
     quantity: usize,
 }
 
+impl Inventory {
+    pub fn date(&self) -> Date {
+        self.date
+    }
+
+    pub fn name(&self) -> &str {
+        &self.product
+    }
+
+    pub fn quantity(&self) -> usize {
+        self.quantity
+    }
+}
+
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
 where
     D: serde::Deserializer<'de>,
