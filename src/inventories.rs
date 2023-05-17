@@ -33,7 +33,7 @@ where
     D: serde::Deserializer<'de>,
 {
     let string = String::deserialize(deserializer).unwrap();
-    Ok(Date::parse_from_str(&string, "%Y-%m-%d").unwrap())
+    Ok(Date::parse_from_str(&string, "%d/%m/%Y").unwrap())
 }
 
 #[derive(Debug)]
