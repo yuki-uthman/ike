@@ -1,7 +1,7 @@
 use chrono::NaiveDate as Date;
 use serde::Deserialize;
 
-use crate::records::Records;
+use crate::loader::Loader;
 use crate::result::Result;
 
 #[derive(Clone, Debug, PartialEq)]
@@ -47,7 +47,7 @@ where
 #[derive(Debug)]
 pub struct Invoices(Vec<Invoice>);
 
-impl Records<Invoice> for Invoices {}
+impl Loader<Invoice> for Invoices {}
 impl From<Vec<Invoice>> for Invoices {
     fn from(vec: Vec<Invoice>) -> Invoices {
         Invoices(vec)

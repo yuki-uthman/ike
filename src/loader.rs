@@ -3,7 +3,7 @@ use serde::de::DeserializeOwned;
 use crate::error::Error;
 use crate::result::Result;
 
-pub trait Records<Record: DeserializeOwned> {
+pub trait Loader<Record: DeserializeOwned> {
     fn load(filename: &'static str) -> Result<Self>
     where
         Self: Sized + From<Vec<Record>>,

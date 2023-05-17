@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::records::Records;
+use crate::loader::Loader;
 use crate::result::Result;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -71,7 +71,7 @@ impl Item {
 #[derive(Debug)]
 pub struct Items(Vec<Item>);
 
-impl Records<Item> for Items {}
+impl Loader<Item> for Items {}
 impl From<Vec<Item>> for Items {
     fn from(vec: Vec<Item>) -> Items {
         Items(vec)

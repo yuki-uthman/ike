@@ -2,7 +2,7 @@ use chrono::NaiveDate as Date;
 use serde::Deserialize;
 use std::ops::Deref;
 
-use crate::records::Records;
+use crate::loader::Loader;
 
 #[derive(Debug, Deserialize)]
 pub struct Inventory {
@@ -39,7 +39,7 @@ where
 #[derive(Debug)]
 pub struct Inventories(Vec<Inventory>);
 
-impl Records<Inventory> for Inventories {}
+impl Loader<Inventory> for Inventories {}
 impl From<Vec<Inventory>> for Inventories {
     fn from(vec: Vec<Inventory>) -> Inventories {
         Inventories(vec)
