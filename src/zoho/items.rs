@@ -119,8 +119,8 @@ mod tests {
     use insta::assert_yaml_snapshot;
 
     #[test]
-    fn load_items() {
-        let items = Items::load("assets/zoho/Item.csv").unwrap();
+    fn count_items() {
+        let items = Items::load("tests/assets/zoho/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
         694
