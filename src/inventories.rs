@@ -46,6 +46,7 @@ impl From<Vec<Inventory>> for Inventories {
     }
 }
 
+// https://stackoverflow.com/questions/68277992/implement-iterator-trait-for-a-struct-containing-an-iterable-field
 impl Deref for Inventories {
     type Target = Vec<Inventory>;
 
