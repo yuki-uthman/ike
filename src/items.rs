@@ -7,10 +7,10 @@ use crate::result::Result;
 pub struct Item {
     #[serde(rename = "Item Name")]
     name: String,
-    #[serde(rename = "Rate")]
-    price: String,
-    #[serde(rename = "Purchase Rate")]
-    cost: String,
+    #[serde(rename = "Rate", deserialize_with = "trim_currency")]
+    price: f32,
+    #[serde(rename = "Purchase Rate", deserialize_with = "trim_currency")]
+    cost: f32,
     #[serde(skip_deserializing, default = "reset_quantity")]
     quantity: usize,
 }
@@ -19,17 +19,28 @@ fn reset_quantity() -> usize {
     0
 }
 
+/// price and cost fields are in the format "MVR 1.00"
+/// this function trims the "MVR " prefix and parses the rest as f32
+fn trim_currency<'de, D>(deserializer: D) -> std::result::Result<f32, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    let s = s.trim_start_matches("MVR ");
+    Ok(s.parse::<f32>().unwrap())
+}
+
 impl Item {
     pub fn name(&self) -> &str {
         &self.name
     }
 
-    pub fn price(&self) -> &str {
-        &self.price
+    pub fn price(&self) -> f32 {
+        self.price
     }
 
-    pub fn cost(&self) -> &str {
-        &self.cost
+    pub fn cost(&self) -> f32 {
+        self.cost
     }
 
     pub fn quantity(&self) -> usize {
@@ -41,13 +52,13 @@ impl Item {
         self
     }
 
-    pub fn set_price(&mut self, price: &str) -> &mut Self {
-        self.price = price.to_string();
+    pub fn set_price(&mut self, price: f32) -> &mut Self {
+        self.price = price;
         self
     }
 
-    pub fn set_cost(&mut self, cost: &str) -> &mut Self {
-        self.cost = cost.to_string();
+    pub fn set_cost(&mut self, cost: f32) -> &mut Self {
+        self.cost = cost;
         self
     }
 
