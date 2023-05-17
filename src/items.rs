@@ -11,25 +11,12 @@ pub struct Item {
     price: String,
     #[serde(rename = "Purchase Rate")]
     cost: String,
-    #[serde(rename = "Stock On Hand", deserialize_with = "parse_quantity")]
+    #[serde(skip_deserializing, default = "reset_quantity")]
     quantity: usize,
 }
 
-fn parse_quantity<'de, D>(deserializer: D) -> std::result::Result<usize, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    let s = String::deserialize(deserializer)?;
-    if s.is_empty() {
-        Ok(0)
-    } else {
-        let number = s.parse::<isize>().unwrap();
-        if number < 0 {
-            Ok(0)
-        } else {
-            Ok(number as usize)
-        }
-    }
+fn reset_quantity() -> usize {
+    0
 }
 
 impl Item {
