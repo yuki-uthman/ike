@@ -68,7 +68,7 @@ mod tests {
     use insta::assert_yaml_snapshot;
 
     #[test]
-    fn count_items() {
+    fn len() {
         let inventories = Inventories::load("tests/assets/revision/Inventory.csv").unwrap();
         assert_yaml_snapshot!(inventories.len(), @r###"
         ---
