@@ -1,6 +1,7 @@
+use std::result::Result;
+
 mod loader;
 use loader::Loader;
-
 
 mod zoho;
 use zoho::Invoices;
@@ -20,20 +21,45 @@ pub enum Error {
     },
 }
 
-pub fn run() -> std::result::Result<(), Error> {
-    let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::LoadFailed {
-        filename: "assets/zoho/Item.csv",
-        source,
-    })?;
+struct Shop {
+    items: Items,
+    inventories: Inventories,
+    invoices: Invoices,
+}
 
-    let inventories = Inventories::load("assets/revision/Inventory.csv").map_err(|source| Error::LoadFailed {
-        filename: "assets/revision/Inventory.csv",
-        source,
-    })?;
-    let invoices = Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::LoadFailed {
-        filename: "assets/zoho/Invoice.csv",
-        source,
-    })?;
+impl Shop {
+    fn new() -> Result<Shop, Error> {
+        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::LoadFailed {
+            filename: "assets/zoho/Item.csv",
+            source,
+        })?;
+        let inventories = Inventories::load("assets/revision/Inventory.csv").map_err(|source| {
+            Error::LoadFailed {
+                filename: "assets/revision/Inventory.csv",
+                source,
+            }
+        })?;
+        let invoices =
+            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::LoadFailed {
+                filename: "assets/zoho/Invoice.csv",
+                source,
+            })?;
+
+        Ok(Shop {
+            items,
+            inventories,
+            invoices,
+        })
+    }
+}
+
+pub fn run() -> Result<(), Error> {
+    let shop = Shop::new()?;
+
+    println!("items: {}", shop.items.len());
+    println!("invoices: {}", shop.invoices.len());
+
+    println!("inventories: {}", shop.inventories.len());
 
     Ok(())
 }
