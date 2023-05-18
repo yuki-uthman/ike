@@ -1,7 +1,11 @@
 use serde::{Deserialize, Serialize};
 
 use crate::loader::Loader;
-use crate::result::Result;
+
+
+#[derive(thiserror::Error, Debug)]
+pub enum Error {}
+type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Item {

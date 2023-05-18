@@ -1,10 +1,21 @@
 use serde::de::DeserializeOwned;
+use thiserror;
 
-use crate::error::Error;
-use crate::result::Result;
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("{source}: {filename}")]
+    FileNotFound {
+        filename: &'static str,
+        source: csv::Error,
+    },
+
+    #[error("{source}")]
+    DeserializeFailed { source: csv::Error },
+}
+
 
 pub trait Loader<Record: DeserializeOwned> {
-    fn load(filename: &'static str) -> Result<Self>
+    fn load(filename: &'static str) -> Result<Self, Error>
     where
         Self: Sized + From<Vec<Record>>,
     {

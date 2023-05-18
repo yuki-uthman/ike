@@ -2,7 +2,6 @@ use chrono::NaiveDate as Date;
 use serde::Deserialize;
 
 use crate::loader::Loader;
-use crate::result::Result;
 
 #[derive(Clone, Debug, PartialEq)]
 enum Status {
