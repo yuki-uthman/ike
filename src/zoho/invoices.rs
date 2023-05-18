@@ -1,4 +1,5 @@
 use chrono::NaiveDate as Date;
+use kv_log_macro as log;
 use serde::Deserialize;
 
 use crate::loader::Loader;
@@ -89,11 +90,15 @@ impl Invoices {
     pub fn count(&self, product: &str) -> usize {
         let filtered_invoices = self.0.iter().filter(|invoice| invoice.product == product);
         let mut count: usize = 0;
+        log::info!("{}", product);
         for invoice in filtered_invoices {
+            log::info!("{}: {}pcs sold", invoice.date, invoice.quantity);
             if invoice.product == product {
                 count += invoice.quantity;
             }
         }
+        log::info!("total: {}pcs sold", count);
+        println!();
         count
     }
 }
