@@ -55,4 +55,24 @@ impl Deref for Inventories {
     }
 }
 
-impl Inventories {}
+impl Inventories {
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use insta::assert_yaml_snapshot;
+
+    #[test]
+    fn count_items() {
+        let inventories = Inventories::load("tests/assets/revision/Inventory.csv").unwrap();
+        assert_yaml_snapshot!(inventories.len(), @r###"
+        ---
+        3
+        "###);
+    }
+}
