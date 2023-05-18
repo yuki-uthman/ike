@@ -1,3 +1,4 @@
+use kv_log_macro as log;
 use std::result::Result;
 
 mod loader;
@@ -19,6 +20,8 @@ pub enum Error {
         filename: &'static str,
         source: loader::Error,
     },
+    #[error("{source}")]
+    UpdateInventoryFailed { source: zoho::items::Error },
 }
 
 struct Shop {
@@ -51,15 +54,26 @@ impl Shop {
             invoices,
         })
     }
+
+    fn update_inventories(&mut self) -> Result<(), Error> {
+        for inventory in &mut self.inventories.iter() {
+            let name = inventory.name();
+            let date = inventory.date();
+            let quantity = self.invoices.closed().after(date).count(name);
+            self.items
+                .get_mut(name)
+                .map_err(|source| Error::UpdateInventoryFailed { source })?
+                .set_quantity(quantity);
+        }
+        Ok(())
+    }
 }
 
 pub fn run() -> Result<(), Error> {
-    let shop = Shop::new()?;
+    femme::with_level(femme::LevelFilter::Trace);
 
-    println!("items: {}", shop.items.len());
-    println!("invoices: {}", shop.invoices.len());
-
-    println!("inventories: {}", shop.inventories.len());
+    let mut shop = Shop::new()?;
+    shop.update_inventories()?;
 
     Ok(())
 }
