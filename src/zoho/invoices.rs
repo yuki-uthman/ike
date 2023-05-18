@@ -98,3 +98,19 @@ impl Invoices {
         count
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use insta::assert_yaml_snapshot;
+
+    #[test]
+    fn count_items() {
+        let invoices = Invoices::load("tests/assets/zoho/Invoice.csv").unwrap();
+        assert_yaml_snapshot!(invoices.len(), @r###"
+        ---
+        5030
+        "###);
+    }
+}
