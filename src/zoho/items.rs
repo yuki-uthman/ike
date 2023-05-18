@@ -29,9 +29,9 @@ fn trim_currency<'de, D>(deserializer: D) -> std::result::Result<f32, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
-    let s = String::deserialize(deserializer)?;
-    let s = s.trim_start_matches("MVR ");
-    Ok(s.parse::<f32>().unwrap())
+    let string = String::deserialize(deserializer)?;
+    let s = string.trim_start_matches("MVR ");
+    Ok(s.parse().map_err(serde::de::Error::custom)?)
 }
 
 impl Item {

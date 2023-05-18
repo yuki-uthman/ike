@@ -26,8 +26,8 @@ fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Err
 where
     D: serde::Deserializer<'de>,
 {
-    let s = String::deserialize(deserializer).unwrap();
-    Ok(Date::parse_from_str(&s, "%Y-%m-%d").unwrap())
+    let string = String::deserialize(deserializer)?;
+    Ok(Date::parse_from_str(&string, "%Y-%m-%d").map_err(serde::de::Error::custom)?)
 }
 
 fn deserialize_status<'de, D>(deserializer: D) -> std::result::Result<Status, D::Error>
@@ -97,7 +97,6 @@ impl Invoices {
         count
     }
 }
-
 
 #[cfg(test)]
 mod tests {

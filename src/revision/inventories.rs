@@ -32,8 +32,8 @@ fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Err
 where
     D: serde::Deserializer<'de>,
 {
-    let string = String::deserialize(deserializer).unwrap();
-    Ok(Date::parse_from_str(&string, "%d/%m/%Y").unwrap())
+    let string = String::deserialize(deserializer)?;
+    Ok(Date::parse_from_str(&string, "%d/%m/%Y").map_err(serde::de::Error::custom)?)
 }
 
 #[derive(Debug)]
