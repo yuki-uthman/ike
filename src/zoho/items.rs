@@ -4,7 +4,10 @@ use crate::loader::Loader;
 
 
 #[derive(thiserror::Error, Debug)]
-pub enum Error {}
+pub enum Error {
+    #[error("item not found: {name}")]
+    ItemNotFound { name: String },
+}
 type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -99,7 +102,9 @@ impl Items {
                 return Ok(item);
             }
         }
-        panic!("item not found: {}", item_name);
+        Err(Error::ItemNotFound {
+            name: item_name.to_string(),
+        })
     }
 
     pub fn get_mut(&mut self, item_name: &str) -> Result<&mut Item> {
@@ -108,7 +113,9 @@ impl Items {
                 return Ok(item);
             }
         }
-        panic!("item not found: {}", item_name);
+        Err(Error::ItemNotFound {
+            name: item_name.to_string(),
+        })
     }
 
     pub fn len(&self) -> usize {
