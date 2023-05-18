@@ -10,6 +10,8 @@ chrono = "0.4.24"
 csv = "1.2.1"
 serde = { version = "1.0.163", features = ["derive"] }
 thiserror = "1.0.40"
+femme = "2.1.1"
+kv-log-macro = "1.0.7"
 
 [dev-dependencies]
 insta = { version = "1.28.0", features = ["yaml"] }
