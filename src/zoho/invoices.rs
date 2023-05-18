@@ -97,7 +97,7 @@ impl Invoices {
                 count += invoice.quantity;
             }
         }
-        log::info!("total: {}pcs sold", count);
+        log::info!("     Total: {}pcs sold", count);
         println!();
         count
     }
