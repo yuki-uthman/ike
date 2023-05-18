@@ -45,12 +45,18 @@ where
 }
 
 #[derive(Debug)]
-pub struct Invoices(Vec<Invoice>);
+pub struct Invoices{
+    date: Date,
+    invoices: Vec<Invoice>,
+}
 
 impl Loader<Invoice> for Invoices {}
 impl From<Vec<Invoice>> for Invoices {
     fn from(vec: Vec<Invoice>) -> Invoices {
-        Invoices(vec)
+        Invoices {
+            date: Date::from_ymd_opt(2020, 1, 1).unwrap(),
+            invoices: vec,
+        }
     }
 }
 
@@ -60,15 +66,20 @@ impl FromIterator<Invoice> for Invoices {
         for invoice in iter {
             vec.push(invoice);
         }
-        Invoices(vec)
+        vec.into()
     }
 }
 
 impl Invoices {
+    pub fn set_date(&mut self, date: Date) -> &mut Self {
+        self.date = date;
+        self
+    }
+
     /// Returns a vector of invoices after the given date,
     /// excluding the given date.
     pub fn after(&self, date: Date) -> Self {
-        self.0
+        self.invoices
             .clone()
             .into_iter()
             .filter(|invoice| invoice.date > date)
@@ -76,11 +87,11 @@ impl Invoices {
     }
 
     pub fn len(&self) -> usize {
-        self.0.len()
+        self.invoices.len()
     }
 
     pub fn closed(&self) -> Self {
-        self.0
+        self.invoices
             .clone()
             .into_iter()
             .filter(|invoice| invoice.status == Status::Closed)
@@ -88,7 +99,7 @@ impl Invoices {
     }
 
     pub fn count(&self, product: &str) -> usize {
-        let filtered_invoices = self.0.iter().filter(|invoice| invoice.product == product);
+        let filtered_invoices = self.invoices.iter().filter(|invoice| invoice.product == product);
         let mut count: usize = 0;
         log::info!("{}", product);
         for invoice in filtered_invoices {
