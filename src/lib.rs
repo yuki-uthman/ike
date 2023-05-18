@@ -1,5 +1,3 @@
-mod error;
-
 mod loader;
 use loader::Loader;
 
