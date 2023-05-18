@@ -1,4 +1,5 @@
-use shop::records::Records;
-use shop::invoices::Invoices;
 
-fn main() {}
+fn main() {
+    let result = shop::run();
+    println!("{:#?}", result);
+}
