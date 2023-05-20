@@ -9,7 +9,7 @@ pub enum Error {
 }
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
     #[serde(rename = "Status")]
     status: String,
@@ -148,6 +148,13 @@ impl Items {
     pub fn len(&self) -> usize {
         self.0.len()
     }
+
+    pub fn take(&self, how_many: usize) -> Self {
+        let items = self.0.iter().take(how_many).cloned().collect::<Vec<_>>();
+
+        items.into()
+    }
+
 }
 
 #[cfg(test)]
