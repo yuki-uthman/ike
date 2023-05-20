@@ -26,7 +26,7 @@ pub struct Item {
     price: f32,
     #[serde(rename = "Purchase Rate", deserialize_with = "trim_currency")]
     cost: f32,
-    #[serde(skip_deserializing, default = "reset_quantity")]
+    #[serde(skip_deserializing, default = "reset_quantity", rename(serialize = "Initial Stock"))]
     quantity: usize,
 
     #[serde(rename = "Product Type")]
