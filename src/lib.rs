@@ -1,4 +1,3 @@
-use kv_log_macro as log;
 use std::result::Result;
 
 mod loader;
