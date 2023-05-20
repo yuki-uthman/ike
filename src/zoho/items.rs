@@ -11,14 +11,42 @@ type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Item {
+    #[serde(rename = "Status")]
+    status: String,
     #[serde(rename = "Item Name")]
     name: String,
+    #[serde(rename = "Description")]
+    description: String,
+    #[serde(rename = "SKU")]
+    sku: String,
+    #[serde(rename = "Usage unit")]
+    usage_unit: String,
+
     #[serde(rename = "Rate", deserialize_with = "trim_currency")]
     price: f32,
     #[serde(rename = "Purchase Rate", deserialize_with = "trim_currency")]
     cost: f32,
     #[serde(skip_deserializing, default = "reset_quantity")]
     quantity: usize,
+
+    #[serde(rename = "Product Type")]
+    product_type: String,
+    #[serde(rename = "Item Type")]
+    item_type: String,
+
+    #[serde(rename = "Account")]
+    account: String,
+    #[serde(rename = "Purchase Account")]
+    purchase_account: String,
+    #[serde(rename = "Inventory Account")]
+    inventory_account: String,
+
+    #[serde(rename = "Tax Name")]
+    tax_name: String,
+    #[serde(rename = "Tax Type")]
+    tax_type: String,
+    #[serde(rename = "Tax Percentage")]
+    tax_percentage: String,
 }
 
 fn reset_quantity() -> usize {
