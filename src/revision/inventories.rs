@@ -61,7 +61,6 @@ impl Inventories {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

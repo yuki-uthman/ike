@@ -57,13 +57,10 @@ impl Shop {
 
     fn update_inventories(&mut self) -> Result<(), Error> {
         for inventory in &mut self.inventories.iter() {
-
             let name = inventory.name();
             let date = inventory.date();
 
-            let quantity = self.invoices
-                .set_date(date)
-                .count(name);
+            let quantity = self.invoices.set_date(date).count(name);
 
             self.items
                 .get_mut(name)

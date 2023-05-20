@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::loader::Loader;
 
-
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("item not found: {name}")]
@@ -121,7 +120,6 @@ impl Items {
     pub fn len(&self) -> usize {
         self.0.len()
     }
-
 }
 
 #[cfg(test)]

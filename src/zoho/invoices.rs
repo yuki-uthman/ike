@@ -100,7 +100,8 @@ impl Invoices {
     }
 
     pub fn count(&self, product: &str) -> usize {
-        let filtered_invoices = self.invoices
+        let filtered_invoices = self
+            .invoices
             .clone()
             .into_iter()
             .filter(|invoice| invoice.date > self.date)

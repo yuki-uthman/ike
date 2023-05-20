@@ -13,7 +13,6 @@ pub enum Error {
     DeserializeFailed { source: csv::Error },
 }
 
-
 pub trait Loader<Record: DeserializeOwned> {
     fn load(filename: &'static str) -> Result<Self, Error>
     where
