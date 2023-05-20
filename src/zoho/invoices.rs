@@ -45,7 +45,7 @@ where
 }
 
 #[derive(Debug)]
-pub struct Invoices{
+pub struct Invoices {
     date: Date,
     invoices: Vec<Invoice>,
 }
@@ -99,7 +99,13 @@ impl Invoices {
     }
 
     pub fn count(&self, product: &str) -> usize {
-        let filtered_invoices = self.invoices.iter().filter(|invoice| invoice.product == product);
+        let filtered_invoices = self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.date > self.date)
+            .filter(|invoice| invoice.status == Status::Closed)
+            .filter(|invoice| invoice.product == product);
+
         let mut count: usize = 0;
         log::info!("{}", product);
         for invoice in filtered_invoices {
