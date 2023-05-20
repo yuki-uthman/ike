@@ -72,6 +72,7 @@ impl FromIterator<Invoice> for Invoices {
 
 impl Invoices {
     pub fn set_date(&mut self, date: Date) -> &mut Self {
+        log::info!("{}", date);
         self.date = date;
         self
     }
