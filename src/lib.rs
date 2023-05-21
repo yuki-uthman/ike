@@ -21,16 +21,22 @@ pub enum Error {
     },
     #[error("{source}")]
     UpdateInventory { source: zoho::items::Error },
+
+    #[error("{source}")]
+    Export {
+        filename: &'static str,
+        source: zoho::items::Error,
+    },
 }
 
-struct Shop {
+pub struct Shop {
     items: Items,
     inventories: Inventories,
     invoices: Invoices,
 }
 
 impl Shop {
-    fn new() -> Result<Shop, Error> {
+    pub fn new() -> Result<Shop, Error> {
         let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
             filename: "assets/zoho/Item.csv",
             source,
@@ -54,7 +60,7 @@ impl Shop {
         })
     }
 
-    fn items(&self) -> &Items {
+    pub fn items(&self) -> &Items {
         &self.items
     }
 
@@ -66,7 +72,7 @@ impl Shop {
         &self.invoices
     }
 
-    fn update_inventories(&mut self) -> Result<(), Error> {
+    pub fn update_inventories(&mut self) -> Result<(), Error> {
         for inventory in &mut self.inventories.iter() {
             let name = inventory.name();
             let date = inventory.date();
