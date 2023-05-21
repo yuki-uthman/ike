@@ -6,6 +6,29 @@ use crate::loader::Loader;
 pub enum Error {
     #[error("item not found: {name}")]
     ItemNotFound { name: String },
+
+    #[error("{source}")]
+    FileCreate {
+        filename: &'static str,
+        source: std::io::Error,
+    },
+
+    #[error("{source}")]
+    FileOpen {
+        filename: &'static str,
+        source: csv::Error,
+    },
+
+    #[error("{source}")]
+    Serialization {
+        source: csv::Error,
+    },
+
+    #[error("{source}")]
+    Flush {
+        source: std::io::Error,
+    },
+
 }
 type Result<T> = std::result::Result<T, Error>;
 
@@ -155,6 +178,20 @@ impl Items {
         items.into()
     }
 
+    pub fn export(&self, filename: &'static str) -> Result<()> {
+        std::fs::File::create(filename)
+            .map_err(|source| Error::FileCreate { filename, source })?;
+
+        let mut writer = csv::Writer::from_path(filename).map_err(|source| Error::FileOpen {
+            filename,
+            source,
+        })?;
+        for item in &self.0 {
+            writer.serialize(item).map_err(|source| Error::Serialization { source })?;
+        }
+        writer.flush().map_err(|source| Error::Flush { source })?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]
