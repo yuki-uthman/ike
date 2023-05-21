@@ -77,12 +77,12 @@ impl Shop {
             let name = inventory.name();
             let date = inventory.date();
 
-            let quantity = self.invoices.set_date(date).count(name);
+            let new_quantity = inventory.quantity() - self.invoices.set_date(date).count(name);
 
             self.items
                 .get_mut(name)
                 .map_err(|source| Error::UpdateInventory { source })?
-                .set_quantity(quantity);
+                .set_quantity(new_quantity);
         }
         Ok(())
     }
