@@ -15,12 +15,12 @@ use thiserror;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("{filename}: {source}")]
-    LoadFailed {
+    Load {
         filename: &'static str,
         source: loader::Error,
     },
     #[error("{source}")]
-    UpdateInventoryFailed { source: zoho::items::Error },
+    UpdateInventory { source: zoho::items::Error },
 }
 
 struct Shop {
@@ -31,18 +31,18 @@ struct Shop {
 
 impl Shop {
     fn new() -> Result<Shop, Error> {
-        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::LoadFailed {
+        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
             filename: "assets/zoho/Item.csv",
             source,
         })?;
         let inventories = Inventories::load("assets/revision/Inventory.csv").map_err(|source| {
-            Error::LoadFailed {
+            Error::Load {
                 filename: "assets/revision/Inventory.csv",
                 source,
             }
         })?;
         let invoices =
-            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::LoadFailed {
+            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
                 filename: "assets/zoho/Invoice.csv",
                 source,
             })?;
@@ -75,7 +75,7 @@ impl Shop {
 
             self.items
                 .get_mut(name)
-                .map_err(|source| Error::UpdateInventoryFailed { source })?
+                .map_err(|source| Error::UpdateInventory { source })?
                 .set_quantity(quantity);
         }
         Ok(())
