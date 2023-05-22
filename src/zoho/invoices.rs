@@ -86,6 +86,23 @@ impl Invoices {
             .collect()
     }
 
+    pub fn before(&self, date: Date) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.date < date)
+            .collect()
+    }
+
+    pub fn between(&self, start: Date, end: Date) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.date > start)
+            .filter(|invoice| invoice.date < end)
+            .collect()
+    }
+
     pub fn len(&self) -> usize {
         self.invoices.len()
     }
