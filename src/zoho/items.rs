@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use serde::{Deserialize, Serialize};
 
 use crate::loader::Loader;
@@ -135,6 +136,14 @@ impl Loader<Item> for Items {}
 impl From<Vec<Item>> for Items {
     fn from(vec: Vec<Item>) -> Items {
         Items(vec)
+    }
+}
+
+impl Deref for Items {
+    type Target = Vec<Item>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
