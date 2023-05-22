@@ -91,7 +91,33 @@ where
     Ok(s.parse().map_err(serde::de::Error::custom)?)
 }
 
+impl PartialEq for Item {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
 impl Item {
+    pub fn new(name: &str, quantity: usize) -> Self {
+        Self {
+            status: "active".to_string(),
+            name: name.to_string(),
+            description: "".to_string(),
+            sku: "".to_string(),
+            usage_unit: "pcs".to_string(),
+            price: 0.0,
+            cost: 0.0,
+            quantity,
+            product_type: "goods".to_string(),
+            item_type: "inventory".to_string(),
+            account: "Inventory Assets".to_string(),
+            purchase_account: "Cost of Goods Sold".to_string(),
+            inventory_account: "Inventory Assets".to_string(),
+            tax_name: "".to_string(),
+            tax_type: "".to_string(),
+            tax_percentage: "".to_string(),
+        }
+    }
     pub fn name(&self) -> &str {
         &self.name
     }

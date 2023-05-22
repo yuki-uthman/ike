@@ -3,6 +3,7 @@ use colored::Colorize;
 use serde::Deserialize;
 
 use crate::loader::Loader;
+use super::items::{Items, Item};
 
 #[derive(Clone, Debug, PartialEq)]
 enum Status {
@@ -133,6 +134,22 @@ impl Invoices {
         }
         println!("     {}: {}{}", "Total".red().bold(), "-".red(), count.to_string().red().bold().underline());
         count
+    }
+
+    pub fn unique(&self) -> Items {
+        let mut items = Vec::new();
+
+        for invoice in &self.invoices {
+            let item = Item::new(&invoice.product.clone(), invoice.quantity);
+            if items.contains(&item) {
+            } else {
+                items.push(item);
+            }
+        }
+        if items.len() == 0 {
+            panic!("No products found");
+        }
+        items.into()
     }
 }
 
