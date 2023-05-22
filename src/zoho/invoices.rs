@@ -109,7 +109,6 @@ impl Invoices {
             .filter(|invoice| invoice.product == product);
 
         let mut count: usize = 0;
-        log::info!("{}", product);
         for invoice in filtered_invoices {
             log::info!("{}: {}pcs sold", invoice.date, invoice.quantity);
             if invoice.product == product {
@@ -117,7 +116,6 @@ impl Invoices {
             }
         }
         log::info!("     Total: {}pcs sold", count);
-        println!();
         count
     }
 }

@@ -1,6 +1,7 @@
 use std::result::Result;
 
 mod loader;
+use kv_log_macro::info;
 use loader::Loader;
 
 mod zoho;
@@ -76,13 +77,16 @@ impl Shop {
         for inventory in &mut self.inventories.iter() {
             let name = inventory.name();
             let date = inventory.date();
-
+            let quantity = inventory.quantity();
+            info!("{}", name);
+            info!("{}: {}pcs", date, quantity);
             let new_quantity = inventory.quantity() - self.invoices.set_date(date).count(name);
 
             self.items
                 .get_mut(name)
                 .map_err(|source| Error::UpdateInventory { source })?
                 .set_quantity(new_quantity);
+            info!("Today: {}pcs\n", new_quantity);
         }
         Ok(())
     }
