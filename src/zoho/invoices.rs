@@ -1,5 +1,5 @@
 use chrono::NaiveDate as Date;
-use kv_log_macro as log;
+use colored::Colorize;
 use serde::Deserialize;
 
 use crate::loader::Loader;
@@ -72,7 +72,6 @@ impl FromIterator<Invoice> for Invoices {
 
 impl Invoices {
     pub fn set_date(&mut self, date: Date) -> &mut Self {
-        log::info!("{}", date);
         self.date = date;
         self
     }
@@ -110,12 +109,12 @@ impl Invoices {
 
         let mut count: usize = 0;
         for invoice in filtered_invoices {
-            log::info!("{}: {}pcs sold", invoice.date, invoice.quantity);
+            println!("{}: {}", invoice.date.to_string().red(), invoice.quantity.to_string().red().dimmed());
             if invoice.product == product {
                 count += invoice.quantity;
             }
         }
-        log::info!("     Total: {}pcs sold", count);
+        println!("     {}: {}{}", "Total".red().bold(), "-".red(), count.to_string().red().bold().underline());
         count
     }
 }
