@@ -7,6 +7,9 @@ pub enum Error {
     #[error("item not found: {name}")]
     ItemNotFound { name: String },
 
+    #[error("no items with the keyword: {keyword}")]
+    NoSuchItems { keyword: String },
+
     #[error("{source}")]
     FileCreate {
         filename: &'static str,
@@ -136,14 +139,19 @@ impl From<Vec<Item>> for Items {
 }
 
 impl Items {
-    pub fn find_all(&self, name: &str) -> Result<Vec<&Item>> {
+    pub fn find_all(&self, name: &str) -> Result<Self> {
         let mut matches = Vec::new();
         for item in &self.0 {
             if item.name.contains(name) {
-                matches.push(item);
+                matches.push(item.clone());
             }
         }
-        Ok(matches)
+        if matches.is_empty() {
+            return Err(Error::NoSuchItems {
+                keyword: name.to_string(),
+            });
+        }
+        Ok(matches.into())
     }
 
     pub fn get(&self, item_name: &str) -> Result<&Item> {
