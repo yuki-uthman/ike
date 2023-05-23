@@ -202,6 +202,36 @@ impl Add<Items> for Items {
     }
 }
 
+/// # Examples
+///
+/// ```
+/// use shop::{Item, Items};
+///
+/// let apple = Item::new("apple");
+/// let orange = Item::new("orange");
+/// let items1 = Items::new(vec![apple.clone(), orange.clone()]);
+///
+/// let apple = Item::new("apple");
+/// let items2 = Items::new(vec![apple.clone()]);
+///
+/// let result = items1 - items2;
+/// assert!(!result.contains(&apple));
+/// assert!(result.contains(&orange));
+///
+/// // no change if items to be subtracted are not present in the first list
+/// let apple = Item::new("apple");
+/// let orange = Item::new("orange");
+/// let items1 = Items::new(vec![apple.clone(), orange.clone()]);
+///
+/// let grape = Item::new("grape");
+/// let items2 = Items::new(vec![grape.clone()]);
+///
+/// let result = items1 - items2;
+/// assert!(result.contains(&apple));
+/// assert!(result.contains(&orange));
+/// assert!(!result.contains(&grape));
+///
+/// ```
 impl Sub<Items> for Items {
     type Output = Items;
 
