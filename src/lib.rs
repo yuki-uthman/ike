@@ -2,11 +2,11 @@ use colored::Colorize;
 use std::result::Result;
 
 mod loader;
-use loader::Loader;
+pub use loader::Loader;
 
 mod zoho;
-use zoho::Invoices;
-use zoho::Items;
+pub use zoho::Invoices;
+pub use zoho::Items;
 
 mod revision;
 use revision::Inventories;
