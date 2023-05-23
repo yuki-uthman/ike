@@ -20,7 +20,9 @@ fn main() -> Result<(), Error> {
     writer.write_record(&["Date", "Name", "Quantity"]).unwrap();
 
     for item in items.iter() {
-        writer.write_record(&["01/05/2023", &item.name(), "0"]).unwrap();
+        writer
+            .write_record(&["01/05/2023", &item.name(), "0"])
+            .unwrap();
     }
     writer.flush().unwrap();
 

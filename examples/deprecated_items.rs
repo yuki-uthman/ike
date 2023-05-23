@@ -30,8 +30,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     writer.write_record(&["Date", "Name", "Quantity"])?;
 
     for item in deprecated.iter() {
-        writer
-            .write_record(&["01/05/2023", &item.name(), "0"])?;
+        writer.write_record(&["01/05/2023", &item.name(), "0"])?;
     }
     writer.flush()?;
 

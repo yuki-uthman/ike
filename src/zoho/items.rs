@@ -1,5 +1,5 @@
-use std::ops::Deref;
 use serde::{Deserialize, Serialize};
+use std::ops::Deref;
 
 use crate::loader::Loader;
 
@@ -24,15 +24,10 @@ pub enum Error {
     },
 
     #[error("{source}")]
-    Serialization {
-        source: csv::Error,
-    },
+    Serialization { source: csv::Error },
 
     #[error("{source}")]
-    Flush {
-        source: std::io::Error,
-    },
-
+    Flush { source: std::io::Error },
 }
 type Result<T> = std::result::Result<T, Error>;
 
@@ -53,7 +48,11 @@ pub struct Item {
     price: f32,
     #[serde(rename = "Purchase Rate", deserialize_with = "trim_currency")]
     cost: f32,
-    #[serde(skip_deserializing, default = "reset_quantity", rename(serialize = "Initial Stock"))]
+    #[serde(
+        skip_deserializing,
+        default = "reset_quantity",
+        rename(serialize = "Initial Stock")
+    )]
     quantity: usize,
 
     #[serde(rename = "Product Type")]
@@ -222,15 +221,14 @@ impl Items {
     }
 
     pub fn export(&self, filename: &'static str) -> Result<()> {
-        std::fs::File::create(filename)
-            .map_err(|source| Error::FileCreate { filename, source })?;
+        std::fs::File::create(filename).map_err(|source| Error::FileCreate { filename, source })?;
 
-        let mut writer = csv::Writer::from_path(filename).map_err(|source| Error::FileOpen {
-            filename,
-            source,
-        })?;
+        let mut writer = csv::Writer::from_path(filename)
+            .map_err(|source| Error::FileOpen { filename, source })?;
         for item in &self.0 {
-            writer.serialize(item).map_err(|source| Error::Serialization { source })?;
+            writer
+                .serialize(item)
+                .map_err(|source| Error::Serialization { source })?;
         }
         writer.flush().map_err(|source| Error::Flush { source })?;
         Ok(())

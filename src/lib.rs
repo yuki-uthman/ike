@@ -42,17 +42,15 @@ impl Shop {
             filename: "assets/zoho/Item.csv",
             source,
         })?;
-        let inventories = Inventories::load("assets/revision/Inventory.csv").map_err(|source| {
-            Error::Load {
+        let inventories =
+            Inventories::load("assets/revision/Inventory.csv").map_err(|source| Error::Load {
                 filename: "assets/revision/Inventory.csv",
                 source,
-            }
-        })?;
-        let invoices =
-            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
-                filename: "assets/zoho/Invoice.csv",
-                source,
             })?;
+        let invoices = Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
+            filename: "assets/zoho/Invoice.csv",
+            source,
+        })?;
 
         Ok(Shop {
             items,
@@ -90,7 +88,11 @@ impl Shop {
                 .get_mut(name)
                 .map_err(|source| Error::UpdateInventory { source })?
                 .set_quantity(new_quantity);
-            println!("     {}: {}\n", "Today".green().bold(), new_quantity.to_string().green().bold());
+            println!(
+                "     {}: {}\n",
+                "Today".green().bold(),
+                new_quantity.to_string().green().bold()
+            );
         }
         Ok(())
     }

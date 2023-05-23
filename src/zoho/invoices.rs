@@ -2,8 +2,8 @@ use chrono::NaiveDate as Date;
 use colored::Colorize;
 use serde::Deserialize;
 
+use super::items::{Item, Items};
 use crate::loader::Loader;
-use super::items::{Items, Item};
 
 #[derive(Clone, Debug, PartialEq)]
 enum Status {
@@ -127,12 +127,21 @@ impl Invoices {
 
         let mut count: usize = 0;
         for invoice in filtered_invoices {
-            println!("{}: {}", invoice.date.to_string().red(), invoice.quantity.to_string().red().dimmed());
+            println!(
+                "{}: {}",
+                invoice.date.to_string().red(),
+                invoice.quantity.to_string().red().dimmed()
+            );
             if invoice.product == product {
                 count += invoice.quantity;
             }
         }
-        println!("     {}: {}{}", "Total".red().bold(), "-".red(), count.to_string().red().bold().underline());
+        println!(
+            "     {}: {}{}",
+            "Total".red().bold(),
+            "-".red(),
+            count.to_string().red().bold().underline()
+        );
         count
     }
 
