@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, Deref};
+use std::ops::{Add, Deref, Sub};
 
 use crate::loader::Loader;
 
@@ -196,6 +196,19 @@ impl Add<Items> for Items {
         for item in items.0 {
             if !self.0.contains(&item) {
                 self.0.push(item);
+            }
+        }
+        self
+    }
+}
+
+impl Sub<Items> for Items {
+    type Output = Items;
+
+    fn sub(mut self, items: Items) -> Self::Output {
+        for item in items.0 {
+            if let Some(index) = self.0.iter().position(|i| i.name == item.name) {
+                self.0.remove(index);
             }
         }
         self
