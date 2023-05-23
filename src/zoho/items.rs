@@ -97,7 +97,7 @@ impl PartialEq for Item {
 }
 
 impl Item {
-    pub fn new(name: &str, quantity: usize) -> Self {
+    pub fn new(name: &str) -> Self {
         Self {
             status: "active".to_string(),
             name: name.to_string(),
@@ -106,7 +106,7 @@ impl Item {
             usage_unit: "pcs".to_string(),
             price: 0.0,
             cost: 0.0,
-            quantity,
+            quantity: 0,
             product_type: "goods".to_string(),
             item_type: "inventory".to_string(),
             account: "Inventory Assets".to_string(),
@@ -177,14 +177,14 @@ impl Deref for Items {
 /// ```
 /// use shop::{Item, Items};
 ///
-/// let items1 = Items::new(vec![Item::new("item1", 1)]);
-/// let items2 = Items::new(vec![Item::new("item2", 1)]);
+/// let items1 = Items::new(vec![Item::new("item1")]);
+/// let items2 = Items::new(vec![Item::new("item2")]);
 /// let sum = items1 + items2;
 /// assert_eq!(sum.len(), 2);
 ///
 /// // only unique items are added
-/// let items = Items::new(vec![Item::new("item1", 1)]);
-/// let items_duplicate = Items::new(vec![Item::new("item1", 1)]);
+/// let items = Items::new(vec![Item::new("item1")]);
+/// let items_duplicate = Items::new(vec![Item::new("item1")]);
 /// let sum = items + items_duplicate;
 /// assert_eq!(sum.len(), 1);
 ///
