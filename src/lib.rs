@@ -7,6 +7,7 @@ pub use loader::Loader;
 mod zoho;
 pub use zoho::Invoices;
 pub use zoho::Items;
+pub use zoho::items::Item;
 
 mod revision;
 use revision::Inventories;

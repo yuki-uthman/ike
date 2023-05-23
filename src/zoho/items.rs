@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::ops::Deref;
+use std::ops::{Add, Deref};
 
 use crate::loader::Loader;
 
@@ -172,7 +172,41 @@ impl Deref for Items {
     }
 }
 
+/// # Examples
+///
+/// ```
+/// use shop::{Item, Items};
+///
+/// let items1 = Items::new(vec![Item::new("item1", 1)]);
+/// let items2 = Items::new(vec![Item::new("item2", 1)]);
+/// let sum = items1 + items2;
+/// assert_eq!(sum.len(), 2);
+///
+/// // only unique items are added
+/// let items = Items::new(vec![Item::new("item1", 1)]);
+/// let items_duplicate = Items::new(vec![Item::new("item1", 1)]);
+/// let sum = items + items_duplicate;
+/// assert_eq!(sum.len(), 1);
+///
+/// ```
+impl Add<Items> for Items {
+    type Output = Items;
+
+    fn add(mut self, items: Items) -> Self::Output {
+        for item in items.0 {
+            if !self.0.contains(&item) {
+                self.0.push(item);
+            }
+        }
+        self
+    }
+}
+
 impl Items {
+    pub fn new(items: Vec<Item>) -> Self {
+        Self(items)
+    }
+
     pub fn find_all(&self, name: &str) -> Result<Self> {
         let mut matches = Vec::new();
         for item in &self.0 {
