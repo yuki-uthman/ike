@@ -10,7 +10,7 @@ pub use zoho::Items;
 pub use zoho::items::Item;
 
 mod revision;
-use revision::Inventories;
+pub use revision::Inventories;
 
 use thiserror;
 
