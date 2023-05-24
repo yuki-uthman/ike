@@ -83,7 +83,7 @@ impl Shop {
                 date.to_string().green(),
                 quantity.to_string().green().bold()
             );
-            let new_quantity = inventory.quantity() - self.invoices.set_date(date).count(name);
+            let new_quantity = inventory.quantity() - self.invoices.set_date(date).count_quantity_sold(name);
 
             self.items
                 .get_mut(name)

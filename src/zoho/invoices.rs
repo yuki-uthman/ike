@@ -116,7 +116,7 @@ impl Invoices {
             .collect()
     }
 
-    pub fn count(&self, product: &str) -> usize {
+    pub fn count_quantity_sold(&self, product: &str) -> usize {
         let filtered_invoices = self
             .invoices
             .clone()
@@ -145,7 +145,7 @@ impl Invoices {
         count
     }
 
-    pub fn unique(&self) -> Items {
+    pub fn unique_items(&self) -> Items {
         let mut items = Vec::new();
 
         for invoice in &self.invoices {
