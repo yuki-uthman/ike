@@ -1,3 +1,4 @@
+use regex::RegexBuilder;
 use serde::{Deserialize, Serialize};
 use std::ops::{Add, Deref, Sub};
 
@@ -255,8 +256,13 @@ impl Items {
 
     pub fn find_all(&self, name: &str) -> Result<Self> {
         let mut matches = Vec::new();
+        let re = RegexBuilder::new(name)
+            .case_insensitive(true)
+            .build()
+            .unwrap();
+
         for item in &self.0 {
-            if item.name.contains(name) {
+            if re.is_match(&item.name) {
                 matches.push(item.clone());
             }
         }
