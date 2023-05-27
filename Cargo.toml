@@ -13,6 +13,7 @@ thiserror = "1.0.40"
 femme = "2.1.1"
 kv-log-macro = "1.0.7"
 colored = "2.0.0"
+ngrams = "1.0.1"
 
 [dev-dependencies]
 insta = { version = "1.28.0", features = ["yaml"] }
