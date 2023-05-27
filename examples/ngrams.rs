@@ -19,6 +19,17 @@ fn main() -> Result<(), Error> {
             .ngrams(2)
             .collect::<Vec<_>>()
             .iter()
+            .filter(|ngram| {
+                ngram
+                    .iter()
+                    .all(|word| word.chars().all(|c| c.is_alphabetic()))
+            })
+            .filter(|ngram| {
+                // filter out ngrams that contain less than 2 words
+                ngram
+                    .iter()
+                    .all(|word| word.len() > 2)
+            })
             .map(|ngram| ngram.join(" "))
             .map(|ngram| ngram.to_lowercase())
             .collect::<Vec<_>>();
