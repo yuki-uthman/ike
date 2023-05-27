@@ -28,6 +28,9 @@ pub enum Error {
 
     #[error("{source}")]
     Flush { source: std::io::Error },
+
+    #[error("{index}")]
+    IndexOutOfBounds { index: usize },
 }
 type Result<T> = std::result::Result<T, Error>;
 
@@ -285,6 +288,13 @@ impl Items {
         Err(Error::ItemNotFound {
             name: item_name.to_string(),
         })
+    }
+
+    pub fn get_by_index(&self, index: usize) -> Result<&Item> {
+        if index >= self.0.len() {
+            return Err(Error::IndexOutOfBounds { index });
+        }
+        Ok(&self.0[index])
     }
 
     pub fn len(&self) -> usize {
