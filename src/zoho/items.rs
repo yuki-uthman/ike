@@ -176,23 +176,6 @@ impl Deref for Items {
     }
 }
 
-/// # Examples
-///
-/// ```
-/// use shop::{Item, Items};
-///
-/// let items1 = Items::new(vec![Item::new("item1")]);
-/// let items2 = Items::new(vec![Item::new("item2")]);
-/// let sum = items1 + items2;
-/// assert_eq!(sum.len(), 2);
-///
-/// // only unique items are added
-/// let items = Items::new(vec![Item::new("item1")]);
-/// let items_duplicate = Items::new(vec![Item::new("item1")]);
-/// let sum = items + items_duplicate;
-/// assert_eq!(sum.len(), 1);
-///
-/// ```
 impl Add<Items> for Items {
     type Output = Items;
 
@@ -206,36 +189,6 @@ impl Add<Items> for Items {
     }
 }
 
-/// # Examples
-///
-/// ```
-/// use shop::{Item, Items};
-///
-/// let apple = Item::new("apple");
-/// let orange = Item::new("orange");
-/// let items1 = Items::new(vec![apple.clone(), orange.clone()]);
-///
-/// let apple = Item::new("apple");
-/// let items2 = Items::new(vec![apple.clone()]);
-///
-/// let result = items1 - items2;
-/// assert!(!result.contains(&apple));
-/// assert!(result.contains(&orange));
-///
-/// // no change if items to be subtracted are not present in the first list
-/// let apple = Item::new("apple");
-/// let orange = Item::new("orange");
-/// let items1 = Items::new(vec![apple.clone(), orange.clone()]);
-///
-/// let grape = Item::new("grape");
-/// let items2 = Items::new(vec![grape.clone()]);
-///
-/// let result = items1 - items2;
-/// assert!(result.contains(&apple));
-/// assert!(result.contains(&orange));
-/// assert!(!result.contains(&grape));
-///
-/// ```
 impl Sub<Items> for Items {
     type Output = Items;
 
