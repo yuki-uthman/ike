@@ -103,7 +103,7 @@ impl PartialEq for Item {
 impl Item {
     pub fn new(name: &str) -> Self {
         Self {
-            status: "active".to_string(),
+            status: "Active".to_string(),
             name: name.to_string(),
             description: "".to_string(),
             sku: "".to_string(),
@@ -155,6 +155,10 @@ impl Item {
     pub fn set_quantity(&mut self, quantity: usize) -> &mut Self {
         self.quantity = quantity;
         self
+    }
+
+    pub fn is_active(&self) -> bool {
+        self.status == "Active"
     }
 }
 
