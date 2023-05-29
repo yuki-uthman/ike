@@ -250,8 +250,12 @@ impl Sub<Items> for Items {
 }
 
 impl Items {
-    pub fn new(items: Vec<Item>) -> Self {
-        Self(items)
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+
+    pub fn add(&mut self, item: Item) {
+        self.0.push(item);
     }
 
     pub fn find_all(&self, name: &str) -> Result<Self> {
