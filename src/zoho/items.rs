@@ -219,7 +219,7 @@ impl Items {
             .unwrap();
 
         for item in &self.0 {
-            if re.is_match(&item.name) {
+            if re.is_match(&item.name) || re.is_match(&item.description){
                 matches.push(item.clone());
             }
         }
