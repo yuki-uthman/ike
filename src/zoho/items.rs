@@ -271,6 +271,7 @@ impl Items {
                 keyword: name.to_string(),
             });
         }
+        matches.sort_by(|a, b| a.name.cmp(&b.name));
         Ok(matches.into())
     }
 
