@@ -6,8 +6,9 @@ pub use loader::Loader;
 
 mod zoho;
 pub use zoho::Invoices;
-pub use zoho::Items;
-pub use zoho::items::Item;
+
+mod items;
+pub use items::{Item, Items};
 
 mod revision;
 pub use revision::Inventories;
@@ -22,12 +23,12 @@ pub enum Error {
         source: loader::Error,
     },
     #[error("{source}")]
-    UpdateInventory { source: zoho::items::Error },
+    UpdateInventory { source: items::Error },
 
     #[error("{source}")]
     Export {
         filename: &'static str,
-        source: zoho::items::Error,
+        source: items::Error,
     },
 }
 

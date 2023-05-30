@@ -2,7 +2,7 @@ use chrono::NaiveDate as Date;
 use colored::Colorize;
 use serde::Deserialize;
 
-use super::items::{Item, Items};
+use crate::items::{Item, Items};
 use crate::loader::Loader;
 
 #[derive(Clone, Debug, PartialEq)]
