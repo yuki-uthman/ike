@@ -4,8 +4,8 @@ use std::result::Result;
 mod loader;
 pub use loader::Loader;
 
-mod zoho;
-pub use zoho::Invoices;
+mod invoices;
+pub use invoices::{Invoice, Invoices};
 
 mod items;
 pub use items::{Item, Items};

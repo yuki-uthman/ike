@@ -1,6 +1,0 @@
----
-source: src/zoho/items.rs
-expression: items.len()
----
-694
-

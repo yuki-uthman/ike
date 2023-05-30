@@ -1,49 +1,10 @@
+// use super::error::Error;
+use super::invoice::{Invoice, Status};
 use chrono::NaiveDate as Date;
 use colored::Colorize;
-use serde::Deserialize;
 
 use crate::items::{Item, Items};
 use crate::loader::Loader;
-
-#[derive(Clone, Debug, PartialEq)]
-enum Status {
-    Draft,
-    Closed,
-    Overdue,
-}
-
-#[derive(Clone, Debug, Deserialize)]
-pub struct Invoice {
-    #[serde(rename = "Invoice Date", deserialize_with = "deserialize_date")]
-    date: Date,
-    #[serde(rename = "Invoice Status", deserialize_with = "deserialize_status")]
-    status: Status,
-    #[serde(rename = "Item Name")]
-    product: String,
-    #[serde(rename = "Quantity")]
-    quantity: usize,
-}
-
-fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    let string = String::deserialize(deserializer)?;
-    Ok(Date::parse_from_str(&string, "%Y-%m-%d").map_err(serde::de::Error::custom)?)
-}
-
-fn deserialize_status<'de, D>(deserializer: D) -> std::result::Result<Status, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    let status = String::deserialize(deserializer).unwrap();
-    match status.as_str() {
-        "Draft" => Ok(Status::Draft),
-        "Closed" => Ok(Status::Closed),
-        "Overdue" => Ok(Status::Overdue),
-        _ => Err(serde::de::Error::custom("invalid status")),
-    }
-}
 
 #[derive(Debug)]
 pub struct Invoices {
@@ -83,7 +44,7 @@ impl Invoices {
         self.invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date > date)
+            .filter(|invoice| invoice.date() > date)
             .collect()
     }
 
@@ -91,7 +52,7 @@ impl Invoices {
         self.invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date < date)
+            .filter(|invoice| invoice.date() < date)
             .collect()
     }
 
@@ -99,8 +60,8 @@ impl Invoices {
         self.invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date > start)
-            .filter(|invoice| invoice.date < end)
+            .filter(|invoice| invoice.date() > start)
+            .filter(|invoice| invoice.date() < end)
             .collect()
     }
 
@@ -112,7 +73,7 @@ impl Invoices {
         self.invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.status == Status::Closed)
+            .filter(|invoice| invoice.status() == Status::Closed)
             .collect()
     }
 
@@ -121,19 +82,19 @@ impl Invoices {
             .invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date > self.date)
-            .filter(|invoice| invoice.status == Status::Closed)
-            .filter(|invoice| invoice.product == product);
+            .filter(|invoice| invoice.date() > self.date)
+            .filter(|invoice| invoice.status() == Status::Closed)
+            .filter(|invoice| invoice.product() == product);
 
         let mut count: usize = 0;
         for invoice in filtered_invoices {
             println!(
                 "{}: {}",
-                invoice.date.to_string().red(),
-                invoice.quantity.to_string().red().dimmed()
+                invoice.date().to_string().red(),
+                invoice.quantity().to_string().red().dimmed()
             );
-            if invoice.product == product {
-                count += invoice.quantity;
+            if invoice.product() == product {
+                count += invoice.quantity();
             }
         }
         println!(
@@ -150,7 +111,7 @@ impl Invoices {
             .invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.product == product);
+            .filter(|invoice| invoice.product() == product);
 
         filtered_invoices.count()
     }
@@ -159,7 +120,7 @@ impl Invoices {
         let mut items = Vec::new();
 
         for invoice in &self.invoices {
-            let item = Item::new(&invoice.product.clone());
+            let item = Item::new(&invoice.product().clone());
             if items.contains(&item) {
             } else {
                 items.push(item);
