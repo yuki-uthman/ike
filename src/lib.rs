@@ -11,17 +11,14 @@ mod items;
 pub use items::{Item, Items};
 
 mod inventories;
-pub use inventories::{Inventory, Inventories};
+pub use inventories::{Inventories, Inventory};
 
 use thiserror;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error("{filename}: {source}")]
-    Load {
-        filename: &'static str,
-        source: loader::Error,
-    },
+    #[error("{source}")]
+    Load { source: loader::Error },
     #[error("{source}")]
     UpdateInventory { source: items::Error },
 
@@ -40,19 +37,11 @@ pub struct Shop {
 
 impl Shop {
     pub fn new() -> Result<Shop, Error> {
-        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
-            filename: "assets/zoho/Item.csv",
-            source,
-        })?;
-        let inventories =
-            Inventories::load("assets/revision/Inventory.csv").map_err(|source| Error::Load {
-                filename: "assets/revision/Inventory.csv",
-                source,
-            })?;
-        let invoices = Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
-            filename: "assets/zoho/Invoice.csv",
-            source,
-        })?;
+        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load { source })?;
+        let inventories = Inventories::load("assets/revision/Inventory.csv")
+            .map_err(|source| Error::Load { source })?;
+        let invoices =
+            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load { source })?;
 
         Ok(Shop {
             items,
@@ -84,7 +73,8 @@ impl Shop {
                 date.to_string().green(),
                 quantity.to_string().green().bold()
             );
-            let new_quantity = inventory.quantity() - self.invoices.set_date(date).count_quantity_sold(name);
+            let new_quantity =
+                inventory.quantity() - self.invoices.set_date(date).count_quantity_sold(name);
 
             self.items
                 .get_mut(name)
