@@ -11,12 +11,54 @@ fn main() -> Result<(), Error> {
     })?;
 
     let mut map = std::collections::HashMap::new();
+    let items = items
+        .iter()
+        .map(|item| {
+            let words = item
+                .name()
+                .split(" ")
+                .collect::<Vec<_>>()
+                .into_iter()
+                .filter(|word| word.chars().all(|c| c.is_alphabetic()))
+                .filter(|word| word.len() > 2)
+                // remove stop words
+                .map(|word| word.to_lowercase())
+                .map(|word| {
+                    let stop_words = [
+                        "and", "the", "for", "with", "from", "this", "that", "these", "those",
+                        "size", "with", "only",
+                    ];
+                    if stop_words.contains(&word.as_str()) {
+                        return "".to_string();
+                    }
+                    word.to_string()
+                })
+                .collect::<Vec<_>>();
+            words.join(" ")
+        })
+        .filter(|item| {
+            let words = item.split(" ");
+            // count the number of words in the name
+            let count = words.clone().count();
+            count > 2
+        })
+        .collect::<Vec<_>>()
+        .clone();
+
+    // print item name
+    for item in items.iter() {
+        if item.contains("with") {
+            println!("{}", item);
+        }
+
+    }
+    //len
+    println!("total: {}", items.len());
 
     for item in items.iter() {
         let ngrams = item
-            .name()
             .split(" ")
-            .ngrams(2)
+            .ngrams(3)
             .collect::<Vec<_>>()
             .iter()
             .filter(|ngram| {
@@ -26,9 +68,7 @@ fn main() -> Result<(), Error> {
             })
             .filter(|ngram| {
                 // filter out ngrams that contain less than 2 words
-                ngram
-                    .iter()
-                    .all(|word| word.len() > 2)
+                ngram.iter().all(|word| word.len() > 2)
             })
             .map(|ngram| ngram.join(" "))
             .map(|ngram| ngram.to_lowercase())
@@ -40,15 +80,23 @@ fn main() -> Result<(), Error> {
         }
     }
 
-    let filename = "examples/output/words.csv";
+    let filename = "examples/output/ngrams_3(2).csv";
     std::fs::File::create(filename).unwrap();
 
     let mut writer = csv::Writer::from_path(filename).unwrap();
     writer.write_record(&["words", "count"]).unwrap();
-    for word in map.keys() {
-        let count = map.get(word).unwrap();
+
+    let mut frequncies = map
+        .iter()
+        .map(|(key, value)| (key, value))
+        .collect::<Vec<_>>();
+
+    // sort by value
+    frequncies.sort_by(|a, b| b.1.cmp(a.1));
+
+    for word in frequncies.iter() {
         writer
-            .write_record(&[word.to_string(), count.to_string()])
+            .write_record(&[&word.0, &word.1.to_string()])
             .unwrap();
     }
     writer.flush().unwrap();
