@@ -10,8 +10,8 @@ pub use invoices::{Invoice, Invoices};
 mod items;
 pub use items::{Item, Items};
 
-mod revision;
-pub use revision::Inventories;
+mod inventories;
+pub use inventories::{Inventory, Inventories};
 
 use thiserror;
 
