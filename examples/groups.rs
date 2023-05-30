@@ -56,7 +56,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "lux",
         "wings",
         "\\brack",
-
         // "bracket"
         // "shelf"
         // "strip", // store

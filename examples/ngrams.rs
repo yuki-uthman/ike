@@ -50,7 +50,6 @@ fn main() -> Result<(), Error> {
         if item.contains("with") {
             println!("{}", item);
         }
-
     }
     //len
     println!("total: {}", items.len());

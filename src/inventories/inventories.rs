@@ -1,6 +1,6 @@
-use std::ops::Deref;
 use super::inventory::Inventory;
 use crate::loader::Loader;
+use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct Inventories(Vec<Inventory>);

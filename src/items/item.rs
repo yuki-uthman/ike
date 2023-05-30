@@ -130,4 +130,3 @@ impl Item {
         self.status == "Active"
     }
 }
-
