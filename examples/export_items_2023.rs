@@ -5,7 +5,6 @@ use shop::Loader;
 
 fn main() -> Result<(), Error> {
     let invoices = Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
-        filename: "assets/zoho/Item.csv",
         source,
     })?;
     let start = NaiveDate::from_ymd_opt(2021, 1, 1).unwrap();
