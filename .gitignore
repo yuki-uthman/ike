@@ -4,3 +4,4 @@ assets/output
 examples/output
 examples/groups
 bibu
+.env
