@@ -15,6 +15,9 @@ kv-log-macro = "1.0.7"
 colored = "2.0.0"
 ngrams = "1.0.1"
 regex = "1.8.3"
+diesel = { version = "2.1.0", features = ["sqlite"] }
+dotenvy = "0.15"
+
 
 [dev-dependencies]
 insta = { version = "1.28.0", features = ["yaml"] }
