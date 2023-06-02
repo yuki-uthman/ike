@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 // use super::error::Error;
 use super::invoice::{Invoice, Status};
 use chrono::NaiveDate as Date;
@@ -29,6 +31,14 @@ impl FromIterator<Invoice> for Invoices {
             vec.push(invoice);
         }
         vec.into()
+    }
+}
+
+impl Deref for Invoices {
+    type Target = Vec<Invoice>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.invoices
     }
 }
 
