@@ -5,7 +5,7 @@ use shop::Loader;
 fn main() -> Result<(), Error> {
     use ngrams::Ngram;
 
-    let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
+    let items = Items::load("assets/Item.csv").map_err(|source| Error::Load {
         source,
     })?;
 

@@ -4,8 +4,8 @@ use shop::Invoices;
 use shop::Loader;
 
 pub fn main() {
-    let mut invoices = Invoices::load("assets/zoho/Invoice.csv").unwrap();
-    let inventories = Inventories::load("assets/revision/Inventory.csv").unwrap();
+    let mut invoices = Invoices::load("assets/Invoice.csv").unwrap();
+    let inventories = Inventories::load("assets/Inventory.csv").unwrap();
 
     for inventory in inventories.iter() {
         invoices.set_date(inventory.date());

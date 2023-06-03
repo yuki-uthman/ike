@@ -5,7 +5,7 @@ use shop::Items;
 use shop::Loader;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load { source })?;
+    let items = Items::load("assets/Item.csv").map_err(|source| Error::Load { source })?;
 
     // filter inactive items
     let items: Items = items

@@ -150,7 +150,7 @@ mod tests {
 
     #[test]
     fn len() {
-        let invoices = Invoices::load("tests/assets/zoho/Invoice.csv").unwrap();
+        let invoices = Invoices::load("assets/Invoice.csv").unwrap();
         assert_yaml_snapshot!(invoices.len(), @r###"
         ---
         5030

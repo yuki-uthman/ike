@@ -141,10 +141,10 @@ mod tests {
 
     #[test]
     fn len() {
-        let items = Items::load("tests/assets/zoho/Item.csv").unwrap();
+        let items = Items::load("assets/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
-        694
+        686
         "###);
     }
 }

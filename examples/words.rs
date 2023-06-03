@@ -3,7 +3,7 @@ use shop::Items;
 use shop::Loader;
 
 fn main() -> Result<(), Error> {
-    let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
+    let items = Items::load("assets/Item.csv").map_err(|source| Error::Load {
         source,
     })?;
 

@@ -34,7 +34,7 @@ mod tests {
 
     #[test]
     fn len() {
-        let inventories = Inventories::load("tests/assets/revision/Inventory.csv").unwrap();
+        let inventories = Inventories::load("assets/Inventory.csv").unwrap();
         assert_yaml_snapshot!(inventories.len(), @r###"
         ---
         3

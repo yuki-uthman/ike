@@ -37,11 +37,11 @@ pub struct Shop {
 
 impl Shop {
     pub fn new() -> Result<Shop, Error> {
-        let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load { source })?;
-        let inventories = Inventories::load("assets/revision/Inventory.csv")
+        let items = Items::load("assets/Item.csv").map_err(|source| Error::Load { source })?;
+        let inventories = Inventories::load("assets/Inventory.csv")
             .map_err(|source| Error::Load { source })?;
         let invoices =
-            Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load { source })?;
+            Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
         Ok(Shop {
             items,
