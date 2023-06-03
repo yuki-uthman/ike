@@ -6,7 +6,6 @@ fn main() -> Result<(), Error> {
     use ngrams::Ngram;
 
     let items = Items::load("assets/zoho/Item.csv").map_err(|source| Error::Load {
-        filename: "assets/zoho/Item.csv",
         source,
     })?;
 

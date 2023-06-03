@@ -5,7 +5,6 @@ use shop::Loader;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let invoices = Invoices::load("assets/zoho/Invoice.csv").map_err(|source| Error::Load {
-        filename: "assets/zoho/Item.csv",
         source,
     })?;
 
