@@ -142,7 +142,7 @@ Item ID,Item Name,SKU,Description,Rate,Account,Account Code,Tax Name,Tax Percent
 3262759000000090469,Round Container R30 Round,,,MVR 4.10,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 1.90,Cost of Goods Sold,,,Inventory Asset,,2000,,,,0,Inventory,false,
 3262759000000090478,Round Container R4 Round,,,MVR 1.40,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 0.67,Cost of Goods Sold,,,Inventory Asset,,2000,,45000,MVR 0.67,-1475,Inventory,false,
 3262759000000091001,Round Container R750B Round,,,MVR 6.00,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 2.84,Cost of Goods Sold,,,Inventory Asset,,2000,,423,MVR 2.84,246,Inventory,false,
-3262759000000091010,Round Container Sq350 Square,,,MVR 4.30,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 2.02,Cost of Goods Sold,,,Inventory Asset,,2000,,500,MVR 2.02,500,Inventory,false,
+3262759000000091010,Round Container Sq350 Square,,,MVR 4.30,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 2.02,Cost of Goods Sold,,,Inventory Asset,,2000,,500,MVR 2.02,500,Inventory,false,"disposable, plastic"
 3262759000000091019,Round Container Sq5 Square Container,,,MVR 13.80,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 6.50,Cost of Goods Sold,,,Inventory Asset,,2000,,494,MVR 6.50,488,Inventory,false,
 3262759000000091028,Round Container Sq7 Square,,,MVR 15.20,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 7.19,Cost of Goods Sold,,,Inventory Asset,,2000,,500,MVR 7.19,500,Inventory,false,
 3262759000000091037,Round Container T250 Round,,,MVR 2.80,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,pcs,MVR 0.00,Cost of Goods Sold,,,Inventory Asset,,,,,,1269,Inventory,false,
@@ -595,7 +595,7 @@ Item ID,Item Name,SKU,Description,Rate,Account,Account Code,Tax Name,Tax Percent
 3262759000002367119,"Clamshell 9"" 3-Compartment",,baggase,MVR 3.80,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 2.053,Cost of Goods Sold,,,Inventory Asset,,,,,,100,Inventory,false,
 3262759000002367128,"9"" Plate Sugar Cane",,baggase,MVR 1.40,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.811,Cost of Goods Sold,,,Inventory Asset,,,,,,500,Inventory,false,
 3262759000002367137,"9"" 3-compartment Plate",,baggase,MVR 1.50,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.811,Cost of Goods Sold,,,Inventory Asset,,,,,,0,Inventory,false,
-3262759000002367146,"7"" Plate Sugar Cane",,baggase,MVR 1.00,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.486,Cost of Goods Sold,,,Inventory Asset,,,,,,13250,Inventory,false,
+3262759000002367146,"7"" Plate Sugar Cane",,baggase,MVR 1.00,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.486,Cost of Goods Sold,,,Inventory Asset,,,,,,13250,Inventory,false,"baggase, disposable"
 3262759000002367155,2oz cup-white,,,MVR 0.90,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.531,Cost of Goods Sold,,,Inventory Asset,,,,,,17700,Inventory,false,
 3262759000002367164,750ml salad bowl,,,MVR 3.00,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 1.582,Cost of Goods Sold,,,Inventory Asset,,,,,,3000,Inventory,false,
 3262759000002367173,4oz paper cup,,,MVR 0.24,Sales,,GST,8.00,ItemAmount,,,,goods,1,,,Active,,MVR 0.155,Cost of Goods Sold,,,Inventory Asset,,,,,,79000,Inventory,false,
