@@ -1,6 +1,25 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
+enum Category {
+    Disposable,
+    BuildingMaterial,
+    Household,
+    Office,
+    Retail,
+    Restaurant,
+    Aluminuim,
+    Steel,
+    Plastic,
+    Paper,
+    Glass,
+    Baggase,
+    Wood,
+    PackagedFood,
+    FoodPowder,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
     #[serde(rename = "Status")]
     status: String,
@@ -42,6 +61,10 @@ pub struct Item {
     tax_type: String,
     #[serde(rename = "Tax Percentage")]
     tax_percentage: String,
+
+    // skip deserializing these fields
+    #[serde(skip_deserializing)]
+    categories: Vec<Category>,
 }
 
 fn reset_quantity() -> usize {
@@ -84,6 +107,7 @@ impl Item {
             tax_name: "".to_string(),
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
+            categories: Vec::new(),
         }
     }
     pub fn name(&self) -> &str {
