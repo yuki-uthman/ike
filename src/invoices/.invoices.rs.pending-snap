@@ -1,6 +1,0 @@
-{"run_id":"1685769821-634443000","line":154,"new":{"module_name":"shop__invoices__invoices__tests","snapshot_name":"len","metadata":{"source":"src/invoices/invoices.rs","assertion_line":154,"expression":"invoices.len()"},"snapshot":"---\n5174\n"},"old":{"module_name":"shop__invoices__invoices__tests","metadata":{},"snapshot":"---\n5030"}}
-{"run_id":"1685769851-95783000","line":154,"new":null,"old":null}
-{"run_id":"1685769884-539234000","line":154,"new":null,"old":null}
-{"run_id":"1685769941-634312000","line":154,"new":null,"old":null}
-{"run_id":"1685769975-717406000","line":154,"new":null,"old":null}
-{"run_id":"1685770163-44910000","line":154,"new":null,"old":null}
