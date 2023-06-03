@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 enum Category {
     Disposable,
-    BuildingMaterial,
+    Construction,
     Household,
     Office,
     Retail,
     Restaurant,
-    Aluminuim,
+    Aluminium,
     Steel,
     Plastic,
     Paper,
