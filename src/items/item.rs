@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub enum Category {
+pub enum Tag {
     Disposable,
     Construction,
     Household,
@@ -63,8 +63,8 @@ pub struct Item {
     #[serde(rename = "Tax Percentage")]
     tax_percentage: String,
 
-    #[serde(rename = "CF.categories", deserialize_with = "process_categories")]
-    categories: HashSet<Category>,
+    #[serde(rename = "CF.tags", deserialize_with = "process_tags")]
+    tags: HashSet<Tag>,
 }
 
 fn reset_quantity() -> usize {
@@ -82,7 +82,7 @@ where
     Ok(s.parse().map_err(serde::de::Error::custom)?)
 }
 
-fn process_categories<'de, D>(deserializer: D) -> std::result::Result<HashSet<Category>, D::Error>
+fn process_tags<'de, D>(deserializer: D) -> std::result::Result<HashSet<Tag>, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
@@ -98,29 +98,29 @@ where
         return Ok(HashSet::new());
     }
 
-    let categories: HashSet<Category> = string
+    let tags: HashSet<Tag> = string
         .split(',')
         .map(|s| s.trim())
         .map(|s| match s {
-            "disposable" => Category::Disposable,
-            "construction" => Category::Construction,
-            "household" => Category::Household,
-            "office" => Category::Office,
-            "retail" => Category::Retail,
-            "restaurant" => Category::Restaurant,
-            "aluminium" => Category::Aluminium,
-            "steel" => Category::Steel,
-            "plastic" => Category::Plastic,
-            "paper" => Category::Paper,
-            "glass" => Category::Glass,
-            "baggase" => Category::Baggase,
-            "wood" => Category::Wood,
-            "packaged food" => Category::PackagedFood,
-            "food powder" => Category::FoodPowder,
+            "disposable" => Tag::Disposable,
+            "construction" => Tag::Construction,
+            "household" => Tag::Household,
+            "office" => Tag::Office,
+            "retail" => Tag::Retail,
+            "restaurant" => Tag::Restaurant,
+            "aluminium" => Tag::Aluminium,
+            "steel" => Tag::Steel,
+            "plastic" => Tag::Plastic,
+            "paper" => Tag::Paper,
+            "glass" => Tag::Glass,
+            "baggase" => Tag::Baggase,
+            "wood" => Tag::Wood,
+            "packaged food" => Tag::PackagedFood,
+            "food powder" => Tag::FoodPowder,
             _ => panic!("unknown category: {}", s),
         })
     .collect();
-    Ok(categories)
+    Ok(tags)
 }
 
 impl PartialEq for Item {
@@ -148,7 +148,7 @@ impl Item {
             tax_name: "".to_string(),
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
-            categories: HashSet::new(),
+            tags: HashSet::new(),
         }
     }
     pub fn name(&self) -> &str {
@@ -195,7 +195,7 @@ impl Item {
         self.status == "Active"
     }
 
-    pub fn is(&self, category: Category) -> bool {
-        self.categories.contains(&category)
+    pub fn tagged(&self, category: Tag) -> bool {
+        self.tags.contains(&category)
     }
 }

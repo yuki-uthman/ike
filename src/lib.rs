@@ -8,7 +8,7 @@ mod invoices;
 pub use invoices::{Invoice, Invoices};
 
 mod items;
-pub use items::{Item, Items, Category};
+pub use items::{Item, Items, Tag};
 
 mod inventories;
 pub use inventories::{Inventories, Inventory};
