@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "\\bstraw\\b",
         "food wrap paper",
         // food
-        "milkshake|mikshake|white coffee|cookies",
+        "milkshake",
         // construction
         "steel bar",
         // household items
