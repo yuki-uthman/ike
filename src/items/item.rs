@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
-enum Category {
+pub enum Category {
     Disposable,
     Construction,
     Household,
@@ -193,5 +193,9 @@ impl Item {
 
     pub fn is_active(&self) -> bool {
         self.status == "Active"
+    }
+
+    pub fn is(&self, category: Category) -> bool {
+        self.categories.contains(&category)
     }
 }
