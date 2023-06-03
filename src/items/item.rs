@@ -1,6 +1,7 @@
+use std::collections::HashSet;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
 enum Category {
     Disposable,
     Construction,
@@ -62,9 +63,8 @@ pub struct Item {
     #[serde(rename = "Tax Percentage")]
     tax_percentage: String,
 
-    // skip deserializing these fields
-    #[serde(skip_deserializing)]
-    categories: Vec<Category>,
+    #[serde(rename = "CF.categories", deserialize_with = "process_categories")]
+    categories: HashSet<Category>,
 }
 
 fn reset_quantity() -> usize {
@@ -80,6 +80,47 @@ where
     let string = String::deserialize(deserializer)?;
     let s = string.trim_start_matches("MVR ");
     Ok(s.parse().map_err(serde::de::Error::custom)?)
+}
+
+fn process_categories<'de, D>(deserializer: D) -> std::result::Result<HashSet<Category>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let result = String::deserialize(deserializer);
+    // if string is not empty, split it by comma and parse each category
+    // else return an empty vector
+    if result.is_err() {
+        return Ok(HashSet::new());
+    }
+
+    let string = result.unwrap();
+    if string.is_empty() {
+        return Ok(HashSet::new());
+    }
+
+    let categories: HashSet<Category> = string
+        .split(',')
+        .map(|s| s.trim())
+        .map(|s| match s {
+            "disposable" => Category::Disposable,
+            "construction" => Category::Construction,
+            "household" => Category::Household,
+            "office" => Category::Office,
+            "retail" => Category::Retail,
+            "restaurant" => Category::Restaurant,
+            "aluminium" => Category::Aluminium,
+            "steel" => Category::Steel,
+            "plastic" => Category::Plastic,
+            "paper" => Category::Paper,
+            "glass" => Category::Glass,
+            "baggase" => Category::Baggase,
+            "wood" => Category::Wood,
+            "packaged food" => Category::PackagedFood,
+            "food powder" => Category::FoodPowder,
+            _ => panic!("unknown category: {}", s),
+        })
+    .collect();
+    Ok(categories)
 }
 
 impl PartialEq for Item {
@@ -107,7 +148,7 @@ impl Item {
             tax_name: "".to_string(),
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
-            categories: Vec::new(),
+            categories: HashSet::new(),
         }
     }
     pub fn name(&self) -> &str {
