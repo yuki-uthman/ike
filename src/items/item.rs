@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{collections::HashSet, str::FromStr};
 
+use super::Tags;
 use super::Tag;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -47,7 +48,7 @@ pub struct Item {
     tax_percentage: String,
 
     #[serde(rename = "CF.tags", deserialize_with = "process_tags")]
-    tags: HashSet<Tag>,
+    tags: Tags,
 }
 
 fn reset_quantity() -> usize {
@@ -65,7 +66,7 @@ where
     Ok(s.parse().map_err(serde::de::Error::custom)?)
 }
 
-fn process_tags<'de, D>(deserializer: D) -> std::result::Result<HashSet<Tag>, D::Error>
+fn process_tags<'de, D>(deserializer: D) -> std::result::Result<Tags, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
@@ -73,19 +74,15 @@ where
     // if string is not empty, split it by comma and parse each category
     // else return an empty vector
     if result.is_err() {
-        return Ok(HashSet::new());
+        return Ok(Tags::new());
     }
 
     let string = result.unwrap();
     if string.is_empty() {
-        return Ok(HashSet::new());
+        return Ok(Tags::new());
     }
 
-    let tags: HashSet<Tag> = string
-        .split(',')
-        .map(|s| s.trim())
-        .map(|s| Tag::from_str(s).unwrap())
-        .collect();
+    let tags = Tags::new();
     Ok(tags)
 }
 
@@ -114,7 +111,7 @@ impl Item {
             tax_name: "".to_string(),
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
-            tags: HashSet::new(),
+            tags: Tags::new(),
         }
     }
     pub fn name(&self) -> &str {

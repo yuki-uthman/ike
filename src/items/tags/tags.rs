@@ -1,6 +1,8 @@
-use std::collections::HashSet;
 use super::Tag;
+use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tags(HashSet<Tag>);
 
 impl Tags {
