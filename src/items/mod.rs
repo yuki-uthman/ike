@@ -1,8 +1,8 @@
 mod item;
 pub use item::Item;
 
-mod tag;
-pub use tag::Tag;
+mod tags;
+pub use tags::Tag;
 
 mod items;
 pub use items::{Items, Result};
