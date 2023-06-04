@@ -15,6 +15,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .into();
     println!("{:#?}", items);
 
-    items.export("assets/Item.csv").map_err(|source| Error::Export { source })?;
+    items.export("examples/output/tags.csv").map_err(|source| Error::Export { source })?;
     Ok(())
 }
