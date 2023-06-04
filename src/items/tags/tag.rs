@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
+use std::{str::FromStr, fmt::Display};
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub enum Tag {
@@ -42,6 +42,29 @@ impl FromStr for Tag {
             "food powder" => Ok(Tag::FoodPowder),
             _ => Err(format!("{} is not a valid tag", s)),
         }
+    }
+}
+
+impl Display for Tag {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Tag::Disposable => "disposable",
+            Tag::Construction => "construction",
+            Tag::Household => "household",
+            Tag::Office => "office",
+            Tag::Retail => "retail",
+            Tag::Restaurant => "restaurant",
+            Tag::Aluminium => "aluminium",
+            Tag::Steel => "steel",
+            Tag::Plastic => "plastic",
+            Tag::Paper => "paper",
+            Tag::Glass => "glass",
+            Tag::Baggase => "baggase",
+            Tag::Wood => "wood",
+            Tag::PackagedFood => "packaged food",
+            Tag::FoodPowder => "food powder",
+        };
+        write!(f, "{}", s)
     }
 }
 

@@ -47,7 +47,7 @@ pub struct Item {
     #[serde(rename = "Tax Percentage")]
     tax_percentage: String,
 
-    #[serde(rename = "CF.tags", deserialize_with = "process_tags")]
+    #[serde(rename = "CF.tags", deserialize_with = "de_tags", serialize_with = "se_tags")]
     tags: Tags,
 }
 
@@ -66,7 +66,7 @@ where
     Ok(s.parse().map_err(serde::de::Error::custom)?)
 }
 
-fn process_tags<'de, D>(deserializer: D) -> std::result::Result<Tags, D::Error>
+fn de_tags<'de, D>(deserializer: D) -> std::result::Result<Tags, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
@@ -85,6 +85,15 @@ where
     let tags = Tags::from_str(&string).unwrap();
     Ok(tags)
 }
+
+fn se_tags<S>(tags: &Tags, serializer: S) -> std::result::Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    let string = String::from(tags);
+    serializer.serialize_str(&string)
+}
+
 
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {

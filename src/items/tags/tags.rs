@@ -31,3 +31,16 @@ impl FromStr for Tags {
         Ok(Tags(tags))
     }
 }
+
+impl From<&Tags> for String {
+    fn from(tags: &Tags) -> Self {
+        let mut tags = tags
+            .0
+            .iter()
+            .map(|tag| tag.to_string())
+            .collect::<Vec<String>>();
+        tags.sort();
+
+        tags.join(", ")
+    }
+}
