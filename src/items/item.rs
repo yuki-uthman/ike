@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
-use std::{collections::HashSet, str::FromStr};
+use std::str::FromStr;
 
-use super::Tags;
 use super::Tag;
+use super::Tags;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
@@ -82,7 +82,7 @@ where
         return Ok(Tags::new());
     }
 
-    let tags = Tags::new();
+    let tags = Tags::from_str(&string).unwrap();
     Ok(tags)
 }
 
