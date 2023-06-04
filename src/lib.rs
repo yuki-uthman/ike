@@ -24,7 +24,6 @@ pub enum Error {
 
     #[error("{source}")]
     Export {
-        filename: &'static str,
         source: items::Error,
     },
 }

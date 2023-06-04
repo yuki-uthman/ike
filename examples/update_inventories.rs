@@ -10,10 +10,7 @@ fn main() -> Result<(), Error> {
     shop.items()
         .take(10)
         .export("examples/output/Item.csv")
-        .map_err(|source| Error::Export {
-            filename: "examples/output/Item.csv",
-            source,
-        })?;
+        .map_err(|source| Error::Export { source })?;
 
     Ok(())
 }

@@ -14,5 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect::<Vec<_>>()
         .into();
     println!("{:#?}", items);
+
+    items.export("assets/Item.csv").map_err(|source| Error::Export { source })?;
     Ok(())
 }
