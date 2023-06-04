@@ -84,25 +84,8 @@ where
     let tags: HashSet<Tag> = string
         .split(',')
         .map(|s| s.trim())
-        .map(|s| match s {
-            "disposable" => Tag::Disposable,
-            "construction" => Tag::Construction,
-            "household" => Tag::Household,
-            "office" => Tag::Office,
-            "retail" => Tag::Retail,
-            "restaurant" => Tag::Restaurant,
-            "aluminium" => Tag::Aluminium,
-            "steel" => Tag::Steel,
-            "plastic" => Tag::Plastic,
-            "paper" => Tag::Paper,
-            "glass" => Tag::Glass,
-            "baggase" => Tag::Baggase,
-            "wood" => Tag::Wood,
-            "packaged food" => Tag::PackagedFood,
-            "food powder" => Tag::FoodPowder,
-            _ => panic!("unknown category: {}", s),
-        })
-    .collect();
+        .map(|s| Tag::from_str(s).unwrap())
+        .collect();
     Ok(tags)
 }
 
