@@ -3,7 +3,6 @@ use super::item::Item;
 use crate::loader::Loader;
 use regex::RegexBuilder;
 use std::ops::{Add, Deref, Sub, DerefMut};
-use super::Tag;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -132,11 +131,20 @@ impl Items {
         items.into()
     }
 
-    pub fn export(&self, filename: &'static str) -> Result<()> {
-        std::fs::File::create(filename).map_err(|source| Error::FileCreate { filename, source })?;
+    pub fn export<S>(&self, filename: S) -> Result<()>
+    where
+        S: Into<String> + Copy,
+    {
+        std::fs::File::create(filename.into()).map_err(|source| Error::FileCreate {
+            filename: filename.into(),
+            source,
+        })?;
 
-        let mut writer = csv::Writer::from_path(filename)
-            .map_err(|source| Error::FileOpen { filename, source })?;
+        let mut writer =
+            csv::Writer::from_path(filename.into()).map_err(|source| Error::FileOpen {
+                filename: filename.into(),
+                source,
+            })?;
         for item in &self.0 {
             writer
                 .serialize(item)

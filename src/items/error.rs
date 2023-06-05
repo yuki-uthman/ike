@@ -8,13 +8,13 @@ pub enum Error {
 
     #[error("{source}")]
     FileCreate {
-        filename: &'static str,
+        filename: String,
         source: std::io::Error,
     },
 
     #[error("{source}")]
     FileOpen {
-        filename: &'static str,
+        filename: String,
         source: csv::Error,
     },
 
