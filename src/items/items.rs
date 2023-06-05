@@ -2,7 +2,8 @@ use super::error::Error;
 use super::item::Item;
 use crate::loader::Loader;
 use regex::RegexBuilder;
-use std::ops::{Add, Deref, Sub};
+use std::ops::{Add, Deref, Sub, DerefMut};
+use super::Tag;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -16,11 +17,23 @@ impl From<Vec<Item>> for Items {
     }
 }
 
+impl From<Vec<&mut Item>> for Items {
+    fn from(vec: Vec<&mut Item>) -> Items {
+        Items(vec.into_iter().map(|item| item.clone()).collect())
+    }
+}
+
 impl Deref for Items {
     type Target = Vec<Item>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+impl DerefMut for Items {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
     }
 }
 
