@@ -167,7 +167,7 @@ impl Item {
         self.status == "Active"
     }
 
-    pub fn tagged(&self, category: Tag) -> bool {
-        self.tags.contains(&category)
+    pub fn tagged(&self, tag: Tag) -> bool {
+        self.tags.contains(&tag)
     }
 }
