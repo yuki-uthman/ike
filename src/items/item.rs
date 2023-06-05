@@ -170,4 +170,16 @@ impl Item {
     pub fn tagged(&self, tag: Tag) -> bool {
         self.tags.contains(&tag)
     }
+
+    pub fn add_tag(&mut self, tag: Tag) -> &mut Self {
+        self.tags.insert(tag);
+        self
+    }
+
+    pub fn add_tags(&mut self, tags: &[Tag]) -> &mut Self {
+        for tag in tags {
+            self.tags.insert(tag.clone());
+        }
+        self
+    }
 }
