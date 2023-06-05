@@ -13,8 +13,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .filter(|item| item.tagged(Tag::Disposable))
         .collect::<Vec<_>>()
         .into();
-    println!("{:#?}", items);
 
-    items.export("examples/output/tags.csv").map_err(|source| Error::Export { source })?;
+    for item in milkshake.iter() {
+        println!("{}", item.name());
+    }
+
+    milkshake
+        .export("examples/output/milkshake.csv")
+        .map_err(|source| Error::Export { source })?;
     Ok(())
 }
