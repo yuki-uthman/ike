@@ -54,14 +54,6 @@ impl Shop {
         &self.items
     }
 
-    fn inventories(&self) -> &Inventories {
-        &self.inventories
-    }
-
-    fn invoices(&self) -> &Invoices {
-        &self.invoices
-    }
-
     pub fn update_inventories(&mut self) -> Result<()> {
         for inventory in &mut self.inventories.iter() {
             let name = inventory.name();
