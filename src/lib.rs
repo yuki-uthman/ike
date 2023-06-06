@@ -1,5 +1,4 @@
 use colored::Colorize;
-use std::result::Result;
 
 mod loader;
 pub use loader::Loader;
@@ -12,6 +11,8 @@ pub use items::{Item, Items, Tag};
 
 mod inventories;
 pub use inventories::{Inventories, Inventory};
+
+pub type Result<T> = std::result::Result<T, Error>;
 
 use thiserror;
 
@@ -35,7 +36,7 @@ pub struct Shop {
 }
 
 impl Shop {
-    pub fn new() -> Result<Shop, Error> {
+    pub fn new() -> Result<Shop> {
         let items = Items::load("assets/Item.csv").map_err(|source| Error::Load { source })?;
         let inventories = Inventories::load("assets/Inventory.csv")
             .map_err(|source| Error::Load { source })?;
@@ -61,7 +62,7 @@ impl Shop {
         &self.invoices
     }
 
-    pub fn update_inventories(&mut self) -> Result<(), Error> {
+    pub fn update_inventories(&mut self) -> Result<()> {
         for inventory in &mut self.inventories.iter() {
             let name = inventory.name();
             let date = inventory.date();
@@ -89,7 +90,7 @@ impl Shop {
     }
 }
 
-pub fn run() -> Result<(), Error> {
+pub fn run() -> Result<()> {
     femme::with_level(femme::LevelFilter::Trace);
 
     let mut shop = Shop::new()?;
