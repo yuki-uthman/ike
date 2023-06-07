@@ -49,6 +49,8 @@ pub struct Item {
 
     #[serde(rename = "CF.tags", deserialize_with = "de_tags", serialize_with = "se_tags")]
     tags: Tags,
+    #[serde(rename = "CF.group")]
+    group: String,
 }
 
 fn reset_quantity() -> usize {
@@ -121,6 +123,7 @@ impl Item {
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
             tags: Tags::new(),
+            group: "".to_string(),
         }
     }
     pub fn name(&self) -> &str {
@@ -141,6 +144,10 @@ impl Item {
 
     pub fn quantity(&self) -> usize {
         self.quantity
+    }
+
+    pub fn group(&self) -> &str {
+        &self.group
     }
 
     pub fn set_name(&mut self, name: &str) -> &mut Self {
