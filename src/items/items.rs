@@ -79,7 +79,7 @@ impl Items {
             .unwrap();
 
         for item in &self.0 {
-            if re.is_match(&item.name()) || re.is_match(&item.description()) {
+            if re.is_match(&item.name()) || re.is_match(&item.group()) {
                 matches.push(item.clone());
             }
         }
