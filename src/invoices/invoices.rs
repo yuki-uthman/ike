@@ -94,7 +94,7 @@ impl Invoices {
             .into_iter()
             .filter(|invoice| invoice.date() > self.date)
             .filter(|invoice| invoice.status() == Status::Closed)
-            .filter(|invoice| invoice.product() == product);
+            .filter(|invoice| invoice.item_name() == product);
 
         let mut count: usize = 0;
         for invoice in filtered_invoices {
@@ -103,7 +103,7 @@ impl Invoices {
                 invoice.date().to_string().red(),
                 invoice.quantity().to_string().red().dimmed()
             );
-            if invoice.product() == product {
+            if invoice.item_name() == product {
                 count += invoice.quantity();
             }
         }
@@ -121,7 +121,7 @@ impl Invoices {
             .invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.product() == product);
+            .filter(|invoice| invoice.item_name() == product);
 
         filtered_invoices.count()
     }
@@ -130,7 +130,7 @@ impl Invoices {
         let mut items = Vec::new();
 
         for invoice in &self.invoices {
-            let item = Item::new(&invoice.product().clone());
+            let item = Item::new(&invoice.item_name().clone());
             if items.contains(&item) {
             } else {
                 items.push(item);
@@ -149,7 +149,7 @@ impl Invoices {
         let invoices = self
             .invoices
             .iter()
-            .filter(|invoice| invoice.product() == item_name.clone().into())
+            .filter(|invoice| invoice.item_name() == item_name.clone().into())
             .collect::<Vec<_>>();
 
         if let Some(item) = invoices.last() {

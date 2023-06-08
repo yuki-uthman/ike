@@ -15,7 +15,7 @@ pub struct Invoice {
     #[serde(rename = "Invoice Status", deserialize_with = "deserialize_status")]
     status: Status,
     #[serde(rename = "Item Name")]
-    product: String,
+    item_name: String,
     #[serde(rename = "Quantity")]
     quantity: usize,
 }
@@ -50,8 +50,8 @@ impl Invoice {
         self.status.clone()
     }
 
-    pub fn product(&self) -> String {
-        self.product.clone()
+    pub fn item_name(&self) -> String {
+        self.item_name.clone()
     }
 
     pub fn quantity(&self) -> usize {
