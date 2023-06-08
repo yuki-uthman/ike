@@ -8,9 +8,9 @@ pub fn main() {
 
     let invoices = Invoices::load("assets/Invoice.csv").unwrap();
 
-    let result = invoices.last_sold(item_name);
-    match result {
-        Ok(date) => println!("{}: {}", item_name, date.to_string().green().bold()),
-        Err(error) => println!("{}: {}", item_name, error.to_string().red().bold()),
+    let option = invoices.last_sold(item_name);
+    match option {
+        Some(date) => println!("{}: {}", item_name, date.to_string().green().bold()),
+        None => println!("{}: {}", item_name, "Never sold".red().bold()),
     }
 }
