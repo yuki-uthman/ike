@@ -8,16 +8,6 @@ use colored::Colorize;
 use crate::items::{Item, Items};
 use crate::loader::Loader;
 
-pub type Result<T> = std::result::Result<T, Error>;
-
-use thiserror;
-
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("No invoices found")]
-    NoInvoicesFound { item: String },
-}
-
 #[derive(Debug)]
 pub struct Invoices {
     date: Date,
@@ -152,7 +142,7 @@ impl Invoices {
         items.into()
     }
 
-    pub fn last_sold<S>(&self, item_name: S) -> Result<Date>
+    pub fn last_sold<S>(&self, item_name: S) -> Option<Date>
     where
         S: Into<String> + Clone,
     {
@@ -163,11 +153,9 @@ impl Invoices {
             .collect::<Vec<_>>();
 
         if let Some(item) = invoices.last() {
-            Ok(item.date().clone())
+            Some(item.date().clone())
         } else {
-            Err(Error::NoInvoicesFound {
-                item: item_name.into(),
-            })
+            None
         }
     }
 }
