@@ -75,6 +75,14 @@ impl Invoices {
             .collect()
     }
 
+    pub fn on(&self, date: Date) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.date() == date)
+            .collect()
+    }
+
     pub fn len(&self) -> usize {
         self.invoices.len()
     }
