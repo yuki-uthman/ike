@@ -43,11 +43,6 @@ impl Deref for Invoices {
 }
 
 impl Invoices {
-    pub fn set_date(&mut self, date: Date) -> &mut Self {
-        self.date = date;
-        self
-    }
-
     /// Returns a vector of invoices after the given date,
     /// excluding the given date.
     pub fn after(&self, date: Date) -> Self {

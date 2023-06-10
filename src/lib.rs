@@ -57,16 +57,20 @@ impl Shop {
     pub fn update_inventories(&mut self) -> Result<()> {
         for inventory in &mut self.inventories.iter() {
             let name = inventory.name();
-            let date = inventory.date();
+            let counted_date = inventory.date();
             let quantity = inventory.quantity();
             println!("{}", name.green().bold());
             println!(
                 "{}: {}",
-                date.to_string().green(),
+                counted_date.to_string().green(),
                 quantity.to_string().green().bold()
             );
-            let new_quantity =
-                inventory.quantity() - self.invoices.set_date(date).count_quantity_sold(name);
+            let today = chrono::Local::now().date_naive();
+            let new_quantity = inventory.quantity()
+                - self
+                    .invoices
+                    .between(counted_date, today)
+                    .count_quantity_sold(name);
 
             self.items
                 .get_mut(name)
