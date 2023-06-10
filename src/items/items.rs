@@ -165,7 +165,7 @@ mod tests {
         let items = Items::load("assets/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
-        686
+        690
         "###);
     }
 }
