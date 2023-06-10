@@ -18,6 +18,9 @@ pub enum Error {
 
     #[error("{source}")]
     DeserializeFailed { source: csv::Error },
+
+    #[error("directory: {dir}")]
+    DirectoryEmpty { dir: String },
 }
 
 pub trait Loader<Record: DeserializeOwned> {
@@ -63,15 +66,32 @@ pub trait Loader<Record: DeserializeOwned> {
         Self: Sized + From<Vec<Record>>,
     {
         let mut vec = Vec::new();
-        for entry in
-            std::fs::read_dir(dir).map_err(|source| Error::DirectoryNotFound { source, dir })?
-        {
-            let path = entry.map_err(|source| Error::DirectoryIteration { source })?.path();
+        let count = read_dir(dir)
+            .map_err(|source| Error::DirectoryNotFound {
+                source,
+                dir: dir.to_string(),
+            })?
+            .count();
+
+        for entry in read_dir(dir).map_err(|source| Error::DirectoryNotFound {
+            source,
+            dir: dir.to_string(),
+        })? {
+            let path = entry
+                .map_err(|source| Error::DirectoryIteration { source })?
+                .path();
+
+            if count == 1 && path.file_name().unwrap() == ".DS_Store" {
+                return Err(Error::DirectoryEmpty {
+                    dir: dir.to_string(),
+                });
+            }
+
             if path.is_file() {
                 let mut reader =
-                    csv::Reader::from_path(path).map_err(|source| Error::FileNotFound {
+                    csv::Reader::from_path(&path).map_err(|source| Error::FileNotFound {
                         source,
-                        filename: dir,
+                        filename: path.to_str().unwrap().to_string(),
                     })?;
                 for result in reader.deserialize() {
                     let record: Record =
