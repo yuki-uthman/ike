@@ -24,9 +24,7 @@ pub enum Error {
     UpdateInventory { source: items::Error },
 
     #[error("{source}")]
-    Export {
-        source: items::Error,
-    },
+    Export { source: items::Error },
 }
 
 pub struct Shop {
@@ -38,8 +36,8 @@ pub struct Shop {
 impl Shop {
     pub fn new() -> Result<Shop> {
         let items = Items::load("assets/Item.csv").map_err(|source| Error::Load { source })?;
-        let inventories = Inventories::load("assets/Inventory.csv")
-            .map_err(|source| Error::Load { source })?;
+        let inventories =
+            Inventories::load("assets/Inventory.csv").map_err(|source| Error::Load { source })?;
         let invoices =
             Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 

@@ -2,7 +2,7 @@ use super::error::Error;
 use super::item::Item;
 use crate::loader::Loader;
 use regex::RegexBuilder;
-use std::ops::{Add, Deref, Sub, DerefMut};
+use std::ops::{Add, Deref, DerefMut, Sub};
 
 pub type Result<T> = std::result::Result<T, Error>;
 

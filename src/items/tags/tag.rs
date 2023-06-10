@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::{str::FromStr, fmt::Display};
+use std::{fmt::Display, str::FromStr};
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub enum Tag {
@@ -70,4 +70,3 @@ impl Display for Tag {
         write!(f, "{}", s)
     }
 }
-

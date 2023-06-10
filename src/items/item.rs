@@ -47,7 +47,11 @@ pub struct Item {
     #[serde(rename = "Tax Percentage")]
     tax_percentage: String,
 
-    #[serde(rename = "CF.tags", deserialize_with = "de_tags", serialize_with = "se_tags")]
+    #[serde(
+        rename = "CF.tags",
+        deserialize_with = "de_tags",
+        serialize_with = "se_tags"
+    )]
     tags: Tags,
     #[serde(rename = "CF.group")]
     group: String,
@@ -95,7 +99,6 @@ where
     let string = String::from(tags);
     serializer.serialize_str(&string)
 }
-
 
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
