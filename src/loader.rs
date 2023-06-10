@@ -66,22 +66,19 @@ pub trait Loader<Record: DeserializeOwned> {
         Self: Sized + From<Vec<Record>>,
     {
         let mut vec = Vec::new();
-        let count = read_dir(dir)
-            .map_err(|source| Error::DirectoryNotFound {
-                source,
-                dir: dir.to_string(),
-            })?
-            .count();
-
-        for entry in read_dir(dir).map_err(|source| Error::DirectoryNotFound {
+        let dir_iter = read_dir(dir).map_err(|source| Error::DirectoryNotFound {
             source,
             dir: dir.to_string(),
-        })? {
+        })?;
+
+        let mut file_count = 0;
+
+        for entry in dir_iter {
             let path = entry
                 .map_err(|source| Error::DirectoryIteration { source })?
                 .path();
 
-            if count == 1 && path.file_name().unwrap() == ".DS_Store" {
+            if file_count == 0 && path.file_name().unwrap() == ".DS_Store" {
                 return Err(Error::DirectoryEmpty {
                     dir: dir.to_string(),
                 });
@@ -99,6 +96,7 @@ pub trait Loader<Record: DeserializeOwned> {
                     vec.push(record);
                 }
             }
+            file_count += 1;
         }
         Ok(vec.into())
     }
