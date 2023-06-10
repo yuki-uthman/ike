@@ -35,11 +35,11 @@ pub struct Shop {
 
 impl Shop {
     pub fn new() -> Result<Shop> {
-        let items = Items::load("assets/Item.csv").map_err(|source| Error::Load { source })?;
+        let items = Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
         let inventories =
-            Inventories::load("assets/Inventory.csv").map_err(|source| Error::Load { source })?;
+            Inventories::load_from_file("assets/Inventory.csv").map_err(|source| Error::Load { source })?;
         let invoices =
-            Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
+            Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
         Ok(Shop {
             items,

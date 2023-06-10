@@ -6,7 +6,7 @@ pub fn main() {
     let args: Vec<String> = std::env::args().collect();
     let item_name = &args[1];
 
-    let invoices = Invoices::load("assets/Invoice.csv").unwrap();
+    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
 
     let option = invoices.last_sold(item_name);
     match option {
