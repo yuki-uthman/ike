@@ -67,7 +67,7 @@ impl Items {
         Self(Vec::new())
     }
 
-    pub fn active_items(&self) -> Self {
+    pub fn only_active_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_active())
             .map(|item| item.clone())
@@ -75,7 +75,7 @@ impl Items {
             .into()
     }
 
-    pub fn inactive_items(&self) -> Self {
+    pub fn only_inactive_items(&self) -> Self {
         self.iter()
             .filter(|item| !item.is_active())
             .map(|item| item.clone())
