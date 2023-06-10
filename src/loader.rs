@@ -6,15 +6,12 @@ use thiserror;
 pub enum Error {
     #[error("{source}: {filename}")]
     FileNotFound {
-        filename: &'static str,
+        filename: String,
         source: csv::Error,
     },
 
     #[error("{source}: {dir}")]
-    DirectoryNotFound {
-        dir: &'static str,
-        source: std::io::Error,
-    },
+    DirectoryNotFound { dir: String, source: std::io::Error },
 
     #[error("{source}")]
     DirectoryIteration { source: std::io::Error },
@@ -29,8 +26,11 @@ pub trait Loader<Record: DeserializeOwned> {
     where
         Self: Sized + From<Vec<Record>>,
     {
-        let mut reader = csv::Reader::from_path(filename)
-            .map_err(|source| Error::FileNotFound { source, filename })?;
+        let mut reader =
+            csv::Reader::from_path(filename).map_err(|source| Error::FileNotFound {
+                source,
+                filename: filename.to_string(),
+            })?;
         let mut vec = Vec::new();
         for result in reader.deserialize() {
             let record: Record = result.map_err(|source| Error::DeserializeFailed { source })?;
@@ -44,8 +44,11 @@ pub trait Loader<Record: DeserializeOwned> {
     where
         Self: Sized + From<Vec<Record>>,
     {
-        let mut reader = csv::Reader::from_path(filename)
-            .map_err(|source| Error::FileNotFound { source, filename })?;
+        let mut reader =
+            csv::Reader::from_path(filename).map_err(|source| Error::FileNotFound {
+                source,
+                filename: filename.to_string(),
+            })?;
         let mut vec = Vec::new();
         for result in reader.deserialize() {
             let record: Record = result.map_err(|source| Error::DeserializeFailed { source })?;
