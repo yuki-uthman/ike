@@ -43,14 +43,15 @@ pub trait Loader<Record: DeserializeOwned> {
         Ok(vec.into())
     }
 
-    fn load_from_file(filename: &'static str) -> Result<Self, Error>
+    fn load_from_file<S>(filename: S) -> Result<Self, Error>
     where
         Self: Sized + From<Vec<Record>>,
+        S: Into<String> + Clone,
     {
         let mut reader =
-            csv::Reader::from_path(filename).map_err(|source| Error::FileNotFound {
+            csv::Reader::from_path(filename.clone().into()).map_err(|source| Error::FileNotFound {
                 source,
-                filename: filename.to_string(),
+                filename: filename.into(),
             })?;
         let mut vec = Vec::new();
         for result in reader.deserialize() {
@@ -61,14 +62,15 @@ pub trait Loader<Record: DeserializeOwned> {
         Ok(vec.into())
     }
 
-    fn load_from_dir(dir: &'static str) -> Result<Self, Error>
+    fn load_from_dir<S>(dir: S) -> Result<Self, Error>
     where
         Self: Sized + From<Vec<Record>>,
+        S: Into<String> + Clone,
     {
         let mut vec = Vec::new();
-        let dir_iter = read_dir(dir).map_err(|source| Error::DirectoryNotFound {
+        let dir_iter = read_dir(dir.clone().into()).map_err(|source| Error::DirectoryNotFound {
             source,
-            dir: dir.to_string(),
+            dir: dir.clone().into(),
         })?;
 
         let mut file_count = 0;
@@ -80,7 +82,7 @@ pub trait Loader<Record: DeserializeOwned> {
 
             if file_count == 0 && path.file_name().unwrap() == ".DS_Store" {
                 return Err(Error::DirectoryEmpty {
-                    dir: dir.to_string(),
+                    dir: dir.into(),
                 });
             }
 
