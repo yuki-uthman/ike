@@ -4,9 +4,7 @@ use shop::Invoices;
 use shop::Loader;
 
 fn main() -> Result<(), Error> {
-    let invoices = Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load {
-        source,
-    })?;
+    let invoices = Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
     let start = NaiveDate::from_ymd_opt(2021, 1, 1).unwrap();
     let end = NaiveDate::from_ymd_opt(2023, 6, 1).unwrap();
     let items = invoices.between(start, end).unique_items();

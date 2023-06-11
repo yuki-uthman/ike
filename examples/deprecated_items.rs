@@ -4,9 +4,7 @@ use shop::Invoices;
 use shop::Loader;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let invoices = Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load {
-        source,
-    })?;
+    let invoices = Invoices::load("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
     let start = NaiveDate::from_ymd_opt(2022, 1, 1).unwrap();
     let end = NaiveDate::from_ymd_opt(2022, 12, 31).unwrap();

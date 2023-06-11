@@ -24,16 +24,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut groups = vec![
         // disposables
-        "alum",
+        // "alum",
         "plastic container|round container",
         "plastic bottle",
         "plastic canister",
         "paper bag",
         "paper cup|bowl",
-        "baggase",
-        "cake box",
+        "(paper|cake|lunch|pizza|burger) box",
+        // "food wrap paper",
+        // "baggase",
         "\\bstraw\\b",
-        "food wrap paper",
         // food
         "milkshake",
         // construction
@@ -41,7 +41,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // household items
         "dustpan|broom",
         "knife",
-        "\\bbrush",
+        // "\\bbrush",
         "glass", // drainer, wiper
         "toothbrush",
         "hanger",
@@ -53,6 +53,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "lux",
         "wings",
         "\\brack",
+        // "tissue paper",
+        // "box"
         // "bracket"
         // "shelf"
         // "strip", // store
