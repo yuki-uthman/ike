@@ -1,42 +1,6 @@
-use shop::{Error, Items, Loader, Result, Tag};
+use shop::{Error, Items, Loader, Result, Tag, Group};
 use std::fs;
 use std::fs::File;
-
-struct Group<'a> {
-    pub regex: String,
-    tags: &'a [Tag],
-    items: Option<Items>,
-    should_print: bool,
-}
-
-impl<'a> Group<'a> {
-    fn new<S>(regex: S, tags: &'a [Tag], should_print: bool) -> Self
-    where
-        S: Into<String>,
-    {
-        Self {
-            regex: regex.into(),
-            tags,
-            items: None,
-            should_print,
-        }
-    }
-
-    fn add_items(&mut self, mut items: Items) {
-        for item in items.iter_mut() {
-            item.add_tags(self.tags);
-        }
-        self.items = Some(items);
-    }
-
-    fn print(&self) {
-        println!("{}", self.regex);
-        for item in self.items.as_ref().unwrap().iter() {
-            println!("  {}", item.name());
-        }
-        println!();
-    }
-}
 
 fn create_dir(dir: &str) -> Result<()> {
     if fs::metadata(dir).is_ok() {
@@ -158,7 +122,7 @@ fn main() -> Result<()> {
         File::create(&filename).unwrap();
         let mut writer = csv::Writer::from_path(filename).unwrap();
 
-        for items in group.items.as_ref().unwrap().iter() {
+        for items in group.iter() {
             writer.serialize(&items).unwrap();
         }
         writer.flush().unwrap();

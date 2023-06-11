@@ -12,6 +12,9 @@ pub use items::{Item, Items, Tag};
 mod inventories;
 pub use inventories::{Inventories, Inventory};
 
+mod groups;
+pub use groups::{Group, Groups};
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 use thiserror;
