@@ -1,5 +1,4 @@
-use chrono::Utc;
-use shop::{Error, Invoices, Items, Loader, Result, Tag};
+use shop::{Error, Items, Loader, Result, Tag};
 use std::fs;
 use std::fs::File;
 
@@ -30,23 +29,6 @@ impl<'a> Group<'a> {
         self.items = Some(items);
     }
 
-    fn export(&self, dir: &str) -> Result<()> {
-        let filename = self
-            .regex
-            .replace("|", "_")
-            .replace(" ", "_")
-            .replace("(", "")
-            .replace(")", "")
-            .replace("\\b", "");
-        let path = format!("{}/{}.csv", dir, filename);
-
-        let items = self.items.as_ref().unwrap();
-        items
-            .export(&path)
-            .map_err(|source| Error::Export { source })?;
-        Ok(())
-    }
-
     fn print(&self) {
         println!("{}", self.regex);
         for item in self.items.as_ref().unwrap().iter() {
@@ -66,15 +48,8 @@ fn create_dir(dir: &str) -> Result<()> {
 
 fn main() -> Result<()> {
     let items = Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
-    let invoices = Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
-    // filter inactive items
-    let items: Items = items
-        .clone()
-        .into_iter()
-        .filter(|item| item.is_active())
-        .collect::<Vec<_>>()
-        .into();
+    let items = items.only_active_items();
 
     let mut groups = [
         // aluminium
@@ -174,7 +149,6 @@ fn main() -> Result<()> {
     let dir = "examples/tagged";
     create_dir(dir)?;
 
-    let today = Utc::now().naive_utc().date();
     for group in groups.iter() {
         if group.should_print {
             group.print();
@@ -184,33 +158,11 @@ fn main() -> Result<()> {
         File::create(&filename).unwrap();
         let mut writer = csv::Writer::from_path(filename).unwrap();
 
-        // writer
-        //     .write_record(&["Item Name", "Most recent sale", "Rate", "Cost"])
-        //     .unwrap();
-
         for items in group.items.as_ref().unwrap().iter() {
             writer.serialize(&items).unwrap();
         }
         writer.flush().unwrap();
 
-        // for item in group.items.as_ref().unwrap().iter() {
-        //     let last_sold = invoices.last_sold(item.name());
-
-        //     let date = if let Some(last_sold) = last_sold {
-        //         let num_of_days = (today - last_sold).num_days().to_string();
-        //         num_of_days
-        //     } else {
-        //         "9999".to_string()
-        //     };
-
-        //     let row = [
-        //         item.name(),
-        //         &date,
-        //         &item.price().to_string(),
-        //         &item.cost().to_string(),
-        //     ];
-        //     writer.write_record(&row).unwrap();
-        // }
     }
 
     Ok(())
