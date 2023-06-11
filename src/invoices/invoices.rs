@@ -10,7 +10,6 @@ use crate::loader::Loader;
 
 #[derive(Debug)]
 pub struct Invoices {
-    date: Date,
     invoices: Vec<Invoice>,
 }
 
@@ -18,7 +17,6 @@ impl Loader<Invoice> for Invoices {}
 impl From<Vec<Invoice>> for Invoices {
     fn from(vec: Vec<Invoice>) -> Invoices {
         Invoices {
-            date: Date::from_ymd_opt(2020, 1, 1).unwrap(),
             invoices: vec,
         }
     }
@@ -95,7 +93,6 @@ impl Invoices {
             .invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date() > self.date)
             .filter(|invoice| invoice.status() == Status::Closed)
             .filter(|invoice| invoice.item_name() == product);
 
