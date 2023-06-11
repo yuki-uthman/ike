@@ -80,7 +80,7 @@ impl Invoices {
         self.invoices.len()
     }
 
-    pub fn closed(&self) -> Self {
+    pub fn only_closed(&self) -> Self {
         self.invoices
             .clone()
             .into_iter()
