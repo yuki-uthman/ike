@@ -152,7 +152,7 @@ impl Invoices {
         let invoices = self
             .invoices
             .iter()
-            .filter(|invoice| invoice.item_name() == item_name.clone().into())
+            .filter(|invoice| invoice.item_name().to_lowercase() == item_name.clone().into().to_lowercase())
             .collect::<Vec<_>>();
 
         if let Some(item) = invoices.last() {
