@@ -1,4 +1,4 @@
-use shop::{Error, Items, Loader, Result, Tag, Group};
+use shop::{Error, Group, Items, Loader, Result, Tag};
 use std::fs;
 use std::fs::File;
 
@@ -11,14 +11,14 @@ fn create_dir(dir: &str) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let items = Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
-
-    let items = items.only_active_items();
+    let items = Items::load_from_file("assets/Item.csv")
+        .map_err(|source| Error::Load { source })?
+        .only_active_items();
 
     let mut groups = [
         // aluminium
         Group::new(
-            "alum",
+            "alum", // todo annotate as cf.group aluminium foil box
             &[Tag::Disposable, Tag::Aluminium, Tag::Restaurant],
             false,
         ),
@@ -76,7 +76,7 @@ fn main() -> Result<()> {
         ),
         Group::new(
             "(black|fat) straw",
-            &[Tag::Disposable, Tag::Paper, Tag::Retail],
+            &[Tag::Disposable, Tag::Plastic, Tag::Retail],
             false,
         ),
         Group::new(
@@ -90,14 +90,86 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "\\brack\\b|hook|clip|shelf|bracket",
+            "\\brack\\b|hook|clip|shelf|bracket", // todo annotate as cf.group rack
             &[Tag::Retail],
             true,
         ),
         Group::new(
-            "wood|spoon|fork",
-            &[],
+            "wood|spoon|fork", // todo annotate as cutlery
+            &[Tag::Restaurant],
             true,
+        ),
+        // tiles
+        Group::new(
+            "tile",
+            &[Tag::Construction],
+            false,
+        ),
+        // door
+        Group::new(
+            "\\bdoor|wpc",
+            &[Tag::Construction],
+            false,
+        ),
+        // steel bar
+        Group::new(
+            "steel bar",
+            &[Tag::Construction],
+            false,
+        ),
+        // milkshake
+        Group::new(
+            "milkshake",
+            &[Tag::Restaurant],
+            false,
+        ),
+        // soklin
+        Group::new(
+            "soklin",
+            &[Tag::Household],
+            false,
+        ),
+        // wings
+        Group::new(
+            "wings",
+            &[Tag::Household],
+            false,
+        ),
+        // lux
+        Group::new(
+            "lux",
+            &[Tag::Household],
+            false,
+        ),
+        // mop
+        Group::new(
+            "mop",
+            &[Tag::Household],
+            false,
+        ),
+        // "dustpan|broom",
+        Group::new(
+            "dustpan|broom",
+            &[Tag::Household],
+            false,
+        ),
+        // toothbrush
+        Group::new(
+            "toothbrush",
+            &[Tag::Household],
+            false,
+        ),
+        // iron
+        Group::new(
+            "(iron|ironing) board",
+            &[Tag::Household],
+            false,
+        ),
+        // hanger
+        Group::new(
+            "hanger",
+            &[Tag::Household],
+            false,
         ),
     ];
 
@@ -113,6 +185,7 @@ fn main() -> Result<()> {
     let dir = "examples/tagged";
     create_dir(dir)?;
 
+    // groups.export("examples/tagged")?;
     for group in groups.iter() {
         if group.should_print {
             group.print();
@@ -126,7 +199,6 @@ fn main() -> Result<()> {
             writer.serialize(&items).unwrap();
         }
         writer.flush().unwrap();
-
     }
 
     Ok(())
