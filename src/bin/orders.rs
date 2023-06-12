@@ -28,7 +28,8 @@ pub fn main() -> Result<()> {
     let items = Items::load_from_file("assets/Item.csv").unwrap();
     let items = items.find_all(pattern).unwrap();
 
-    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
+    let invoices = Invoices::load_from_file("assets/Invoice.csv")?
+        .only_closed();
 
     let mut frequencies: Vec<Frequency> = Vec::new();
     for item in items.iter() {
