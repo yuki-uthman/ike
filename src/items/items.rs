@@ -91,6 +91,16 @@ impl Items {
             .into()
     }
 
+    pub fn unique_items(&self) -> Self {
+        let mut unique_items = Vec::new();
+        for item in self.iter() {
+            if !unique_items.contains(item) {
+                unique_items.push(item.clone());
+            }
+        }
+        unique_items.into()
+    }
+
     pub fn add(&mut self, item: Item) {
         self.0.push(item);
     }
