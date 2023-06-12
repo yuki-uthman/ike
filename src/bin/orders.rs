@@ -46,6 +46,7 @@ pub fn main() -> Result<()> {
     frequencies.sort();
     frequencies.reverse();
 
+    println!();
     for frequency in frequencies {
         let count = frequency.count.to_string();
         let name = frequency.item_name.to_string();
@@ -66,6 +67,7 @@ pub fn main() -> Result<()> {
             );
         }
     }
+    println!();
 
     Ok(())
 }
