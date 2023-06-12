@@ -28,6 +28,7 @@ pub fn main() {
         .collect::<Vec<_>>();
     vec.sort_by(|a, b| a.0.cmp(&b.0));
 
+    println!();
     for item in vec {
         let num_of_days = item.0.to_string();
         if item.0 == 9999 {
@@ -46,4 +47,5 @@ pub fn main() {
             );
         }
     }
+    println!();
 }
