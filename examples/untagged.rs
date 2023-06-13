@@ -1,15 +1,16 @@
 use std::collections::HashSet;
 
+use colored::Colorize;
 use serde::{Deserialize, Serialize};
 use shop::Item;
 use shop::Items;
 use shop::Loader;
 
 pub fn main() -> Result<(), Box<dyn std::error::Error>>{
-    let items = Items::load_from_file("assets/Item.csv")?.only_active_items();
+    let items = Items::load_from_file("assets/Item.csv")?.get_active_items();
     let items_len = items.len();
 
-    let tagged = Items::load_from_dir("examples/tagged")?;
+    let tagged = Items::load_from_dir("examples/tagged")?.get_unique_items();
     let tagged_len = tagged.len();
 
     let mut untagged = items - tagged;
@@ -21,9 +22,9 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>>{
     }
     println!();
 
-    println!("Total   : {}", items_len);
-    println!("tagged  : {}", tagged_len);
-    println!("untagged: {}", untagged_len);
+    println!("{}   : {}", "Total".bright_green().bold(), items_len.to_string().bright_green().bold());
+    println!("{}  : {}", "tagged".green().bold(), tagged_len.to_string().green().bold());
+    println!("{}: {}", "untagged".red().bold(), untagged_len.to_string().red().bold());
     untagged.export("examples/output/untagged.csv")?;
     // let tagged_set = HashSet::from(tagged);
 

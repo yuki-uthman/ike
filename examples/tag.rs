@@ -13,7 +13,7 @@ fn create_dir(dir: &str) -> Result<()> {
 fn main() -> Result<()> {
     let items = Items::load_from_file("assets/Item.csv")
         .map_err(|source| Error::Load { source })?
-        .only_active_items();
+        .get_active_items();
 
     let mut groups = [
         // aluminium
@@ -90,87 +90,51 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
+            "wood (spoon|fork)|wooden (spoon|fork|ice)", // todo annotate as cutlery
+            &[Tag::Disposable, Tag::Wood, Tag::Restaurant],
+            false,
+        ),
+        Group::new(
             "\\brack\\b|hook|clip|shelf|bracket", // todo annotate as cf.group rack
             &[Tag::Retail],
             true,
         ),
-        Group::new(
-            "wood|spoon|fork", // todo annotate as cutlery
-            &[Tag::Restaurant],
-            true,
-        ),
+        Group::new("steel (spoon|fork|soup)", &[Tag::Restaurant], false),
         // tiles
-        Group::new(
-            "tile",
-            &[Tag::Construction],
-            false,
-        ),
+        Group::new("tile", &[Tag::Construction], false),
         // door
-        Group::new(
-            "\\bdoor|wpc",
-            &[Tag::Construction],
-            false,
-        ),
+        Group::new("\\bdoor|wpc", &[Tag::Construction], false),
         // steel bar
-        Group::new(
-            "steel bar",
-            &[Tag::Construction],
-            false,
-        ),
-        // milkshake
-        Group::new(
-            "milkshake",
-            &[Tag::Restaurant],
-            false,
-        ),
-        // soklin
-        Group::new(
-            "soklin",
-            &[Tag::Household],
-            false,
-        ),
-        // wings
-        Group::new(
-            "wings",
-            &[Tag::Household],
-            false,
-        ),
-        // lux
-        Group::new(
-            "lux",
-            &[Tag::Household],
-            false,
-        ),
-        // mop
-        Group::new(
-            "mop",
-            &[Tag::Household],
-            false,
-        ),
-        // "dustpan|broom",
-        Group::new(
-            "dustpan|broom",
-            &[Tag::Household],
-            false,
-        ),
-        // toothbrush
-        Group::new(
-            "toothbrush",
-            &[Tag::Household],
-            false,
-        ),
-        // iron
-        Group::new(
-            "(iron|ironing) board",
-            &[Tag::Household],
-            false,
-        ),
-        // hanger
-        Group::new(
-            "hanger",
-            &[Tag::Household],
-            false,
-        ),
+        Group::new("steel bar", &[Tag::Construction], false),
+        // cement
+        Group::new("cement", &[Tag::Construction], false),
+        // paint
+        Group::new("paint|spray", &[Tag::Construction], false),
+        Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
+        // makita
+        Group::new("makita", &[Tag::Construction], true),
+        // drink
+        Group::new("(milkshake|tea|frappe|coffee|smoothie) powder|long beach", &[Tag::Restaurant], true),
+        Group::new("(carob|cheese|root|onion|sumac|waffle|yogurt) powder", &[Tag::Restaurant], true),
+
+        // powder
+        Group::new("powder", &[Tag::Household], true),
+        // long beach
+        Group::new("long beach", &[Tag::Restaurant], true),
+        // Household
+        Group::new("soklin", &[Tag::Household], false),
+        Group::new("wings", &[Tag::Household], false),
+        Group::new("lux", &[Tag::Household], false),
+        Group::new("mop", &[Tag::Household], false),
+        Group::new("dustpan|broom|dustbin", &[Tag::Household], false),
+        Group::new("toothbrush", &[Tag::Household], false),
+        Group::new("(iron|ironing) board", &[Tag::Household], false),
+        Group::new("hanger", &[Tag::Household], false),
+        Group::new("tissue paper", &[Tag::Household], false),
+        Group::new("\\bbrush", &[Tag::Household], false),
+        Group::new("chair", &[Tag::Household], false),
+        Group::new("bucket", &[Tag::Household], false),
+
     ];
 
     let groups = groups

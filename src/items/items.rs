@@ -80,7 +80,7 @@ impl Items {
         Self(Vec::new())
     }
 
-    pub fn only_active_items(&self) -> Self {
+    pub fn get_active_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_active())
             .map(|item| item.clone())
@@ -88,7 +88,7 @@ impl Items {
             .into()
     }
 
-    pub fn only_inactive_items(&self) -> Self {
+    pub fn get_inactive_items(&self) -> Self {
         self.iter()
             .filter(|item| !item.is_active())
             .map(|item| item.clone())
@@ -96,7 +96,7 @@ impl Items {
             .into()
     }
 
-    pub fn untagged_items(&self) -> Self {
+    pub fn get_untagged_items(&self) -> Self {
         self.iter()
             .filter(|item| item.group().is_empty())
             .map(|item| item.clone())
@@ -104,7 +104,7 @@ impl Items {
             .into()
     }
 
-    pub fn unique_items(&self) -> Self {
+    pub fn get_unique_items(&self) -> Self {
         let mut unique_items = Vec::new();
         for item in self.iter() {
             if !unique_items.contains(item) {

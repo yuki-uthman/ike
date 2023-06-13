@@ -20,7 +20,7 @@ impl PartialOrd for Frequency {
 
 pub fn main() {
     let invoices = Invoices::load("assets/Invoice.csv").unwrap();
-    let items = Items::load("assets/Item.csv").unwrap().only_active_items();
+    let items = Items::load("assets/Item.csv").unwrap().get_active_items();
 
     let mut frequencies: Vec<Frequency> = Vec::new();
     for item in items.iter() {

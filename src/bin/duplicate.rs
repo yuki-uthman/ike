@@ -11,7 +11,7 @@ pub fn main() -> Result<()> {
     let first_pattern = &args[1];
     let second_pattern = &args[2];
 
-    let items = Items::load_from_file("assets/Item.csv")?.only_active_items();
+    let items = Items::load_from_file("assets/Item.csv")?.get_active_items();
 
     let first_items: HashSet<String> = items.find_all(first_pattern)?.into();
     let second_items: HashSet<String> = items.find_all(second_pattern)?.into();
