@@ -2,7 +2,10 @@ use super::error::Error;
 use super::item::Item;
 use crate::loader::Loader;
 use regex::RegexBuilder;
-use std::ops::{Add, Deref, DerefMut, Sub};
+use std::{
+    collections::HashSet,
+    ops::{Add, Deref, DerefMut, Sub},
+};
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -19,6 +22,16 @@ impl From<Vec<Item>> for Items {
 impl From<Vec<&mut Item>> for Items {
     fn from(vec: Vec<&mut Item>) -> Items {
         Items(vec.into_iter().map(|item| item.clone()).collect())
+    }
+}
+
+impl From<Items> for HashSet<String> {
+    fn from(items: Items) -> HashSet<String> {
+        let set = items
+            .iter()
+            .map(|item| item.name().to_string())
+            .collect::<HashSet<String>>();
+        set
     }
 }
 
