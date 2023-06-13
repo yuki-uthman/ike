@@ -88,7 +88,6 @@ impl Shop {
 }
 
 pub fn run() -> Result<()> {
-    femme::with_level(femme::LevelFilter::Trace);
 
     let mut shop = Shop::new()?;
     shop.update_inventories()?;
