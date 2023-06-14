@@ -74,9 +74,9 @@ fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
 }
 
 fn main() -> Result<()> {
-    let aff_content = fs::read_to_string("node_modules/dictionary-en/index.aff")
+    let aff_content = fs::read_to_string("assets/dictionary-en/index.aff")
         .expect("failed to load config file");
-    let dic_content = fs::read_to_string("node_modules/dictionary-en/index.dic")
+    let dic_content = fs::read_to_string("assets/dictionary-en/index.dic")
         .expect("failed to load dictionary file");
 
     let dict: Dictionary = DictBuilder::new()
