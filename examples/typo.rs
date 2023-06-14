@@ -92,7 +92,6 @@ fn main() -> Result<()> {
     items.sort();
 
     let typos = get_typos(dict, &items);
-    println!("{:#?}", typos);
 
     let is_misspelled = |item: &&mut Item| -> bool {
         let words = item
@@ -136,8 +135,15 @@ fn main() -> Result<()> {
 
     items.iter_mut().for_each(highlight_typos);
 
+    println!();
+    let mut count = 0;
     for item in items.iter() {
-        println!("{}", item.name());
+        println!("     {}", item.name());
+        count += 1;
     }
+    println!();
+    println!("   Total: {}", count.to_string().red().bold());
+    println!();
+
     Ok(())
 }
