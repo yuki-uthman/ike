@@ -111,7 +111,7 @@ fn main() -> Result<()> {
     let typos = get_typos(dict, &items);
     println!("{:#?}", typos);
 
-    let misspelled = |item: &&Item| -> bool {
+    let misspelled = |item: &&mut Item| -> bool {
         let words = item
             .name()
             .split(" ")
@@ -129,7 +129,7 @@ fn main() -> Result<()> {
     };
 
     let misspelled_items = items
-        .iter()
+        .iter_mut()
         .filter(misspelled)
         .collect::<Vec<_>>()
         .into();
