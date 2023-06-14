@@ -93,7 +93,7 @@ fn main() -> Result<()> {
 
     let typos = get_typos(dict, &items);
 
-    let is_misspelled = |item: &&mut Item| -> bool {
+    let is_typo = |item: &&mut Item| -> bool {
         let words = item
             .name()
             .split(" ")
@@ -109,6 +109,12 @@ fn main() -> Result<()> {
 
         false
     };
+
+    let mut items_with_typo: Items = items
+        .iter_mut()
+        .filter(is_typo)
+        .collect::<Vec<_>>()
+        .into();
 
     let highlight_typos = |item: &mut Item| {
         let highlighted_name = item
@@ -127,17 +133,11 @@ fn main() -> Result<()> {
         item.set_name(&highlighted_name);
     };
 
-    let mut items: Items = items
-        .iter_mut()
-        .filter(is_misspelled)
-        .collect::<Vec<_>>()
-        .into();
-
-    items.iter_mut().for_each(highlight_typos);
+    items_with_typo.iter_mut().for_each(highlight_typos);
 
     println!();
     let mut count = 0;
-    for item in items.iter() {
+    for item in items_with_typo.iter() {
         println!("     {}", item.name());
         count += 1;
     }
