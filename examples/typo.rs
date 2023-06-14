@@ -41,24 +41,14 @@ fn export_typos(dict: Dictionary, items: Items) {
     writer.flush().unwrap();
 }
 
-fn only_alphabets_in_the_name(item: &mut Item) -> &Item {
-    let name = item
-        .name()
-        .split(" ")
-        .collect::<Vec<_>>()
-        .into_iter()
-        .filter(|word| word.chars().all(|c| c.is_alphabetic()))
-        .collect::<Vec<_>>()
-        .join(" ");
-    item.set_name(&name);
-    item
-}
-
 fn only_misspelled_items(typos: &Vec<String>, mut items: Items) -> Items {
     let items = items
         .iter_mut()
         .filter(|item| {
-            let words = item.name().split(" ").collect::<Vec<_>>();
+            let words = item.name().split(" ")
+                .into_iter()
+                .map(|word| word.to_lowercase())
+                .collect::<Vec<_>>();
 
             for word in words {
                 if typos.contains(&word.to_string()) {
@@ -73,29 +63,27 @@ fn only_misspelled_items(typos: &Vec<String>, mut items: Items) -> Items {
     items.into()
 }
 
-fn get_typos(dict: Dictionary, mut items: Items) -> Vec<String> {
-    let items: Items = items
-        .iter_mut()
-        .map(only_alphabets_in_the_name)
-        .collect::<Vec<_>>()
-        .into();
+fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
 
-    let items = items.get_unique_items();
+    let mut words_set = HashSet::new();
 
-    let misspelled_names = items
-        .iter()
-        .filter(|item| {
-            if dict.check(&item.name()) {
-                return false;
-            } else {
-                return true;
-            }
-        })
-        .map(|item| item.name().to_owned())
-        .collect::<Vec<_>>();
+    for item in items.iter() {
+        let words = item
+            .name()
+            .split(" ")
+            .collect::<Vec<_>>()
+            .into_iter()
+            .filter(|word| word.chars().all(|c| c.is_alphabetic()))
+            .map(|word| word.to_lowercase())
+            .collect::<Vec<_>>();
+
+        for word in words {
+            words_set.insert(word);
+        }
+    }
 
     let mut typos = HashSet::new();
-    for name in misspelled_names.iter() {
+    for name in words_set.iter() {
         for word in name.split(" ") {
             if !dict.check(word) {
                 typos.insert(word.to_owned());
@@ -114,7 +102,7 @@ fn highlight_typos(typos: &Vec<String>, items: Items) -> Items {
         let name = item.name();
         let mut new_name = String::new();
         for word in name.split(" ") {
-            if typos.contains(&word.to_owned()) {
+            if typos.contains(&word.to_owned().to_lowercase()) {
                 new_name.push_str(&word.red().bold().to_string());
             } else {
                 new_name.push_str(word);
@@ -143,7 +131,8 @@ fn main() -> Result<()> {
         .get_active_items();
     items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
 
-    let typos = get_typos(dict, items.clone().into());
+    let typos = get_typos(dict, &items);
+    println!("{:#?}", typos);
 
     let misspelled_items = only_misspelled_items(&typos, items.clone().into());
     let items = highlight_typos(&typos, misspelled_items);
