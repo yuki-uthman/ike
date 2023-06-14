@@ -19,6 +19,12 @@ impl From<Vec<Item>> for Items {
     }
 }
 
+impl From<Vec<&Item>> for Items {
+    fn from(vec: Vec<&Item>) -> Items {
+        Items(vec.into_iter().map(|item| item.clone()).collect())
+    }
+}
+
 impl From<Vec<&mut Item>> for Items {
     fn from(vec: Vec<&mut Item>) -> Items {
         Items(vec.into_iter().map(|item| item.clone()).collect())
