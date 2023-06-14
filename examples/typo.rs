@@ -88,7 +88,8 @@ fn main() -> Result<()> {
     let mut items = Items::load_from_file("assets/Item.csv")
         .map_err(|source| Error::Load { source })?
         .get_active_items();
-    items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+
+    items.sort();
 
     let typos = get_typos(dict, &items);
     println!("{:#?}", typos);

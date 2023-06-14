@@ -206,6 +206,11 @@ impl Items {
         writer.flush().map_err(|source| Error::Flush { source })?;
         Ok(())
     }
+
+    pub fn sort(&mut self) {
+        self.0
+            .sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+    }
 }
 
 #[cfg(test)]
