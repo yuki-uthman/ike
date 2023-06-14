@@ -73,24 +73,6 @@ fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
     typos
 }
 
-fn highlight_typos(typos: &Vec<String>, items: Items) -> Items {
-    let mut items = items;
-    for item in items.iter_mut() {
-        let name = item.name();
-        let mut new_name = String::new();
-        for word in name.split(" ") {
-            if typos.contains(&word.to_owned().to_lowercase()) {
-                new_name.push_str(&word.red().bold().to_string());
-            } else {
-                new_name.push_str(word);
-            }
-            new_name.push_str(" ");
-        }
-        item.set_name(&new_name);
-    }
-    items
-}
-
 fn main() -> Result<()> {
     let aff_content = fs::read_to_string("node_modules/dictionary-en/index.aff")
         .expect("failed to load config file");
@@ -128,13 +110,31 @@ fn main() -> Result<()> {
         false
     };
 
-    let misspelled_items = items
+    let highlight_typos = |item: &mut Item| {
+        let highlighted_name = item
+            .name()
+            .split(" ")
+            .into_iter()
+            .map(|word| {
+                if typos.contains(&word.to_lowercase()) {
+                    word.red().bold().to_string()
+                } else {
+                    word.to_string()
+                }
+            })
+            .collect::<Vec<_>>().join(" ");
+
+        item.set_name(&highlighted_name);
+    };
+
+    let mut items: Items = items
         .iter_mut()
         .filter(is_misspelled)
         .collect::<Vec<_>>()
         .into();
 
-    let items = highlight_typos(&typos, misspelled_items);
+    items.iter_mut().for_each(highlight_typos);
+
     for item in items.iter() {
         println!("{}", item.name());
     }
