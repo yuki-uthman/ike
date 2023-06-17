@@ -1,7 +1,6 @@
 use shop::{Error, Shop};
 
 fn main() -> Result<(), Error> {
-    femme::with_level(femme::LevelFilter::Trace);
 
     let mut shop = Shop::new()?;
     shop.update_inventories()?;
