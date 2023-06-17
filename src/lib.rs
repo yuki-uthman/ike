@@ -15,6 +15,9 @@ pub use inventories::{Inventories, Inventory};
 mod groups;
 pub use groups::{Group, Groups};
 
+mod purchase_orders;
+pub use purchase_orders::{PurchaseOrder, PurchaseOrders};
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 use thiserror;
