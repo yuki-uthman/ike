@@ -86,6 +86,13 @@ impl Items {
         Self(Vec::new())
     }
 
+    pub fn contains<S>(&self, item: S) -> bool
+    where
+        S: AsRef<str>,
+    {
+        self.iter().any(|i| i.name() == item.as_ref())
+    }
+
     pub fn get_active_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_active())

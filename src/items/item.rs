@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::ops::Deref;
 use std::str::FromStr;
 
 use super::Tag;
@@ -103,6 +104,12 @@ where
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
+    }
+}
+
+impl AsRef<str> for Item {
+    fn as_ref(&self) -> &str {
+        &self.name
     }
 }
 
