@@ -20,3 +20,21 @@ where
     let string = String::deserialize(deserializer)?;
     Ok(Date::parse_from_str(&string, "%Y-%m-%d").map_err(serde::de::Error::custom)?)
 }
+
+impl PurchaseOrder {
+    pub fn status(&self) -> String {
+        self.status.clone()
+    }
+
+    pub fn date(&self) -> Date {
+        self.date.clone()
+    }
+
+    pub fn item_name(&self) -> String {
+        self.item_name.clone()
+    }
+
+    pub fn quantity(&self) -> usize {
+        self.quantity
+    }
+}
