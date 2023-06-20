@@ -1,5 +1,6 @@
 use super::PurchaseOrder;
 use crate::loader::Loader;
+use chrono::NaiveDate as Date;
 use std::ops::Deref;
 
 #[derive(Debug)]
@@ -18,6 +19,26 @@ impl Deref for PurchaseOrders {
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+impl FromIterator<PurchaseOrder> for PurchaseOrders {
+    fn from_iter<I: IntoIterator<Item = PurchaseOrder>>(iter: I) -> Self {
+        let mut vec = Vec::new();
+        for po in iter {
+            vec.push(po);
+        }
+        vec.into()
+    }
+}
+
+impl PurchaseOrders {
+    pub fn between(&self, start: Date, end: Date) -> Self {
+        self.0
+            .clone()
+            .into_iter()
+            .filter(|po| po.date() >= start && po.date() <= end)
+            .collect()
     }
 }
 
