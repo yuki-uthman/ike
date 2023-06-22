@@ -72,7 +72,7 @@ mod tests {
         let po = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
         assert_yaml_snapshot!(po.len(), @r###"
         ---
-        444
+        476
         "###);
     }
 }
