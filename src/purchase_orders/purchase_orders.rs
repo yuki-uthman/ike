@@ -33,7 +33,12 @@ impl FromIterator<PurchaseOrder> for PurchaseOrders {
 }
 
 impl PurchaseOrders {
-    pub fn between(&self, start: Date, end: Date) -> Self {
+    pub fn between(&self, start: Date, end: Date) -> impl Iterator<Item = PurchaseOrder> {
+        self.0
+            .clone()
+            .into_iter()
+            .filter(move |po| po.date() >= start && po.date() <= end)
+    }
         self.0
             .clone()
             .into_iter()
