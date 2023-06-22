@@ -56,6 +56,9 @@ impl PurchaseOrders {
     {
         self.filter(move |po| po.item_name() == item_name.as_ref())
     }
+
+    pub fn into_quantity(self) -> impl Iterator<Item = usize> {
+        self.into_iter().map(|po| po.quantity())
     }
 }
 
