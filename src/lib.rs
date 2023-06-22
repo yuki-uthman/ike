@@ -17,6 +17,7 @@ pub use groups::{Group, Groups};
 
 mod purchase_orders;
 pub use purchase_orders::{PurchaseOrder, PurchaseOrders};
+pub use purchase_orders::Status as PurchaseOrderStatus;
 
 pub type Result<T> = std::result::Result<T, Error>;
 

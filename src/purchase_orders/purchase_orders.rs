@@ -1,4 +1,4 @@
-use super::PurchaseOrder;
+use super::{PurchaseOrder, purchase_order::Status};
 use crate::loader::Loader;
 use chrono::NaiveDate as Date;
 use std::ops::Deref;
@@ -55,6 +55,12 @@ impl PurchaseOrders {
         where S: AsRef<str>
     {
         self.filter(move |po| po.item_name() == item_name.as_ref())
+    }
+
+    pub fn filter_by_status<S>(&self, status: S) -> PurchaseOrders
+        where S: Into<Status> + Copy
+    {
+        self.filter(|po| po.status() == status.into())
     }
 
     pub fn into_quantity(self) -> impl Iterator<Item = usize> {

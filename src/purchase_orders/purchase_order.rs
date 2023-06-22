@@ -8,6 +8,17 @@ pub enum Status {
     Issued,
 }
 
+impl From<String> for Status {
+    fn from(string: String) -> Status {
+        match string.as_str() {
+            "Draft" => Status::Draft,
+            "Billed" => Status::Billed,
+            "Issued" => Status::Issued,
+            _ => panic!("invalid status: \"{}\"", string),
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize)]
 pub struct PurchaseOrder {
     #[serde(rename = "Purchase Order Status", deserialize_with = "deserialize_status")]
