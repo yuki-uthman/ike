@@ -33,23 +33,25 @@ impl FromIterator<PurchaseOrder> for PurchaseOrders {
 }
 
 impl PurchaseOrders {
-    pub fn between(&self, start: Date, end: Date) -> impl Iterator<Item = PurchaseOrder> {
+    pub fn between(&self, start: Date, end: Date) -> PurchaseOrders {
         self.0
             .clone()
             .into_iter()
             .filter(move |po| po.date() >= start && po.date() <= end)
+            .collect()
     }
 
-    pub fn filter<F>(&self, predicate: F) -> impl Iterator<Item = PurchaseOrder>
+    pub fn filter<F>(&self, predicate: F) -> PurchaseOrders
         where F: Fn(&PurchaseOrder) -> bool
     {
         self.0
             .clone()
             .into_iter()
             .filter(predicate)
+            .collect()
     }
 
-    pub fn filter_by_item_name<S>(&self, item_name: S) -> impl Iterator<Item = PurchaseOrder>
+    pub fn filter_by_item_name<S>(&self, item_name: S) -> PurchaseOrders
         where S: AsRef<str>
     {
         self.filter(move |po| po.item_name() == item_name.as_ref())
