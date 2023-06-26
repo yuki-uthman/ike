@@ -1,5 +1,6 @@
 mod item;
 pub use item::Item;
+pub use item::TaxName;
 
 mod tags;
 pub use tags::{Tag, Tags};

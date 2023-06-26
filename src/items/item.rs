@@ -5,6 +5,12 @@ use std::str::FromStr;
 use super::Tag;
 use super::Tags;
 
+#[derive(Clone, Copy, Debug, PartialEq, Serialize)]
+pub enum TaxName {
+    GST,
+    None
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
     #[serde(rename = "Status")]
@@ -41,8 +47,8 @@ pub struct Item {
     #[serde(rename = "Inventory Account")]
     inventory_account: String,
 
-    #[serde(rename = "Tax Name")]
-    tax_name: String,
+    #[serde(rename = "Tax Name", deserialize_with = "deserialize_tax_name")]
+    tax_name: TaxName,
     #[serde(rename = "Tax Type")]
     tax_type: String,
     #[serde(rename = "Tax Percentage")]
@@ -101,6 +107,21 @@ where
     serializer.serialize_str(&string)
 }
 
+fn deserialize_tax_name<'de, D>(deserializer: D) -> std::result::Result<TaxName, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let status = String::deserialize(deserializer).unwrap();
+    match status.as_str() {
+        "GST" => Ok(TaxName::GST),
+        "" => Ok(TaxName::None),
+        _ => {
+            let err = format!("invalid tax name: {}", status);
+            Err(serde::de::Error::custom(err))
+        }
+    }
+}
+
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
@@ -129,7 +150,7 @@ impl Item {
             account: "Inventory Assets".to_string(),
             purchase_account: "Cost of Goods Sold".to_string(),
             inventory_account: "Inventory Assets".to_string(),
-            tax_name: "".to_string(),
+            tax_name: TaxName::GST,
             tax_type: "".to_string(),
             tax_percentage: "".to_string(),
             tags: Tags::new(),
@@ -158,6 +179,10 @@ impl Item {
 
     pub fn group(&self) -> &str {
         &self.group
+    }
+
+    pub fn tax_name(&self) -> TaxName {
+        self.tax_name
     }
 
     pub fn set_name(&mut self, name: &str) -> &mut Self {

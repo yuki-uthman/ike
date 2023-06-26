@@ -8,6 +8,7 @@ pub use invoices::{Invoice, Invoices};
 
 mod items;
 pub use items::{Item, Items, Tag};
+pub use items::TaxName as ItemTaxName;
 
 mod inventories;
 pub use inventories::{Inventories, Inventory};
