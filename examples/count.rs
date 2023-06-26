@@ -25,9 +25,10 @@ pub fn main() {
             > 0
         {
             println!(
-                "{}: {} pcs sold!",
+                "{}: {} pcs sold on {}!",
                 inventory.name().green().bold(),
-                inventory.quantity().to_string().red().bold()
+                inventory.quantity().to_string().red().bold(),
+                inventory.date().to_string().red().bold()
             );
         }
 
