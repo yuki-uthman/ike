@@ -6,3 +6,4 @@ examples/groups
 bibu
 .env
 examples/tagged
+examples/counted
