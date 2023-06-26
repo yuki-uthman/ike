@@ -32,6 +32,15 @@ impl FromIterator<PurchaseOrder> for PurchaseOrders {
     }
 }
 
+impl IntoIterator for PurchaseOrders {
+    type Item = PurchaseOrder;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
 impl PurchaseOrders {
     pub fn between(&self, start: Date, end: Date) -> PurchaseOrders {
         self.0
