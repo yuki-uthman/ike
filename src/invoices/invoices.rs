@@ -98,21 +98,10 @@ impl Invoices {
 
         let mut count: usize = 0;
         for invoice in filtered_invoices {
-            println!(
-                "{}: {}",
-                invoice.date().to_string().red(),
-                invoice.quantity().to_string().red().dimmed()
-            );
             if invoice.item_name() == product {
                 count += invoice.quantity();
             }
         }
-        println!(
-            "     {}: {}{}",
-            "Total".red().bold(),
-            "-".red(),
-            count.to_string().red().bold().underline()
-        );
         count
     }
 
