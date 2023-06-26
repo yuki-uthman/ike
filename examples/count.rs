@@ -3,11 +3,14 @@ use shop::Inventories;
 use shop::Invoices;
 use shop::Items;
 use shop::Loader;
+use shop::PurchaseOrderStatus;
+use shop::PurchaseOrders;
 
 pub fn main() {
     let mut items = Items::load_from_file("assets/Item.csv").unwrap();
     let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
     let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
+    let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
     for inventory in inventories.iter() {
         let today = chrono::Local::now().date_naive();
@@ -32,7 +35,14 @@ pub fn main() {
             );
         }
 
-        let todays_quantity = counted_quantity - sold_quantity;
+        let restocked_quantity: usize = purchase_orders
+            .between(counted_date, today)
+            .filter_by_item_name(inventory.name())
+            .filter_by_status(PurchaseOrderStatus::Billed)
+            .into_quantity()
+            .sum();
+
+        let todays_quantity = counted_quantity - sold_quantity + restocked_quantity;
 
         items
             .get_mut(inventory.name())
