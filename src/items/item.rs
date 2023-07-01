@@ -1,14 +1,12 @@
-use serde::{Deserialize, Serialize};
-use std::ops::Deref;
-use std::str::FromStr;
-
 use super::Tag;
 use super::Tags;
+use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize)]
 pub enum TaxName {
     GST,
-    None
+    None,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

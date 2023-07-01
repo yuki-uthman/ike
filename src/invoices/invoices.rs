@@ -1,12 +1,8 @@
-use std::ops::Deref;
-
-// use super::error::Error;
 use super::invoice::{Invoice, Status};
-use chrono::NaiveDate as Date;
-use colored::Colorize;
-
 use crate::items::{Item, Items};
 use crate::loader::Loader;
+use chrono::NaiveDate as Date;
+use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct Invoices {
@@ -16,9 +12,7 @@ pub struct Invoices {
 impl Loader<Invoice> for Invoices {}
 impl From<Vec<Invoice>> for Invoices {
     fn from(vec: Vec<Invoice>) -> Invoices {
-        Invoices {
-            invoices: vec,
-        }
+        Invoices { invoices: vec }
     }
 }
 
@@ -138,7 +132,9 @@ impl Invoices {
         let invoices = self
             .invoices
             .iter()
-            .filter(|invoice| invoice.item_name().to_lowercase() == item_name.clone().into().to_lowercase())
+            .filter(|invoice| {
+                invoice.item_name().to_lowercase() == item_name.clone().into().to_lowercase()
+            })
             .collect::<Vec<_>>();
 
         if let Some(item) = invoices.last() {
