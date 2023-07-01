@@ -112,15 +112,11 @@ fn main() -> Result<()> {
         Group::new("paint|spray", &[Tag::Construction], false),
         Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
         // makita
-        Group::new("makita", &[Tag::Construction], true),
+        Group::new("makita", &[Tag::Construction], false),
         // drink
         Group::new("(milkshake|tea|frappe|coffee|smoothie) powder|long beach", &[Tag::Restaurant], true),
-        Group::new("(carob|cheese|root|onion|sumac|waffle|yogurt) powder", &[Tag::Restaurant], true),
+        Group::new("(carob|cheese|root|onion|sumac|waffle|yogurt|premix|flower) powder", &[Tag::Restaurant], true),
 
-        // powder
-        Group::new("powder", &[Tag::Household], true),
-        // long beach
-        Group::new("long beach", &[Tag::Restaurant], true),
         // Household
         Group::new("soklin", &[Tag::Household], false),
         Group::new("wings", &[Tag::Household], false),
@@ -134,6 +130,14 @@ fn main() -> Result<()> {
         Group::new("\\bbrush", &[Tag::Household], false),
         Group::new("chair", &[Tag::Household], false),
         Group::new("bucket", &[Tag::Household], false),
+        // sponge
+        Group::new("sponge [^f]", &[Tag::Household], true),
+        Group::new("mattress", &[Tag::Household], true),
+
+        // luncheon
+        Group::new("luncheon", &[Tag::Restaurant], false),
+        // cake board
+        Group::new("cake board", &[Tag::Restaurant], false),
 
     ];
 
@@ -160,7 +164,7 @@ fn main() -> Result<()> {
         let mut writer = csv::Writer::from_path(filename).unwrap();
 
         for items in group.iter() {
-            writer.serialize(&items).unwrap();
+            writer.write_record(&[items.name()]).unwrap();
         }
         writer.flush().unwrap();
     }

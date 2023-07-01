@@ -41,7 +41,16 @@ fn export_typos(dict: Dictionary, items: Items) {
     writer.flush().unwrap();
 }
 
-fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
+fn find_typos_in_the_item_name(dict: Dictionary, items: &Items) -> Vec<String> {
+    let words = get_all_the_words(items);
+    let typos = find_typos(dict, words);
+
+    let mut typos = typos.into_iter().collect::<Vec<_>>();
+    typos.sort();
+    typos
+}
+
+fn get_all_the_words(items: &Items) -> HashSet<String> {
     let mut words_set = HashSet::new();
 
     for item in items.iter() {
@@ -59,6 +68,10 @@ fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
         }
     }
 
+    words_set
+}
+
+fn find_typos(dict: Dictionary, words_set: HashSet<String>) -> HashSet<String> {
     let mut typos = HashSet::new();
     for name in words_set.iter() {
         for word in name.split(" ") {
@@ -68,10 +81,9 @@ fn get_typos(dict: Dictionary, items: &Items) -> Vec<String> {
         }
     }
 
-    let mut typos = typos.into_iter().collect::<Vec<_>>();
-    typos.sort();
     typos
 }
+
 
 fn main() -> Result<()> {
     let aff_content = fs::read_to_string("assets/dictionary-en/index.aff")
@@ -91,7 +103,7 @@ fn main() -> Result<()> {
 
     items.sort();
 
-    let typos = get_typos(dict, &items);
+    let typos = find_typos_in_the_item_name(dict, &items);
 
     let is_typo = |item: &&mut Item| -> bool {
         let words = item
