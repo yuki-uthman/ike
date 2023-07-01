@@ -12,6 +12,7 @@ pub fn main() {
     let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
     let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
+    println!();
     for inventory in inventories.iter() {
         let today = chrono::Local::now().date_naive();
 
@@ -27,11 +28,12 @@ pub fn main() {
             .count_quantity_sold(inventory.name())
             > 0
         {
+            println!("{}", inventory.name().green().bold(),);
             println!(
-                "{}: {} pcs sold on {}!",
-                inventory.name().green().bold(),
+                "   {}: {} {}\n",
+                inventory.date().to_string().green().bold(),
                 inventory.quantity().to_string().red().bold(),
-                inventory.date().to_string().red().bold()
+                "pcs sold on the day it was counted!".red().bold(),
             );
         }
 
