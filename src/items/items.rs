@@ -93,6 +93,17 @@ impl Items {
         self.iter().any(|i| i.name() == item.as_ref())
     }
 
+    pub fn filter<F>(&self, f: F) -> Self
+    where
+        F: Fn(&Item) -> bool,
+    {
+        self.iter()
+            .filter(|i| f(i))
+            .map(|i| i.clone())
+            .collect::<Vec<Item>>()
+            .into()
+    }
+
     pub fn get_active_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_active())
