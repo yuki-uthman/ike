@@ -7,5 +7,4 @@ bibu
 .env
 examples/tagged
 examples/counted
-client.json
-token.json
+credentials
