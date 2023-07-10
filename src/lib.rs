@@ -20,6 +20,11 @@ mod purchase_orders;
 pub use purchase_orders::{PurchaseOrder, PurchaseOrders};
 pub use purchase_orders::Status as PurchaseOrderStatus;
 
+mod api;
+pub use api::Client;
+pub use api::Token;
+pub use api::Api;
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 use thiserror;
