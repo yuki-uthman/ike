@@ -31,6 +31,16 @@ impl From<Vec<&mut Item>> for Items {
     }
 }
 
+impl From<Vec<String>> for Items {
+    fn from(vec: Vec<String>) -> Items {
+        let mut items = Vec::new();
+        for name in vec {
+            items.push(Item::new(&name));
+        }
+        items.into()
+    }
+}
+
 impl From<Items> for HashSet<String> {
     fn from(items: Items) -> HashSet<String> {
         let set = items
@@ -241,7 +251,7 @@ mod tests {
         let items = Items::load("assets/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
-        718
+        724
         "###);
     }
 }
