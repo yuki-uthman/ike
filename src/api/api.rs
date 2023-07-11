@@ -1,15 +1,7 @@
 use online::check;
 use super::client::Client;
 use super::token::Token;
-
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("{source}")]
-    NotInitialized { source: std::io::Error },
-
-    #[error("No internet connection")]
-    NoInternetConnection,
-}
+use super::error::Error;
 
 #[derive(Debug)]
 pub struct Api {
@@ -26,7 +18,7 @@ impl Api {
         }
 
         let client = Client::read_from(&format!("{}/client.json", config)).unwrap();
-        let token = Token::read_from(&format!("{}/token.json", config)).map_err(|source| Error::NotInitialized { source })?;
+        let token = Token::read_from(&format!("{}/token.json", config)).map_err(|_| Error::NotInitialized )?;
 
         Ok(Self { config, client, token })
     }

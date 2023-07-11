@@ -7,3 +7,6 @@ pub use token::Token;
 
 mod api;
 pub use api::Api;
+
+mod error;
+pub use error::Error;
