@@ -7,7 +7,7 @@ mod invoices;
 pub use invoices::{Invoice, Invoices};
 
 mod items;
-pub use items::{Item, Items, Tag};
+pub use items::{Item, Items, Tags, Tag};
 pub use items::TaxName as ItemTaxName;
 
 mod inventories;

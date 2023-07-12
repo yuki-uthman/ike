@@ -1,4 +1,5 @@
-use super::{PurchaseOrder, purchase_order::Status};
+use super::{purchase_order::Status, PurchaseOrder};
+use crate::items::Items;
 use crate::loader::Loader;
 use chrono::NaiveDate as Date;
 use std::ops::Deref;
@@ -41,6 +42,15 @@ impl IntoIterator for PurchaseOrders {
     }
 }
 
+impl<'a> IntoIterator for &'a PurchaseOrders {
+    type Item = &'a PurchaseOrder;
+    type IntoIter = std::slice::Iter<'a, PurchaseOrder>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
 impl PurchaseOrders {
     pub fn between(&self, start: Date, end: Date) -> PurchaseOrders {
         self.0
@@ -51,29 +61,43 @@ impl PurchaseOrders {
     }
 
     pub fn filter<F>(&self, predicate: F) -> PurchaseOrders
-        where F: Fn(&PurchaseOrder) -> bool
+    where
+        F: Fn(&PurchaseOrder) -> bool,
     {
-        self.0
-            .clone()
-            .into_iter()
-            .filter(predicate)
-            .collect()
+        self.0.clone().into_iter().filter(predicate).collect()
     }
 
     pub fn filter_by_item_name<S>(&self, item_name: S) -> PurchaseOrders
-        where S: AsRef<str>
+    where
+        S: AsRef<str>,
     {
         self.filter(move |po| po.item_name() == item_name.as_ref())
     }
 
     pub fn filter_by_status<S>(&self, status: S) -> PurchaseOrders
-        where S: Into<Status> + Copy
+    where
+        S: Into<Status> + Copy,
     {
         self.filter(|po| po.status() == status.into())
     }
 
     pub fn into_quantity(self) -> impl Iterator<Item = usize> {
         self.into_iter().map(|po| po.quantity())
+    }
+
+    pub fn unique_items(&self) -> Items {
+        let mut items = Vec::new();
+        for po in self {
+            if !items.contains(&po.item_name()) {
+                items.push(po.item_name());
+            }
+        }
+
+        if items.is_empty() {
+            panic!("No items in the purchase order");
+        }
+
+        items.into()
     }
 }
 
@@ -87,7 +111,7 @@ mod tests {
         let po = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
         assert_yaml_snapshot!(po.len(), @r###"
         ---
-        476
+        477
         "###);
     }
 }
