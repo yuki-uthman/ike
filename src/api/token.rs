@@ -8,10 +8,10 @@ pub struct Token {
     refresh_token: String,
     api_domain: String,
     token_type: String,
-    expires_in: i32,
 
     #[serde(skip_serializing, skip_deserializing, default = "SystemTime::now")]
     time_stamp: SystemTime,
+    expires_in: i64,
 }
 
 impl From<serde_json::Value> for Token {
@@ -21,8 +21,8 @@ impl From<serde_json::Value> for Token {
             refresh_token: object.get("refresh_token").unwrap().to_string(),
             api_domain: object.get("api_domain").unwrap().to_string(),
             token_type: object.get("token_type").unwrap().to_string(),
-            expires_in: object.get("expires_in").unwrap().to_string().parse::<i32>().unwrap(),
             time_stamp: SystemTime::now(),
+            expires_in: object.get("expires_in").unwrap().to_string().parse::<i64>().unwrap(),
         }
     }
 }
