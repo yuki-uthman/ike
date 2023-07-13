@@ -44,6 +44,16 @@ impl Token {
         time_elapsed < self.expires_in
     }
 
+    /// calculates how many seconds left before current token expires
+    pub fn expires_in(&self) -> i64 {
+        let time_elapsed = Utc::now().signed_duration_since(self.time_stamp).num_seconds();
+        if time_elapsed < self.expires_in {
+            self.expires_in - time_elapsed
+        } else {
+            0
+        }
+    }
+
     pub fn set_access_token(&mut self, new_token: String) {
         self.access_token = new_token;
     }
