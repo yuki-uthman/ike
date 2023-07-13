@@ -16,7 +16,8 @@ impl Client {
     }
 
     pub async fn get_initial_token(&self, code: &str) -> Result<Token, reqwest::Error> {
-        let result = reqwest::Client::new()
+
+        let response = reqwest::Client::new()
             .post("https://accounts.zoho.com/oauth/v2/token")
             .form(&[
                 ("grant_type", "authorization_code"),
@@ -26,10 +27,14 @@ impl Client {
             ])
             .send()
             .await?
-            .json::<Token>()
+            .json::<serde_json::Value>()
             .await?;
 
-        Ok(result)
+        if response.get("error").is_some() {
+            panic!("Error: {:#?}", response);
+        }
+
+        Ok(Token::from(response))
     }
 
     pub async fn get_new_access_token(&self, refresh_token: &str) -> Result<String, reqwest::Error> {
