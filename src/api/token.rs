@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::io::Result;
-use std::time::SystemTime;
+use chrono::prelude::*;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Token {
@@ -8,10 +8,8 @@ pub struct Token {
     refresh_token: String,
     api_domain: String,
     token_type: String,
-
-    #[serde(skip_serializing, skip_deserializing, default = "SystemTime::now")]
-    time_stamp: SystemTime,
     expires_in: i64,
+    time_stamp: DateTime<Utc>,
 }
 
 impl From<serde_json::Value> for Token {
@@ -21,8 +19,8 @@ impl From<serde_json::Value> for Token {
             refresh_token: object.get("refresh_token").unwrap().to_string(),
             api_domain: object.get("api_domain").unwrap().to_string(),
             token_type: object.get("token_type").unwrap().to_string(),
-            time_stamp: SystemTime::now(),
             expires_in: object.get("expires_in").unwrap().to_string().parse::<i64>().unwrap(),
+            time_stamp: Utc::now(),
         }
     }
 }
@@ -38,6 +36,12 @@ impl Token {
 
     pub fn api_domain(&self) -> &str {
         &self.api_domain
+    }
+
+    pub fn is_valid(&self) -> bool {
+        let now = Utc::now();
+        let time_elapsed = now.signed_duration_since(self.time_stamp).num_seconds();
+        time_elapsed < self.expires_in
     }
 
     pub fn set_access_token(&mut self, new_token: String) {
