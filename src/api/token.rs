@@ -12,13 +12,32 @@ pub struct Token {
     time_stamp: DateTime<Utc>,
 }
 
+fn remove_quotes(string: &str) -> String {
+    let mut chars = string.chars();
+    chars.next();
+    chars.next_back();
+    chars.as_str().to_string()
+}
+
 impl From<serde_json::Value> for Token {
     fn from(object: serde_json::Value) -> Self {
+        let access_token = object.get("access_token").unwrap().to_string();
+        let access_token = remove_quotes(&access_token);
+
+        let refresh_token = object.get("refresh_token").unwrap().to_string();
+        let refresh_token = remove_quotes(&refresh_token);
+
+        let api_domain = object.get("api_domain").unwrap().to_string();
+        let api_domain = remove_quotes(&api_domain);
+
+        let token_type = object.get("token_type").unwrap().to_string();
+        let token_type = remove_quotes(&token_type);
+
         Self {
-            access_token: object.get("access_token").unwrap().to_string(),
-            refresh_token: object.get("refresh_token").unwrap().to_string(),
-            api_domain: object.get("api_domain").unwrap().to_string(),
-            token_type: object.get("token_type").unwrap().to_string(),
+            access_token,
+            refresh_token,
+            api_domain,
+            token_type,
             expires_in: object.get("expires_in").unwrap().to_string().parse::<i64>().unwrap(),
             time_stamp: Utc::now(),
         }
