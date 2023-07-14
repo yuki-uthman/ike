@@ -8,7 +8,7 @@ pub struct Client {
 }
 
 impl Client {
-    pub fn read_from(filename: &str) -> Result<Self, std::io::Error> {
+    pub fn from_file(filename: &str) -> Result<Self, std::io::Error> {
         let file = std::fs::File::open(filename)?;
         let client: Client = serde_json::from_reader(file)?;
 

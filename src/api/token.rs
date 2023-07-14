@@ -77,7 +77,7 @@ impl Token {
         self.access_token = new_token;
     }
 
-    pub fn read_from(filename: &str) -> Result<Self> {
+    pub fn from_file(filename: &str) -> Result<Self> {
         let file = std::fs::File::open(filename)?;
         let token = serde_json::from_reader(file)?;
         Ok(token)

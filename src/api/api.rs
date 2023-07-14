@@ -17,8 +17,8 @@ impl Api {
             return Err(Error::NoInternetConnection);
         }
 
-        let client = Client::read_from(&format!("{}/client.json", config)).unwrap();
-        let token = Token::read_from(&format!("{}/token.json", config)).map_err(|_| Error::NotInitialized )?;
+        let client = Client::from_file(&format!("{}/client.json", config)).unwrap();
+        let token = Token::from_file(&format!("{}/token.json", config)).map_err(|_| Error::NotInitialized )?;
 
         Ok(Self { config, client, token })
     }
