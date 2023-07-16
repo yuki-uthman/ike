@@ -72,9 +72,16 @@ struct SearchResponse {
 
 #[tokio::main]
 async fn main() {
-    let token = Token::read_from("credentials/token.json").unwrap();
+    let token = Token::from_file("credentials/token.json").unwrap();
 
     println!("{:#?}", &token);
+
+    if !token.is_valid() {
+
+        println!("Token is not valid");
+        return;
+    }
+
 
     let items: SearchResponse = reqwest::Client::new()
         .get(&format!("{}/books/v3/items", token.api_domain()))
