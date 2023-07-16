@@ -75,6 +75,7 @@ impl Token {
 
     pub fn set_access_token(&mut self, new_token: String) {
         self.access_token = new_token;
+        self.time_stamp = Utc::now();
     }
 
     pub fn from_file(filename: &str) -> Result<Self> {
