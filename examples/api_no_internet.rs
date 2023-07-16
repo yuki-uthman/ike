@@ -1,4 +1,4 @@
-use shop::Api;
+use shop::api::Api;
 
 #[tokio::main]
 async fn main() {
