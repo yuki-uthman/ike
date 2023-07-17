@@ -27,6 +27,10 @@ impl Api {
         &self.token
     }
 
+    pub fn token_is_expired(&self) -> bool {
+        self.token.is_expired()
+    }
+
     pub async fn refresh_access_token(&mut self) {
         let new_access_token = self.client.get_new_access_token(&self.token.refresh_token()).await.unwrap();
         self.token.set_access_token(new_access_token);
