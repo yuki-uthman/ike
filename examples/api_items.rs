@@ -21,6 +21,10 @@ struct Item {
     description: String,
     rate: f64,
     unit: String,
+
+    // this is not included in the search_text and others
+    // only when you get the item with the exact id with the following endpoint
+    // /items/item_id
     custom_fields: Vec<CustomField>,
 }
 
@@ -66,7 +70,7 @@ struct ItemID {
 
 #[derive(Deserialize, Debug)]
 struct SearchResponse {
-    items: Vec<Item>,
+    items: Vec<ItemID>,
     page_context: PageContext,
 }
 
