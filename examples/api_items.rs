@@ -80,7 +80,7 @@ async fn main() {
 
     println!("{:#?}", &token);
 
-    if !token.is_valid() {
+    if token.is_expired() {
 
         println!("Token is not valid");
         return;
