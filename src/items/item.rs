@@ -11,6 +11,8 @@ pub enum TaxName {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
+    #[serde(rename = "Item ID")]
+    id: String,
     #[serde(rename = "Status")]
     status: String,
     #[serde(rename = "Item Name")]
@@ -135,6 +137,7 @@ impl AsRef<str> for Item {
 impl Item {
     pub fn new(name: &str) -> Self {
         Self {
+            id: "".to_string(),
             status: "Active".to_string(),
             name: name.to_string(),
             description: "".to_string(),

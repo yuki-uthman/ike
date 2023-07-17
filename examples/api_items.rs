@@ -66,7 +66,7 @@ struct ItemID {
 
 #[derive(Deserialize, Debug)]
 struct SearchResponse {
-    items: Vec<ItemID>,
+    items: Vec<Item>,
     page_context: PageContext,
 }
 
@@ -119,7 +119,7 @@ async fn main() {
             .await
             .unwrap();
 
-        println!("{:#?}", item.item.name);
+        println!("{:#?}", item.item);
     }
 
     // let item: ItemResponse = reqwest::Client::new()
