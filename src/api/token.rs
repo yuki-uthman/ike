@@ -57,10 +57,10 @@ impl Token {
         &self.api_domain
     }
 
-    pub fn is_valid(&self) -> bool {
+    pub fn is_expired(&self) -> bool {
         let now = Utc::now();
         let time_elapsed = now.signed_duration_since(self.time_stamp).num_seconds();
-        time_elapsed < self.expires_in
+        time_elapsed > self.expires_in
     }
 
     /// calculates how many seconds left before current token expires
