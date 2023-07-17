@@ -158,6 +158,11 @@ impl Item {
             group: "".to_string(),
         }
     }
+
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+
     pub fn name(&self) -> &str {
         &self.name
     }
