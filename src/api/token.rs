@@ -75,6 +75,9 @@ impl Token {
 
     pub fn set_access_token(&mut self, new_token: String) {
         self.access_token = new_token;
+    }
+
+    pub fn renew_time_stamp(&mut self) {
         self.time_stamp = Utc::now();
     }
 

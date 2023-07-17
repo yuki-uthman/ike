@@ -34,6 +34,7 @@ impl Api {
     pub async fn refresh_access_token(&mut self) {
         let new_access_token = self.client.get_new_access_token(&self.token.refresh_token()).await.unwrap();
         self.token.set_access_token(new_access_token);
+        self.token.renew_time_stamp();
 
         let token_file = format!("{}/token.json", self.config);
         self.token.write_to(&token_file).unwrap();
