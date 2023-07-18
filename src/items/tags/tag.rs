@@ -70,3 +70,26 @@ impl Display for Tag {
         write!(f, "{}", s)
     }
 }
+
+impl AsRef<str> for Tag {
+    fn as_ref(&self) -> &str {
+        match self {
+            Tag::Disposable => "disposable",
+            Tag::Construction => "construction",
+            Tag::Household => "household",
+            Tag::Office => "office",
+            Tag::Retail => "retail",
+            Tag::Restaurant => "restaurant",
+            Tag::Aluminium => "aluminium",
+            Tag::Steel => "steel",
+            Tag::Plastic => "plastic",
+            Tag::Paper => "paper",
+            Tag::Glass => "glass",
+            Tag::Baggase => "baggase",
+            Tag::Wood => "wood",
+            Tag::PackagedFood => "packaged food",
+            Tag::FoodPowder => "food powder",
+            Tag::Cutlery => "cutlery",
+        }
+    }
+}
