@@ -1,7 +1,10 @@
 use online::check;
+use crate::Item;
+
 use super::client::Client;
 use super::token::Token;
 use super::error::Error;
+use super::items::Item as ApiItem;
 
 #[derive(Debug)]
 pub struct Api {
@@ -38,5 +41,39 @@ impl Api {
 
         let token_file = format!("{}/token.json", self.config);
         self.token.write_to(&token_file).unwrap();
+    }
+
+    pub async fn update_item(&self, item: &Item) -> Result<(), Error>{
+        #[derive(serde::Deserialize, Debug)]
+        struct Response {
+            code: i32,
+            message: String,
+            item: ApiItem,
+        }
+
+        let item_id = item.id();
+
+        let item = ApiItem::from(item);
+
+        let result = reqwest::Client::new()
+            .put(format!("https://www.zohoapis.com/books/v3/items/{}", item_id))
+            .header(
+                "Authorization",
+                &format!("Zoho-oauthtoken {}", self.token.access_token()),
+            )
+            .query(&[
+                ("organization_id", &String::from("780294706")),
+            ])
+            .json(&item)
+            .send()
+            .await
+            .unwrap()
+            .json::<Response>()
+            .await
+            .unwrap();
+
+        println!("{:#?}", result);
+
+        Ok(())
     }
 }
