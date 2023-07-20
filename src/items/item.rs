@@ -191,6 +191,10 @@ impl Item {
         self.tax_name
     }
 
+    pub fn tags(&self) -> &Tags {
+        &self.tags
+    }
+
     pub fn set_name(&mut self, name: &str) -> &mut Self {
         self.name = name.to_string();
         self
