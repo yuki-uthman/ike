@@ -33,7 +33,7 @@ pub struct Item {
         default = "reset_quantity",
         rename(serialize = "Initial Stock")
     )]
-    quantity: usize,
+    quantity: isize,
 
     #[serde(rename = "Product Type")]
     product_type: String,
@@ -64,7 +64,7 @@ pub struct Item {
     group: String,
 }
 
-fn reset_quantity() -> usize {
+fn reset_quantity() -> isize {
     0
 }
 
@@ -84,6 +84,7 @@ where
     D: serde::Deserializer<'de>,
 {
     let result = String::deserialize(deserializer);
+
     // if string is not empty, split it by comma and parse each category
     // else return an empty vector
     if result.is_err() {
@@ -179,7 +180,7 @@ impl Item {
         self.cost
     }
 
-    pub fn quantity(&self) -> usize {
+    pub fn quantity(&self) -> isize {
         self.quantity
     }
 
@@ -210,7 +211,7 @@ impl Item {
         self
     }
 
-    pub fn set_quantity(&mut self, quantity: usize) -> &mut Self {
+    pub fn set_quantity(&mut self, quantity: isize) -> &mut Self {
         self.quantity = quantity;
         self
     }

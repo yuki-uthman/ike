@@ -78,7 +78,7 @@ impl Shop {
                 - self
                     .invoices
                     .between(counted_date, today)
-                    .count_quantity_sold(name);
+                    .count_quantity_sold(name) as isize;
 
             self.items
                 .get_mut(name)

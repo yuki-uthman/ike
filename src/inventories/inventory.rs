@@ -8,7 +8,7 @@ pub struct Inventory {
     #[serde(rename = "Item Name")]
     product: String,
     #[serde(rename = "Quantity")]
-    quantity: usize,
+    quantity: isize,
 }
 
 impl Inventory {
@@ -20,7 +20,7 @@ impl Inventory {
         &self.product
     }
 
-    pub fn quantity(&self) -> usize {
+    pub fn quantity(&self) -> isize {
         self.quantity
     }
 }

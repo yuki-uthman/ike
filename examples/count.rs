@@ -22,21 +22,6 @@ pub fn main() {
             .between(counted_date, today)
             .count_quantity_sold(inventory.name());
 
-        // was there any sales on the day it was counted
-        if invoices
-            .on(counted_date)
-            .count_quantity_sold(inventory.name())
-            > 0
-        {
-            println!("{}", inventory.name().green().bold(),);
-            println!(
-                "   {}: {} {}\n",
-                inventory.date().to_string().green().bold(),
-                inventory.quantity().to_string().red().bold(),
-                "pcs sold on the day it was counted!".red().bold(),
-            );
-        }
-
         let restocked_quantity: usize = purchase_orders
             .between(counted_date, today)
             .filter_by_item_name(inventory.name())
@@ -44,13 +29,41 @@ pub fn main() {
             .into_quantity()
             .sum();
 
-        let todays_quantity = counted_quantity - sold_quantity + restocked_quantity;
+        let todays_quantity = counted_quantity + restocked_quantity as isize - sold_quantity as isize;
+
+        println!("{}", inventory.name().green().bold());
+        println!(
+            "   {} + {} - {} = {}",
+            counted_quantity, restocked_quantity, sold_quantity, todays_quantity
+        );
+        println!();
+
+        let sold_on_counting_day = invoices
+            .on(counted_date)
+            .count_quantity_sold(inventory.name());
+        if sold_on_counting_day > 0 {
+            println!(
+                "   {}: {} {}\n",
+                inventory.date().to_string().green().bold(),
+                sold_on_counting_day.to_string().red().bold(),
+                "pcs sold on the day it was counted!".red().bold(),
+            );
+        }
 
         items
             .get_mut(inventory.name())
             .unwrap()
             .set_quantity(todays_quantity);
+
+        let name = inventory.name();
+        let quantity = items.get(name).unwrap().quantity();
+
     }
+
+    let items = items.find_all("round container|alu").unwrap();
+//     for item in items.iter() {
+//         println!("{}: {}pcs", item.name(), item.quantity());
+//     }
 
     items.export("examples/counted/Item.csv").unwrap();
 }
