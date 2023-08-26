@@ -18,7 +18,7 @@ fn main() -> Result<()> {
     let mut groups = [
         // aluminium
         Group::new(
-            "alum", // todo annotate as cf.group aluminium foil box
+            "alum|ali|baking paper|cling", // todo annotate as cf.group aluminium foil box
             &[Tag::Disposable, Tag::Aluminium, Tag::Restaurant],
             false,
         ),
@@ -70,7 +70,7 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "paper straw",
+            "straw",
             &[Tag::Disposable, Tag::Paper, Tag::Restaurant],
             false,
         ),
@@ -85,7 +85,7 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "baggase|clamshell",
+            "baggase|clamshell|suagr cane",
             &[Tag::Disposable, Tag::Baggase, Tag::Restaurant],
             false,
         ),
@@ -95,7 +95,7 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "\\brack\\b|hook|clip|shelf|bracket", // todo annotate as cf.group rack
+            "hook|bracket", // todo annotate as cf.group rack
             &[Tag::Retail],
             true,
         ),
@@ -125,7 +125,7 @@ fn main() -> Result<()> {
         Group::new("dustpan|broom|dustbin", &[Tag::Household], false),
         Group::new("toothbrush", &[Tag::Household], false),
         Group::new("(iron|ironing) board", &[Tag::Household], false),
-        Group::new("hanger", &[Tag::Household], false),
+        Group::new("hanger|clip", &[Tag::Household], false),
         Group::new("tissue paper", &[Tag::Household], false),
         Group::new("\\bbrush", &[Tag::Household], false),
         Group::new("chair", &[Tag::Household], false),
