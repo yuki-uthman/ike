@@ -14,6 +14,12 @@ pub fn main() {
 
     println!();
     for inventory in inventories.iter() {
+        let item = items.get_mut(inventory.name()).unwrap();
+        if item.is_counted() {
+            println!("✅ {}: {}pcs\n", item.name().blue().bold().strikethrough(), item.quantity());
+            continue;
+        }
+
         let today = chrono::Local::now().date_naive();
 
         let counted_date = inventory.date();
@@ -50,13 +56,7 @@ pub fn main() {
             );
         }
 
-        items
-            .get_mut(inventory.name())
-            .unwrap()
-            .set_quantity(todays_quantity);
-
-        let name = inventory.name();
-        let quantity = items.get(name).unwrap().quantity();
+        item.set_quantity(todays_quantity);
 
     }
 

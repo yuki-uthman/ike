@@ -235,4 +235,8 @@ impl Item {
         }
         self
     }
+
+    pub fn is_counted(&self) -> bool {
+        self.tagged(Tag::Counted)
+    }
 }
