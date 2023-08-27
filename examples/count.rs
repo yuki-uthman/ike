@@ -14,7 +14,14 @@ pub fn main() {
 
     println!();
     for inventory in inventories.iter() {
-        let item = items.get_mut(inventory.name()).unwrap();
+        let result = items.get_mut(inventory.name());
+        let item = match result {
+            Ok(item) => item,
+            Err(_) => {
+                println!("🧨 {}\n", inventory.name().red().bold().strikethrough());
+                continue;
+            }
+        };
 
         if item.is_counted() {
             let current_quantity = item.stock_on_hand();
@@ -41,7 +48,7 @@ pub fn main() {
 
         let todays_quantity = counted_quantity + restocked_quantity as isize - sold_quantity as isize;
 
-        println!("{}", inventory.name().green().bold());
+        println!("🔖 {}", inventory.name().green().bold());
         println!(
             "   {} + {} - {} = {}",
             counted_quantity, restocked_quantity, sold_quantity, todays_quantity

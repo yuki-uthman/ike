@@ -1,6 +1,9 @@
+use super::error::Error;
 use super::inventory::Inventory;
 use crate::loader::Loader;
 use std::ops::Deref;
+
+pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug)]
 pub struct Inventories(Vec<Inventory>);
@@ -25,6 +28,19 @@ impl Inventories {
     pub fn len(&self) -> usize {
         self.0.len()
     }
+
+    pub fn get(&self, item_name: &str) -> Result<&Inventory> {
+        for item in &self.0 {
+            if item.name() == item_name {
+                return Ok(item);
+            }
+        }
+        Err(Error::InventoryNotFound {
+            name: item_name.to_string(),
+        })
+    }
+
+
 }
 
 #[cfg(test)]
