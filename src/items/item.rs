@@ -35,6 +35,9 @@ pub struct Item {
     )]
     quantity: isize,
 
+    #[serde(rename = "Stock On Hand", deserialize_with = "de_stock_on_hand")]
+    stock_on_hand: isize,
+
     #[serde(rename = "Product Type")]
     product_type: String,
     #[serde(rename = "Item Type")]
@@ -123,6 +126,19 @@ where
     }
 }
 
+fn de_stock_on_hand<'de, D>(deserializer: D) -> std::result::Result<isize, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let string = String::deserialize(deserializer)?;
+
+    if string.is_empty() {
+        Ok(0)
+    } else {
+        Ok(string.parse().map_err(serde::de::Error::custom)?)
+    }
+}
+
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
@@ -147,6 +163,7 @@ impl Item {
             price: 0.0,
             cost: 0.0,
             quantity: 0,
+            stock_on_hand: 0,
             product_type: "goods".to_string(),
             item_type: "inventory".to_string(),
             account: "Inventory Assets".to_string(),
