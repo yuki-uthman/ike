@@ -201,6 +201,10 @@ impl Item {
         self.quantity
     }
 
+    pub fn stock_on_hand(&self) -> isize {
+        self.stock_on_hand
+    }
+
     pub fn group(&self) -> &str {
         &self.group
     }

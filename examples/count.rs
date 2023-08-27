@@ -15,7 +15,11 @@ pub fn main() {
     println!();
     for inventory in inventories.iter() {
         let item = items.get_mut(inventory.name()).unwrap();
+
         if item.is_counted() {
+            let current_quantity = item.stock_on_hand();
+            item.set_quantity(current_quantity);
+
             println!("✅ {}: {}pcs\n", item.name().blue().bold().strikethrough(), item.quantity());
             continue;
         }
