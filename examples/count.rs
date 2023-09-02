@@ -53,23 +53,22 @@ fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
             counted_quantity + restocked_quantity as isize - sold_quantity as isize;
 
         println!("   🔖 {}", inventory.name().green().bold());
-        println!(
-            "   {} + {} - {} = {}",
-            counted_quantity, restocked_quantity, sold_quantity, todays_quantity
-        );
-        println!();
-
         let sold_on_counting_day = invoices
             .on(counted_date)
             .count_quantity_sold(inventory.name());
         if sold_on_counting_day > 0 {
             println!(
-                "   {}: {} {}\n",
-                inventory.date().to_string().green().bold(),
+                "      {}: {} {}",
+                inventory.date().to_string().red().bold(),
                 sold_on_counting_day.to_string().red().bold(),
                 "pcs sold on the day it was counted!".red().bold(),
             );
         }
+        println!(
+            "      {} + {} - {} = {}\n",
+            counted_quantity.to_string().green(), restocked_quantity.to_string().green(), sold_quantity.to_string().red(), todays_quantity.to_string().green().bold()
+        );
+
 
         item.set_quantity(todays_quantity);
     }
