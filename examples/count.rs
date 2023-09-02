@@ -6,30 +6,39 @@ use shop::Loader;
 use shop::PurchaseOrderStatus;
 use shop::PurchaseOrders;
 
-pub fn main() {
-    let mut items = Items::load_from_file("assets/Item.csv").unwrap();
-    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
+fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
     let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
-    let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
     println!();
-    for inventory in inventories.iter() {
-        let result = items.get_mut(inventory.name());
-        let item = match result {
-            Ok(item) => item,
+    for item in items.iter_mut() {
+
+        if let Some(pattern) = &pattern {
+            if !item.name().to_lowercase().contains(&pattern.to_lowercase()) {
+                continue;
+            }
+        }
+
+        if item.is_counted() {
+            item.set_quantity(item.stock_on_hand());
+            println!(
+                "   ✅ {}: {}pcs\n",
+                item.name().blue().bold().strikethrough(),
+                item.quantity()
+            );
+            continue;
+        }
+
+        let found = inventories.get(item.name());
+        let inventory = match found {
+            Ok(inventory) => inventory,
             Err(_) => {
-                println!("🧨 {}\n", inventory.name().red().bold().strikethrough());
+                println!("🧨 {} not in Inventory.csv\n", item.name().red().bold());
                 continue;
             }
         };
 
-        if item.is_counted() {
-            let current_quantity = item.stock_on_hand();
-            item.set_quantity(current_quantity);
-
-            println!("✅ {}: {}pcs\n", item.name().blue().bold().strikethrough(), item.quantity());
-            continue;
-        }
+        let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
+        let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
         let today = chrono::Local::now().date_naive();
 
@@ -46,9 +55,10 @@ pub fn main() {
             .into_quantity()
             .sum();
 
-        let todays_quantity = counted_quantity + restocked_quantity as isize - sold_quantity as isize;
+        let todays_quantity =
+            counted_quantity + restocked_quantity as isize - sold_quantity as isize;
 
-        println!("🔖 {}", inventory.name().green().bold());
+        println!("   🔖 {}", inventory.name().green().bold());
         println!(
             "   {} + {} - {} = {}",
             counted_quantity, restocked_quantity, sold_quantity, todays_quantity
@@ -68,13 +78,20 @@ pub fn main() {
         }
 
         item.set_quantity(todays_quantity);
-
     }
+}
 
-    let items = items.find_all("round container|alu").unwrap();
-//     for item in items.iter() {
-//         println!("{}: {}pcs", item.name(), item.quantity());
-//     }
+pub fn main() {
+    let mut items = Items::load_from_file("assets/Item.csv")
+        .unwrap()
+        .get_active_items();
+
+    items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+
+    let pattern = std::env::args().nth(1);
+    update_from_inventory(&mut items, pattern);
+
+    let items = items.find_all("sponge").unwrap();
 
     items.export("examples/counted/Item.csv").unwrap();
 }
