@@ -12,12 +12,6 @@ fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
     println!();
     for item in items.iter_mut() {
 
-        if let Some(pattern) = &pattern {
-            if !item.name().to_lowercase().contains(&pattern.to_lowercase()) {
-                continue;
-            }
-        }
-
         if item.is_counted() {
             item.set_quantity(item.stock_on_hand());
             println!(
@@ -86,12 +80,17 @@ pub fn main() {
         .unwrap()
         .get_active_items();
 
+    let pattern = std::env::args().nth(1);
+    if let Some(pattern) = &pattern {
+        println!();
+        println!(" 🔍 {} \"{}\"", "Searching for".yellow(), pattern.bright_yellow().bold());
+        items = items.find_all(pattern).unwrap();
+    }
+
     items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
 
-    let pattern = std::env::args().nth(1);
     update_from_inventory(&mut items, pattern);
 
-    let items = items.find_all("sponge").unwrap();
-
-    items.export("examples/counted/Item.csv").unwrap();
+    // let items = items.find_all("sponge").unwrap();
+    // items.export("examples/counted/Item.csv").unwrap();
 }
