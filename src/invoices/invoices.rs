@@ -57,7 +57,7 @@ impl Invoices {
         self.invoices
             .clone()
             .into_iter()
-            .filter(|invoice| invoice.date() > start)
+            .filter(|invoice| invoice.date() >= start)
             .filter(|invoice| invoice.date() <= end)
             .collect()
     }
