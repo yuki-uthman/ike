@@ -186,6 +186,10 @@ impl Item {
         }
     }
 
+    pub fn created_date(&self) -> Date {
+        self.created_date
+    }
+
     pub fn id(&self) -> &str {
         &self.id
     }
