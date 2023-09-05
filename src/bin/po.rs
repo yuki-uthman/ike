@@ -13,7 +13,7 @@ use shop::PurchaseOrders;
 #[derive(Debug)]
 struct Purchase {
     item: Item,
-    purchase_orders: Vec<PurchaseOrder>,
+    purchase_orders: PurchaseOrders,
 }
 
 impl Deref for Purchase {
@@ -43,16 +43,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut purchases = Vec::new();
     for item in items.iter() {
-        let mut item_purchase = Purchase {
+        let po = purchase_orders.filter_by_item_id(item.id());
+        let item_purchase = Purchase {
             item: item.clone(),
-            purchase_orders: Vec::new(),
+            purchase_orders: po,
         };
-
-        for po in purchase_orders.iter() {
-            if po.item_name() == item.name() {
-                item_purchase.purchase_orders.push(po.clone());
-            }
-        }
         purchases.push(item_purchase);
     }
 
