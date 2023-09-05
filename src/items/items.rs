@@ -99,9 +99,9 @@ impl Items {
 
     pub fn set_created_date(&mut self, purchase_orders: &PurchaseOrders, invoices: &Invoices) {
         for item in self.iter_mut() {
-            let first_po = purchase_orders.first_bought_date(item.name());
+            let first_po = purchase_orders.first_bought_date(item);
 
-            let first_invoice = invoices.first_sold_date(item.name());
+            let first_invoice = invoices.first_sold_date(item);
 
             let date = match (first_po, first_invoice) {
                 (Some(po), Some(inv)) => {
