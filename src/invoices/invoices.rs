@@ -143,6 +143,25 @@ impl Invoices {
             None
         }
     }
+
+    pub fn first_sold_date<S>(&self, item_name: S) -> Option<Date>
+    where
+        S: Into<String> + Clone,
+    {
+        let invoices = self
+            .invoices
+            .iter()
+            .filter(|invoice| {
+                invoice.item_name().to_lowercase() == item_name.clone().into().to_lowercase()
+            })
+            .collect::<Vec<_>>();
+
+        if let Some(invoice) = invoices.first() {
+            Some(invoice.date().clone())
+        } else {
+            None
+        }
+    }
 }
 
 #[cfg(test)]

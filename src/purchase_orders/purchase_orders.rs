@@ -99,6 +99,16 @@ impl PurchaseOrders {
 
         items.into()
     }
+
+    pub fn first_bought_date<S>(&self, item_name: S) -> Option<Date>
+    where
+        S: AsRef<str>,
+    {
+        self.filter_by_item_name(item_name)
+            .into_iter()
+            .map(|po| po.date())
+            .min()
+    }
 }
 
 #[cfg(test)]

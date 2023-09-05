@@ -1,6 +1,7 @@
 use super::error::Error;
 use super::item::Item;
-use crate::loader::Loader;
+use crate::{loader::Loader, Invoices, PurchaseOrders};
+use chrono::NaiveDate;
 use regex::RegexBuilder;
 use std::{
     collections::HashSet,
@@ -94,6 +95,31 @@ impl Sub<Items> for Items {
 impl Items {
     pub fn new() -> Self {
         Self(Vec::new())
+    }
+
+    pub fn set_created_date(&mut self, purchase_orders: &PurchaseOrders, invoices: &Invoices) {
+        for item in self.iter_mut() {
+            let first_po = purchase_orders.first_bought_date(item.name());
+
+            let first_invoice = invoices.first_sold_date(item.name());
+
+            let date = match (first_po, first_invoice) {
+                (Some(po), Some(inv)) => {
+                    if po < inv {
+                        po
+                    } else {
+                        inv
+                    }
+                }
+                (Some(po), None) => po,
+                (None, Some(inv)) => inv,
+                (None, None) => continue,
+            };
+
+            item.set_created_date(date);
+        }
+
+
     }
 
     pub fn contains<S>(&self, item: S) -> bool

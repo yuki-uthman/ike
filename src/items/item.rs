@@ -2,6 +2,7 @@ use super::Tag;
 use super::Tags;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
+use chrono::NaiveDate as Date;
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize)]
 pub enum TaxName {
@@ -11,6 +12,9 @@ pub enum TaxName {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Item {
+    #[serde(skip_deserializing, default = "reset_date")]
+    created_date: Date,
+
     #[serde(rename = "Item ID")]
     id: String,
     #[serde(rename = "Status")]
@@ -69,6 +73,10 @@ pub struct Item {
 
 fn reset_quantity() -> isize {
     0
+}
+
+fn reset_date() -> Date {
+    Date::from_ymd_opt(2022, 1, 1).unwrap()
 }
 
 /// price and cost fields are in the format "MVR 1.00"
@@ -154,6 +162,7 @@ impl AsRef<str> for Item {
 impl Item {
     pub fn new(name: &str) -> Self {
         Self {
+            created_date: Date::from_ymd_opt(2022, 1, 1).unwrap(),
             id: "".to_string(),
             status: "Active".to_string(),
             name: name.to_string(),
@@ -215,6 +224,11 @@ impl Item {
 
     pub fn tags(&self) -> &Tags {
         &self.tags
+    }
+
+    pub fn set_created_date(&mut self, date: Date) -> &mut Self {
+        self.created_date = date;
+        self
     }
 
     pub fn set_name(&mut self, name: &str) -> &mut Self {
