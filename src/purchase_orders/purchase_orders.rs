@@ -1,4 +1,5 @@
 use super::{purchase_order::Status, PurchaseOrder};
+use crate::Item;
 use crate::items::Items;
 use crate::loader::Loader;
 use chrono::NaiveDate as Date;
@@ -100,11 +101,9 @@ impl PurchaseOrders {
         items.into()
     }
 
-    pub fn first_bought_date<S>(&self, item_name: S) -> Option<Date>
-    where
-        S: AsRef<str>,
+    pub fn first_bought_date(&self, item: &Item) -> Option<Date>
     {
-        self.filter_by_item_name(item_name)
+        self.filter(|po| po.product_id() == item.id())
             .into_iter()
             .map(|po| po.date())
             .min()
