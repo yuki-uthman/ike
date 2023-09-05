@@ -144,15 +144,13 @@ impl Invoices {
         }
     }
 
-    pub fn first_sold_date<S>(&self, item_name: S) -> Option<Date>
-    where
-        S: Into<String> + Clone,
+    pub fn first_sold_date(&self, item: &Item) -> Option<Date>
     {
         let invoices = self
             .invoices
             .iter()
             .filter(|invoice| {
-                invoice.item_name().to_lowercase() == item_name.clone().into().to_lowercase()
+                invoice.product_id() == item.id()
             })
             .collect::<Vec<_>>();
 
