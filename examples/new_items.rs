@@ -56,12 +56,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     items.set_created_date(&purchase_orders, &invoices);
 
+    items = items.created_after(NaiveDate::from_ymd_opt(2023, 4, 1).unwrap());
+
+    // sort by created date
+    items.sort_by(|a, b| a.created_date().cmp(&b.created_date()));
+
     for item in items.iter() {
-        println!("{:#?}", item);
+        println!("{}: {}", item.created_date(), item.name());
     }
-
-    // items = items.created_after(NaiveDate::from_ymd_opt(2023, 4, 1));
-
     // let purchases = get_purchases(&items, &purchase_orders);
 
     Ok(())
