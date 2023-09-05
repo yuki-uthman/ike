@@ -18,6 +18,8 @@ pub struct Invoice {
     item_name: String,
     #[serde(rename = "Quantity")]
     quantity: usize,
+    #[serde(rename = "Product ID")]
+    product_id: String,
 }
 
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
@@ -56,5 +58,9 @@ impl Invoice {
 
     pub fn quantity(&self) -> usize {
         self.quantity
+    }
+
+    pub fn product_id(&self) -> String {
+        self.product_id.clone()
     }
 }
