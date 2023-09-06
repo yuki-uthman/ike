@@ -160,6 +160,13 @@ impl Invoices {
             None
         }
     }
+
+    pub fn filter<F>(&self, f: F) -> Self
+    where
+        F: Fn(&Invoice) -> bool,
+    {
+        self.invoices.clone().into_iter().filter(f).collect()
+    }
 }
 
 #[cfg(test)]
