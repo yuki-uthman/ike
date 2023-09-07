@@ -10,6 +10,8 @@ pub enum Status {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Invoice {
+    #[serde(rename = "Invoice Number")]
+    invoice_number: String,
     #[serde(rename = "Invoice Date", deserialize_with = "deserialize_date")]
     date: Date,
     #[serde(rename = "Invoice Status", deserialize_with = "deserialize_status")]
