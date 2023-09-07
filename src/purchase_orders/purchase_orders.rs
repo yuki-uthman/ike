@@ -68,11 +68,9 @@ impl PurchaseOrders {
         self.0.clone().into_iter().filter(predicate).collect()
     }
 
-    pub fn filter_by_item_id<S>(&self, item_id: S) -> PurchaseOrders 
-        where
-            S: AsRef<str>,
+    pub fn filter_by_item_id(&self, item_id: usize) -> PurchaseOrders
     {
-        self.filter(move |po| po.product_id() == item_id.as_ref())
+        self.filter(move |po| po.product_id() == item_id)
     }
 
     pub fn filter_by_item_name<S>(&self, item_name: S) -> PurchaseOrders

@@ -30,7 +30,7 @@ pub struct PurchaseOrder {
     #[serde(rename = "QuantityOrdered")]
     quantity: usize,
     #[serde(rename = "Product ID")]
-    product_id: String,
+    product_id: usize,
 }
 
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
@@ -74,7 +74,7 @@ impl PurchaseOrder {
         self.quantity
     }
 
-    pub fn product_id(&self) -> String {
-        self.product_id.clone()
+    pub fn product_id(&self) -> usize {
+        self.product_id
     }
 }

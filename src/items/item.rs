@@ -16,7 +16,7 @@ pub struct Item {
     created_date: Date,
 
     #[serde(rename = "Item ID")]
-    id: String,
+    id: usize,
     #[serde(rename = "Status")]
     status: String,
     #[serde(rename = "Item Name")]
@@ -163,7 +163,7 @@ impl Item {
     pub fn new(name: &str) -> Self {
         Self {
             created_date: Date::from_ymd_opt(2022, 1, 1).unwrap(),
-            id: "".to_string(),
+            id: 0,
             status: "Active".to_string(),
             name: name.to_string(),
             description: "".to_string(),
@@ -190,8 +190,8 @@ impl Item {
         self.created_date
     }
 
-    pub fn id(&self) -> &str {
-        &self.id
+    pub fn id(&self) -> usize {
+        self.id
     }
 
     pub fn name(&self) -> &str {

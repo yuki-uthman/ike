@@ -20,8 +20,8 @@ pub struct Invoice {
     item_name: String,
     #[serde(rename = "Quantity")]
     quantity: usize,
-    #[serde(rename = "Product ID")]
-    product_id: String,
+    #[serde(rename = "Product ID", deserialize_with = "deserialize_product_id")]
+    product_id: usize,
 }
 
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
@@ -45,6 +45,17 @@ where
     }
 }
 
+fn deserialize_product_id<'de, D>(deserializer: D) -> std::result::Result<usize, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let product_id = String::deserialize(deserializer).unwrap();
+    match product_id.parse::<usize>() {
+        Ok(product_id) => Ok(product_id),
+        Err(_) => Ok(0),
+    }
+}
+
 impl Invoice {
     pub fn date(&self) -> Date {
         self.date
@@ -62,7 +73,7 @@ impl Invoice {
         self.quantity
     }
 
-    pub fn product_id(&self) -> String {
-        self.product_id.clone()
+    pub fn product_id(&self) -> usize {
+        self.product_id
     }
 }
