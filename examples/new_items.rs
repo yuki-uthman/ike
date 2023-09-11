@@ -4,6 +4,7 @@ use chrono::NaiveDate;
 use colored::Colorize;
 use shop::Error;
 use shop::Invoices;
+use shop::InvoiceStatus;
 use shop::Item;
 use shop::Items;
 use shop::Loader;

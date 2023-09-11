@@ -1,10 +1,9 @@
-use colored::Colorize;
-
 mod loader;
 pub use loader::Loader;
 
 mod invoices;
 pub use invoices::{Invoice, Invoices};
+pub use invoices::Status as InvoiceStatus;
 
 mod items;
 pub use items::{Item, Items, Tags, Tag};
