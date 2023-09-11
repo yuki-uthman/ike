@@ -17,10 +17,10 @@ pub fn main() {
     let matches = items.find_all(&item_name).unwrap();
 
     for item in matches.iter() {
-        let sales = invoices
-            .iter()
-            .filter(|invoice| invoice.item_name() == item.name())
-            .collect::<Vec<_>>();
+    }
+
+    for item in matches.iter() {
+        let sales = invoices.filter_by_item_id(item.id());
 
         if sales.len() == 0 {
             continue;
@@ -63,4 +63,3 @@ pub fn main() {
         println!();
     }
 }
-
