@@ -34,7 +34,7 @@ pub fn main() {
 
         let mut total = 0;
         for date in launch.iter_days() {
-            let orders_count = invoices.on(date).count_quantity_sold(&item.name());
+            let orders_count = invoices.on(date).count_quantity_sold(item.id());
             total += orders_count;
 
             if orders_count == 0 {

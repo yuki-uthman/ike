@@ -40,7 +40,7 @@ fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
         let counted_quantity = inventory.quantity();
         let sold_quantity = invoices
             .between(counted_date, today)
-            .count_quantity_sold(inventory.name());
+            .count_quantity_sold(item.id());
 
         let restocked_quantity: usize = purchase_orders
             .between(counted_date, today)
@@ -55,7 +55,7 @@ fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
         println!("   🔖 {}", inventory.name().green().bold());
         let sold_on_counting_day = invoices
             .on(counted_date)
-            .count_quantity_sold(inventory.name());
+            .count_quantity_sold(item.id());
         if sold_on_counting_day > 0 {
             println!(
                 "      {}: {} {}",

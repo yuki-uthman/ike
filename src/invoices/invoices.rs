@@ -82,21 +82,12 @@ impl Invoices {
             .collect()
     }
 
-    pub fn count_quantity_sold(&self, product: &str) -> usize {
-        let filtered_invoices = self
-            .invoices
-            .clone()
-            .into_iter()
-            .filter(|invoice| invoice.status() == Status::Closed)
-            .filter(|invoice| invoice.item_name() == product);
-
-        let mut count: usize = 0;
-        for invoice in filtered_invoices {
-            if invoice.item_name() == product {
-                count += invoice.quantity();
-            }
-        }
-        count
+    pub fn count_quantity_sold(&self, item_id: usize) -> usize {
+        self
+            .filter_by_item_id(item_id)
+            .iter()
+            .map(|invoice| invoice.quantity())
+            .sum()
     }
 
     pub fn count_frequency(&self, product: &str) -> usize {
@@ -149,9 +140,7 @@ impl Invoices {
         let invoices = self
             .invoices
             .iter()
-            .filter(|invoice| {
-                invoice.product_id() == item.id()
-            })
+            .filter(|invoice| invoice.product_id() == item.id())
             .collect::<Vec<_>>();
 
         if let Some(invoice) = invoices.first() {
@@ -166,6 +155,22 @@ impl Invoices {
         F: Fn(&Invoice) -> bool,
     {
         self.invoices.clone().into_iter().filter(f).collect()
+    }
+
+    pub fn filter_by_item_id(&self, item_id: usize) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.product_id() == item_id)
+            .collect()
+    }
+
+    pub fn filter_by_status(&self, status: Status) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.status() == status)
+            .collect()
     }
 }
 
