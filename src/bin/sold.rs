@@ -11,7 +11,7 @@ pub fn main() {
 
     let invoices = Invoices::load_from_file("assets/Invoice.csv")
         .unwrap()
-        .get_closed();
+        .get_sold();
 
     let items = Items::load_from_file("assets/Item.csv").unwrap();
     let matches = items.find_all(&item_name).unwrap();

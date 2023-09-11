@@ -82,6 +82,14 @@ impl Invoices {
             .collect()
     }
 
+    pub fn get_sold(&self) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.status() != Status::Draft)
+            .collect()
+    }
+
     pub fn count_quantity_sold(&self, item_id: usize) -> usize {
         self
             .filter_by_item_id(item_id)
