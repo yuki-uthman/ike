@@ -17,9 +17,6 @@ pub fn main() {
     let matches = items.find_all(&item_name).unwrap();
 
     for item in matches.iter() {
-    }
-
-    for item in matches.iter() {
         let sales = invoices.filter_by_item_id(item.id());
 
         if sales.len() == 0 {

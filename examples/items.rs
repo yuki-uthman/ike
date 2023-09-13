@@ -5,7 +5,7 @@ use shop::Items;
 use shop::Loader;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut items = Items::load_from_file("assets/Item.csv")
+    let items = Items::load_from_file("assets/Item.csv")
         .map_err(|source| Error::Load { source })?
         .get_active_items();
 

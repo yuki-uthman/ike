@@ -189,7 +189,7 @@ mod tests {
 
     #[test]
     fn len() {
-        let invoices = Invoices::load("assets/Invoice.csv").unwrap();
+        let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
         assert_yaml_snapshot!(invoices.len(), @r###"
         ---
         7088

@@ -75,11 +75,6 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "(black|fat) straw",
-            &[Tag::Disposable, Tag::Plastic, Tag::Retail],
-            false,
-        ),
-        Group::new(
             "(dolphine|spice) container|\\b2oz|A500|897",
             &[Tag::Disposable, Tag::Plastic, Tag::Restaurant],
             false,
@@ -95,56 +90,58 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "hook|bracket", // todo annotate as cf.group rack
+            "\\brack", // todo annotate as cf.group rack
             &[Tag::Retail],
             true,
         ),
         Group::new("steel (spoon|fork|soup)", &[Tag::Restaurant], false),
-        // tiles
-        Group::new("tile", &[Tag::Construction], false),
-        // door
-        Group::new("\\bdoor|wpc", &[Tag::Construction], false),
-        // steel bar
-        Group::new("steel bar", &[Tag::Construction], false),
-        // cement
-        Group::new("cement", &[Tag::Construction], false),
-        // paint
-        Group::new("paint|spray", &[Tag::Construction], false),
-        Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
-        // makita
-        Group::new("makita", &[Tag::Construction], false),
-        // drink
-        Group::new("(milkshake|tea|frappe|coffee|smoothie) powder|long beach", &[Tag::Restaurant], true),
-        Group::new("(carob|cheese|root|onion|sumac|waffle|yogurt|premix|flower) powder", &[Tag::Restaurant], true),
 
+        // Construction
+        Group::new("plywood|blockboard|deformed|tile|\\bdoor|wpc|paint|spray|makita|cement", &[Tag::Construction], false),
+        // cement
+        Group::new("board", &[Tag::Construction], false),
+        Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
+
+        // drink
+        Group::new(
+            "(milkshake|tea|frappe|coffee|smoothie) powder|long beach",
+            &[Tag::Restaurant],
+            false,
+        ),
+        Group::new(
+            "(carob|cheese|root|onion|sumac|waffle|yogurt|premix|flower) powder",
+            &[Tag::Restaurant],
+            false,
+        ),
         // Household
         Group::new("soklin", &[Tag::Household], false),
         Group::new("wings", &[Tag::Household], false),
         Group::new("lux", &[Tag::Household], false),
-        Group::new("mop", &[Tag::Household], false),
-        Group::new("dustpan|broom|dustbin", &[Tag::Household], false),
+        Group::new(
+            "dustpan|broom|dustbin|\\bbrush|mop|bucket",
+            &[Tag::Household],
+            false,
+        ),
         Group::new("toothbrush", &[Tag::Household], false),
         Group::new("(iron|ironing) board", &[Tag::Household], false),
         Group::new("hanger|clip", &[Tag::Household], false),
         Group::new("tissue paper", &[Tag::Household], false),
-        Group::new("\\bbrush", &[Tag::Household], false),
         Group::new("chair", &[Tag::Household], false),
-        Group::new("bucket", &[Tag::Household], false),
         // sponge
-        Group::new("sponge [^f]", &[Tag::Household], true),
-        Group::new("mattress", &[Tag::Household], true),
-
+        Group::new("sponge [^f]", &[Tag::Household], false),
+        Group::new("mattress", &[Tag::Household], false),
         // luncheon
         Group::new("luncheon", &[Tag::Restaurant], false),
         // cake board
         Group::new("cake board", &[Tag::Restaurant], false),
-
     ];
 
     let groups = groups
         .iter_mut()
         .map(|group| {
-            let items = items.find_all(&group.regex).unwrap();
+            let mut items = items.find_all(&group.regex).unwrap();
+            // sort by lowercase
+            items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
             group.add_items(items);
             group
         })

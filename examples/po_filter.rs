@@ -1,7 +1,3 @@
-use colored::Colorize;
-use shop::Inventories;
-use shop::Invoices;
-use shop::Items;
 use shop::Loader;
 use shop::PurchaseOrderStatus;
 use shop::PurchaseOrders;
@@ -14,9 +10,6 @@ pub fn main() {
 
     let item_name = arg;
 
-    let mut items = Items::load_from_file("assets/Item.csv").unwrap();
-    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
-    let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
     let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
     println!();

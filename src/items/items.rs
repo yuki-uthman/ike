@@ -282,7 +282,7 @@ mod tests {
 
     #[test]
     fn len() {
-        let items = Items::load("assets/Item.csv").unwrap();
+        let items = Items::load_from_file("assets/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
         815

@@ -1,13 +1,12 @@
 use std::fs::File;
 
 use chrono::Utc;
-use colored::Colorize;
 use shop::Invoices;
 use shop::Items;
 use shop::Loader;
 
 pub fn main() {
-    let items = Items::load("assets/Item.csv").unwrap();
+    let items = Items::load_from_file("assets/Item.csv").unwrap();
 
     let items: Items = items
         .clone()
@@ -16,7 +15,7 @@ pub fn main() {
         .collect::<Vec<_>>()
         .into();
 
-    let invoices = Invoices::load("assets/Invoice.csv").unwrap();
+    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
 
     let dir = "examples/output";
     let name = "last_sold";

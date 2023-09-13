@@ -1,8 +1,4 @@
-use std::collections::HashSet;
-
 use colored::Colorize;
-use serde::{Deserialize, Serialize};
-use shop::Item;
 use shop::Items;
 use shop::Loader;
 

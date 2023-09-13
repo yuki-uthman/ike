@@ -1,3 +1,4 @@
+#![allow(unused)]
 use online::check;
 use crate::Item;
 

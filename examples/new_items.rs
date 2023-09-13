@@ -1,15 +1,13 @@
+#![allow(unused)]
 use std::ops::Deref;
 
 use chrono::NaiveDate;
-use colored::Colorize;
 use shop::Error;
 use shop::Invoices;
-use shop::InvoiceStatus;
 use shop::Item;
 use shop::Items;
 use shop::Loader;
 use shop::PurchaseOrder;
-use shop::PurchaseOrderStatus;
 use shop::PurchaseOrders;
 
 #[derive(Debug)]

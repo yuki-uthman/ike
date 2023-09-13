@@ -1,3 +1,4 @@
+#![allow(unused)]
 use colored::Colorize;
 use shop::{Error, Item, Items, Loader, Result};
 use std::{

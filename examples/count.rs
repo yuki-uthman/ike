@@ -6,7 +6,7 @@ use shop::Loader;
 use shop::PurchaseOrderStatus;
 use shop::PurchaseOrders;
 
-fn update_from_inventory(items: &mut Items, pattern: Option<String>) {
+fn update_from_inventory(items: &mut Items) {
     let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
 
     println!();
@@ -88,7 +88,7 @@ pub fn main() {
 
     items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
 
-    update_from_inventory(&mut items, pattern);
+    update_from_inventory(&mut items);
 
     // let items = items.find_all("sponge").unwrap();
     // items.export("examples/counted/Item.csv").unwrap();

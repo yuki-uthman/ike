@@ -8,6 +8,7 @@ pub enum Status {
     Overdue,
 }
 
+#[allow(unused)] // invoice_number never read but required to look up in zoho
 #[derive(Clone, Debug, Deserialize)]
 pub struct Invoice {
     #[serde(rename = "Invoice Number")]

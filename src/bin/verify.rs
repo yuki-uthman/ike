@@ -1,9 +1,3 @@
-use serde::de::DeserializeOwned;
-use std::error::Error;
-use std::fs::File;
-use std::io::BufRead;
-use std::io::BufReader;
-
 use colored::Colorize;
 use shop::Items;
 use shop::ItemTaxName;

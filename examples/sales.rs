@@ -3,7 +3,7 @@ use shop::Invoices;
 use shop::Loader;
 
 pub fn main() {
-    let invoices = Invoices::load("assets/Invoice.csv").unwrap();
+    let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
 
     let item_name = "Round Container R12 370Ml 50*10Pcs";
     let sales = invoices
