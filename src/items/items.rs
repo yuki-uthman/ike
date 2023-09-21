@@ -202,6 +202,12 @@ impl Items {
         self.0.push(item);
     }
 
+    pub fn remove_with_name(&mut self, name: &str) {
+        if let Some(index) = self.0.iter().position(|i| i.name() == name) {
+            self.0.remove(index);
+        }
+    }
+
     pub fn find_all(&self, name: &str) -> Result<Self> {
         let mut matches = Vec::new();
         let re = RegexBuilder::new(name)
