@@ -11,6 +11,7 @@ pub struct CustomField {
 pub struct Item {
     custom_fields: Vec<CustomField>,
     name: String,
+    sku: String,
 }
 
 
@@ -24,7 +25,8 @@ impl From<&FileItem> for Item {
 
         Self {
             name: item.name().to_string(),
-            custom_fields: vec![tags]
+            custom_fields: vec![tags],
+            sku: item.sku().to_string(),
         }
     }
 }

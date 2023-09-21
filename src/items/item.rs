@@ -202,6 +202,10 @@ impl Item {
         &self.description
     }
 
+    pub fn sku(&self) -> &str {
+        &self.sku
+    }
+
     pub fn price(&self) -> f32 {
         self.price
     }
@@ -237,6 +241,11 @@ impl Item {
 
     pub fn set_name(&mut self, name: &str) -> &mut Self {
         self.name = name.to_string();
+        self
+    }
+
+    pub fn set_sku(&mut self, sku: &str) -> &mut Self {
+        self.sku = sku.to_string();
         self
     }
 
