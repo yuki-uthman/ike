@@ -130,6 +130,14 @@ impl Items {
             .into()
     }
 
+    pub fn created_on(&self, date: NaiveDate) -> Self {
+        self.iter()
+            .filter(|item| item.created_date() == date)
+            .map(|item| item.clone())
+            .collect::<Vec<Item>>()
+            .into()
+    }
+
     pub fn contains<S>(&self, item: S) -> bool
     where
         S: AsRef<str>,
