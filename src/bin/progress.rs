@@ -30,7 +30,9 @@ fn update_from_inventory(items: &mut Items) {
             }
         };
 
-        let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
+        let invoices = Invoices::load_from_file("assets/Invoice.csv")
+            .unwrap()
+            .get_sold();
         let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").unwrap();
 
         let today = chrono::Local::now().date_naive();
