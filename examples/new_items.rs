@@ -63,7 +63,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for item in items.iter() {
         println!("{}: {}", item.created_date(), item.name());
     }
-    // let purchases = get_purchases(&items, &purchase_orders);
+
+    let filename = "examples/output/items.csv";
+
+    std::fs::File::create(filename).unwrap();
+
+    let mut writer = csv::Writer::from_path(filename).unwrap();
+    writer.write_record(&["name"]).unwrap();
+
+    for item in items.iter() {
+        if item.name().is_empty() {
+            continue;
+        }
+        writer
+            .write_record(&[item.name().to_string()])
+            .unwrap();
+    }
+    writer.flush().unwrap();
 
     Ok(())
 }
