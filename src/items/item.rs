@@ -69,6 +69,9 @@ pub struct Item {
     tags: Tags,
     #[serde(rename = "CF.group")]
     group: String,
+
+    #[serde(rename = "Is Combo Product", deserialize_with = "de_is_combo_product")]
+    is_combo_product: bool,
 }
 
 fn reset_quantity() -> isize {
@@ -147,6 +150,23 @@ where
     }
 }
 
+fn de_is_combo_product<'de, D>(deserializer: D) -> std::result::Result<bool, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let string = String::deserialize(deserializer)?;
+
+    if string.is_empty() {
+        return Ok(false);
+    }
+
+    if string == "true" {
+        Ok(true)
+    } else {
+        Ok(false)
+    }
+}
+
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
@@ -183,6 +203,7 @@ impl Item {
             tax_percentage: "".to_string(),
             tags: Tags::new(),
             group: "".to_string(),
+            is_combo_product: false,
         }
     }
 
@@ -291,5 +312,9 @@ impl Item {
 
     pub fn is_counted(&self) -> bool {
         self.tagged(Tag::Counted)
+    }
+
+    pub fn is_combo_product(&self) -> bool {
+        self.is_combo_product
     }
 }

@@ -212,6 +212,14 @@ impl Items {
             .into()
     }
 
+    pub fn get_non_combo_items(&self) -> Self {
+        self.iter()
+            .filter(|item| !item.is_combo_product())
+            .map(|item| item.clone())
+            .collect::<Vec<Item>>()
+            .into()
+    }
+
     pub fn add(&mut self, item: Item) {
         self.0.push(item);
     }
