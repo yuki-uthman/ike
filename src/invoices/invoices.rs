@@ -93,6 +93,7 @@ impl Invoices {
     pub fn count_quantity_sold(&self, item_id: usize) -> usize {
         self
             .filter_by_item_id(item_id)
+            .get_sold()
             .iter()
             .map(|invoice| invoice.quantity())
             .sum()
