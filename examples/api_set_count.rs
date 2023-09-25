@@ -1,4 +1,5 @@
 use chrono::NaiveDate;
+use colored::Colorize;
 use shop::api::Api;
 use shop::Error;
 use shop::Invoices;
@@ -9,46 +10,41 @@ use shop::Tag;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let should_update = std::env::args().nth(1);
+
     let invoices =
         Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
     let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv")
         .map_err(|source| Error::Load { source })?;
 
-    let mut items =
-        Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
+    let mut items = Items::load_from_file("assets/Item.csv")
+        .map_err(|source| Error::Load { source })?
+        .get_active_items()
+        .get_uncounted_items();
 
-    items.set_created_date(&purchase_orders, &invoices);
-
-    items = items.created_on(NaiveDate::from_ymd_opt(2023, 7, 30).unwrap());
-    items.remove_with_name("Sponge 1010 1x60 pcs");
-    items.remove_with_name("GN PAN 1/2");
-    items.remove_with_name("Spice Grinder2000W");
-    // items = items
-    //     .find_all("tray|bed sheet|measuring|pillow|gas|burner|manual|cotton|scale")
-    //     .unwrap();
-
-    let today = chrono::Local::now().date_naive();
-    let sold_items = invoices
-        .between(NaiveDate::from_ymd_opt(2023, 7, 30).unwrap(), today)
-        .unique_items();
+    items = items.find_all("toothpick").unwrap();
+    items.remove_with_name("5122 laundry basket");
+    items.remove_with_name("3 TIRE UTILITY SHELF  VC-0003");
+    items.remove_with_name("RD8A SHELF 900X350MM WITH CLIP ONLY");
 
     for item in items.iter() {
-        if sold_items.contains(item) {
-            println!("{} is sold", item.name());
-        }
+        println!("   {}", item.name().green().bold());
     }
 
     let mut api = Api::new("credentials".to_string())?;
 
-    if api.token_is_expired() {
-        api.refresh_access_token().await;
-    }
+    // if should_update is true, update the items in the database
+    if should_update.is_some() {
+        if api.token_is_expired() {
+            api.refresh_access_token().await;
+        }
 
-    for item in items.iter_mut() {
-        item.add_tag(Tag::Counted);
-        let result = api.update_item(item).await?;
-        println!("{:#?}", result);
+        for item in items.iter_mut() {
+            item.add_tag(Tag::Counted);
+            let result = api.update_item(item).await?;
+            println!("{:#?}", result);
+        }
     }
 
     Ok(())
