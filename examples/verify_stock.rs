@@ -1,10 +1,8 @@
 use colored::*;
-use shop::Error;
 use shop::Invoices;
 use shop::Item;
 use shop::Items;
 use shop::Loader;
-use shop::PurchaseOrder;
 use shop::PurchaseOrders;
 
 struct History {

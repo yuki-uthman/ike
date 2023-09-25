@@ -1,7 +1,5 @@
 use shop::Items;
 use shop::Loader;
-use shop::PurchaseOrderStatus;
-use shop::PurchaseOrders;
 
 fn main() {
     let mut items = Items::load_from_file("assets/Item.csv").unwrap().get_active_items();

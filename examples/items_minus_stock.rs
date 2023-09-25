@@ -1,5 +1,3 @@
-use std::fs::File;
-
 use colored::Colorize;
 use shop::Error;
 use shop::Items;

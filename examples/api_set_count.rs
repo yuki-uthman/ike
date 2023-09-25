@@ -1,4 +1,3 @@
-use chrono::NaiveDate;
 use colored::Colorize;
 use shop::api::Api;
 use shop::Error;
@@ -12,10 +11,10 @@ use shop::Tag;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let should_update = std::env::args().nth(1);
 
-    let invoices =
+    let _invoices =
         Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
-    let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv")
+    let _purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv")
         .map_err(|source| Error::Load { source })?;
 
     let mut items = Items::load_from_file("assets/Item.csv")
