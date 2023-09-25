@@ -244,6 +244,11 @@ impl Item {
         self
     }
 
+    pub fn replace_string(&mut self, from: &str, to: &str) -> &mut Self {
+        self.name = self.name.replace(from, to);
+        self
+    }
+
     pub fn set_sku(&mut self, sku: &str) -> &mut Self {
         self.sku = sku.to_string();
         self

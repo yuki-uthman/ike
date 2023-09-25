@@ -97,6 +97,12 @@ impl Items {
         Self(Vec::new())
     }
 
+    pub fn replace_string(&mut self, from: &str, to: &str) {
+        for item in self.iter_mut() {
+            item.replace_string(from, to);
+        }
+    }
+
     pub fn set_created_date(&mut self, purchase_orders: &PurchaseOrders, invoices: &Invoices) {
         for item in self.iter_mut() {
             let first_po = purchase_orders.first_bought_date(item);
@@ -315,7 +321,20 @@ mod tests {
         let items = Items::load_from_file("assets/Item.csv").unwrap();
         assert_yaml_snapshot!(items.len(), @r###"
         ---
-        815
+        891
         "###);
+    }
+
+    #[test]
+    fn replace_string() {
+        let item1 = Item::new("item1");
+        let item2 = Item::new("item2");
+
+        let mut items = Items::from(vec![item1, item2]);
+
+        items.replace_string("item", "product");
+
+        assert_eq!(items.get_by_index(0).unwrap().name(), "product1");
+        assert_eq!(items.get_by_index(1).unwrap().name(), "product2");
     }
 }
