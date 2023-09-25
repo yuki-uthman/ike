@@ -90,14 +90,20 @@ fn main() -> Result<()> {
             false,
         ),
         Group::new(
-            "\\brack", // todo annotate as cf.group rack
+            "\\brack|mart", // todo annotate as cf.group rack
             &[Tag::Retail],
-            true,
+            false,
         ),
+        // shelf
+        Group::new("basket|bucket", &[Tag::Restaurant], true),
+        Group::new("glass|lg", &[Tag::Restaurant], true),
+        Group::new("strip", &[Tag::Restaurant], false),
         Group::new("steel (spoon|fork|soup)", &[Tag::Restaurant], false),
-
+        // hook | bracket
+        Group::new("hook|bracket", &[Tag::Construction], false),
         // Construction
         Group::new("plywood|blockboard|deformed|tile|\\bdoor|wpc|paint|spray|makita|cement", &[Tag::Construction], false),
+        Group::new("plywood|blockboard|tile", &[Tag::Construction], false), // Tag::DIY?
         // cement
         Group::new("board", &[Tag::Construction], false),
         Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
