@@ -186,6 +186,14 @@ impl Items {
             .into()
     }
 
+    pub fn get_tagged_items(&self) -> Self {
+        self.iter()
+            .filter(|item| !item.tags().is_empty())
+            .map(|item| item.clone())
+            .collect::<Vec<Item>>()
+            .into()
+    }
+
     pub fn get_unique_items(&self) -> Self {
         let mut unique_items = Vec::new();
         for item in self.iter() {

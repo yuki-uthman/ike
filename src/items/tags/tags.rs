@@ -1,6 +1,6 @@
 use super::Tag;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashSet, str::FromStr, fmt::{Formatter, Display}};
+use std::{collections::HashSet, str::FromStr, fmt::{Formatter, Display}, ops::Deref};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tags(HashSet<Tag>);
@@ -16,6 +16,14 @@ impl Tags {
 
     pub fn contains(&self, tag: &Tag) -> bool {
         self.0.contains(tag)
+    }
+}
+
+impl Deref for Tags {
+    type Target = HashSet<Tag>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
