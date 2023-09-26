@@ -937,6 +937,7 @@ dependencies = [
  "colored",
  "csv",
  "insta",
+ "lazy_static",
  "ngrams",
  "online",
  "regex",
