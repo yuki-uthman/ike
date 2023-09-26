@@ -319,7 +319,7 @@ impl Items {
         Ok(())
     }
 
-    pub fn sort(&mut self) {
+    pub fn sort_by_name(&mut self) {
         self.0
             .sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
     }
