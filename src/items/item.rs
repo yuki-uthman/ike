@@ -1,3 +1,5 @@
+use crate::Invoice;
+
 use super::Tag;
 use super::Tags;
 use serde::{Deserialize, Serialize};
@@ -164,6 +166,35 @@ where
         Ok(true)
     } else {
         Ok(false)
+    }
+}
+
+impl From<Invoice> for Item {
+    fn from(invoice: Invoice) -> Self {
+        Self {
+            created_date: Date::from_ymd_opt(2022, 1, 1).unwrap(),
+            id: invoice.product_id(),
+            status: "Active".to_string(),
+            name: invoice.item_name(),
+            description: "".to_string(),
+            sku: "".to_string(),
+            usage_unit: "pcs".to_string(),
+            price: 0.0,
+            cost: 0.0,
+            quantity: 0,
+            stock_on_hand: 0,
+            product_type: "goods".to_string(),
+            item_type: "inventory".to_string(),
+            account: "Inventory Assets".to_string(),
+            purchase_account: "Cost of Goods Sold".to_string(),
+            inventory_account: "Inventory Assets".to_string(),
+            tax_name: TaxName::GST,
+            tax_type: "".to_string(),
+            tax_percentage: "".to_string(),
+            tags: Tags::new(),
+            group: "".to_string(),
+            is_combo_product: false,
+        }
     }
 }
 
