@@ -23,6 +23,11 @@ pub mod api;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
+use lazy_static::lazy_static;
+lazy_static! {
+    pub static ref ITEMS: Items = Items::load_from_file("assets/Item.csv").unwrap();
+}
+
 use thiserror;
 
 #[derive(thiserror::Error, Debug)]
