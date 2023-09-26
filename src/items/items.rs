@@ -124,8 +124,6 @@ impl Items {
 
             item.set_created_date(date);
         }
-
-
     }
 
     pub fn created_after(&self, date: NaiveDate) -> Self {
@@ -188,7 +186,7 @@ impl Items {
 
     pub fn get_tagged_items(&self) -> Self {
         self.iter()
-            .filter(|item| !item.tags().is_empty())
+            .filter(|item| item.is_tagged())
             .map(|item| item.clone())
             .collect::<Vec<Item>>()
             .into()
@@ -329,6 +327,8 @@ impl Items {
 
 #[cfg(test)]
 mod tests {
+    use crate::Tag;
+
     use super::*;
     use insta::assert_yaml_snapshot;
 
@@ -352,5 +352,17 @@ mod tests {
 
         assert_eq!(items.get_by_index(0).unwrap().name(), "product1");
         assert_eq!(items.get_by_index(1).unwrap().name(), "product2");
+    }
+
+    #[test]
+    fn get_tagged_items() {
+        let item1 = Item::new("item1");
+        let item2 = Item::new("item2");
+        let mut item3 = Item::new("item3");
+        item3.add_tag(Tag::Paper);
+
+        let items = Items::from(vec![item1, item2, item3]).get_tagged_items();
+
+        assert_eq!(items.len(), 1);
     }
 }

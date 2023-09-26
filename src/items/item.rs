@@ -298,9 +298,8 @@ impl Item {
         self.tags.contains(&tag)
     }
 
-    pub fn add_tag(&mut self, tag: Tag) -> &mut Self {
+    pub fn add_tag(&mut self, tag: Tag) {
         self.tags.insert(tag);
-        self
     }
 
     pub fn add_tags(&mut self, tags: &[Tag]) -> &mut Self {
@@ -316,5 +315,9 @@ impl Item {
 
     pub fn is_combo_product(&self) -> bool {
         self.is_combo_product
+    }
+
+    pub fn is_tagged(&self) -> bool {
+        !self.tags.is_empty()
     }
 }
