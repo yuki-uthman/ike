@@ -16,13 +16,14 @@ pub fn main() {
 
     // iterate from launch date to today
     for date in launch.iter_days() {
-        let orders_count = invoices.on(date).count_frequency(item_name);
-        println!(
-            "{}: {} {}",
-            date.to_string(),
-            orders_count.to_string().green().bold(),
-            "times ordered".green()
-        );
+
+        // let orders_count = invoices.on(date).count_frequency(item.id());
+        // println!(
+        //     "{}: {} {}",
+        //     date.to_string(),
+        //     orders_count.to_string().green().bold(),
+        //     "times ordered".green()
+        // );
 
         if date > today {
             break;

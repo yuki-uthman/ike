@@ -27,7 +27,7 @@ pub fn main() {
         // 2022-01-01
         let start = chrono::NaiveDate::from_ymd_opt(2022, 1, 1).unwrap();
         let end = chrono::Local::now().date_naive();
-        let count = invoices.between(start, end).count_frequency(&item.name());
+        let count = invoices.between(start, end).count_frequency(item.id());
 
         let frequency = Frequency {
             item_name: item.name().to_string(),

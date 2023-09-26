@@ -34,7 +34,7 @@ pub fn main() -> Result<()> {
     for item in items.iter() {
         let start = chrono::NaiveDate::from_ymd_opt(2022, 1, 1).unwrap();
         let today = chrono::Local::now().date_naive();
-        let count = invoices.between(start, today).count_frequency(&item.name());
+        let count = invoices.between(start, today).count_frequency(item.id());
 
         let frequency = Frequency {
             item_name: item.name().to_string(),

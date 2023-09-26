@@ -102,7 +102,7 @@ fn main() -> Result<()> {
         .map_err(|source| Error::Load { source })?
         .get_active_items();
 
-    items.sort();
+    // items.sort();
 
     let typos = find_typos_in_the_item_name(dict, &items);
 
