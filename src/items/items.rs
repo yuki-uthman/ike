@@ -286,15 +286,13 @@ impl Items {
         Ok(&self.0[index])
     }
 
-    pub fn get_by_id(&self, id: usize) -> Result<&Item> {
+    pub fn get_by_id(&self, id: usize) -> Option<&Item> {
         for item in &self.0 {
             if item.id() == id {
-                return Ok(item);
+                return Some(item);
             }
         }
-        Err(Error::ItemNotFound {
-            name: id.to_string(),
-        })
+        None
     }
 
     pub fn len(&self) -> usize {
