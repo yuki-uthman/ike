@@ -1,3 +1,4 @@
+use crate::ITEMS;
 use crate::Invoice;
 
 use super::Tag;
@@ -5,6 +6,7 @@ use super::Tags;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use chrono::NaiveDate as Date;
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize)]
 pub enum TaxName {
@@ -171,36 +173,14 @@ where
 
 impl From<Invoice> for Item {
     fn from(invoice: Invoice) -> Self {
-        Self {
-            created_date: Date::from_ymd_opt(2022, 1, 1).unwrap(),
-            id: invoice.product_id(),
-            status: "Active".to_string(),
-            name: invoice.item_name(),
-            description: "".to_string(),
-            sku: "".to_string(),
-            usage_unit: "pcs".to_string(),
-            price: 0.0,
-            cost: 0.0,
-            quantity: 0,
-            stock_on_hand: 0,
-            product_type: "goods".to_string(),
-            item_type: "inventory".to_string(),
-            account: "Inventory Assets".to_string(),
-            purchase_account: "Cost of Goods Sold".to_string(),
-            inventory_account: "Inventory Assets".to_string(),
-            tax_name: TaxName::GST,
-            tax_type: "".to_string(),
-            tax_percentage: "".to_string(),
-            tags: Tags::new(),
-            group: "".to_string(),
-            is_combo_product: false,
-        }
+        let item = ITEMS.get_by_id(invoice.product_id()).unwrap();
+        item.clone()
     }
 }
 
 impl PartialEq for Item {
     fn eq(&self, other: &Self) -> bool {
-        self.name == other.name
+        self.id() == other.id()
     }
 }
 
@@ -268,6 +248,10 @@ impl Item {
 
     pub fn quantity(&self) -> isize {
         self.quantity
+    }
+
+    pub fn profit(&self) -> f32 {
+        self.price - self.cost
     }
 
     pub fn stock_on_hand(&self) -> isize {
