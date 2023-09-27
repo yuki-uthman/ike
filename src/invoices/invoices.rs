@@ -107,6 +107,9 @@ impl Invoices {
         let mut items = Vec::new();
 
         for invoice in &self.invoices {
+            if invoice.product_id() == 0 {
+                continue;
+            }
             let item = Item::from(invoice.clone());
             if items.contains(&item) {
             } else {
