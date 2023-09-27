@@ -1,8 +1,9 @@
 use super::invoice::{Invoice, Status};
 use crate::items::{Item, Items};
 use crate::loader::Loader;
+use crate::ITEMS;
 use chrono::NaiveDate as Date;
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 
 #[derive(Debug)]
 pub struct Invoices {
@@ -31,6 +32,12 @@ impl Deref for Invoices {
 
     fn deref(&self) -> &Self::Target {
         &self.invoices
+    }
+}
+
+impl DerefMut for Invoices {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.invoices
     }
 }
 
@@ -178,6 +185,27 @@ impl Invoices {
             .filter(|invoice| invoice.status() == status)
             .collect()
     }
+
+    /// Some invoices contain items with no name.
+    /// This function removes those invoices.
+    /// Need to run this before injecting items.
+    pub fn filter_unnamed_invoice(&self) -> Self {
+        self.invoices
+            .clone()
+            .into_iter()
+            .filter(|invoice| invoice.product_id() != 0)
+            .collect()
+    }
+
+    pub fn inject_items(&mut self) {
+        for invoice in self.iter_mut() {
+            if let Some(item) = ITEMS.get_by_id(invoice.product_id()) {
+                invoice.set_item(item.clone());
+            } else {
+                panic!("Item not found: {:#?}", invoice.item_name());
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -192,5 +220,20 @@ mod tests {
         ---
         7719
         "###);
+    }
+
+    #[test]
+    fn test_inject_items() {
+        let mut invoices = Invoices::load_from_file("assets/Invoice.csv")
+            .unwrap()
+            .filter_unnamed_invoice();
+        invoices.inject_items();
+
+        let filtered_invoices = invoices.filter_by_item_id(3262759000000079001);
+        let item = filtered_invoices.first().unwrap().item_as_ref().unwrap();
+
+        let blockboard = ITEMS.get_by_id(3262759000000079001).unwrap();
+
+        assert_eq!(item, blockboard);
     }
 }

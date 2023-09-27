@@ -1,6 +1,8 @@
 use chrono::NaiveDate as Date;
 use serde::Deserialize;
 
+use crate::Item;
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum Status {
     Draft,
@@ -23,6 +25,9 @@ pub struct Invoice {
     quantity: usize,
     #[serde(rename = "Product ID", deserialize_with = "deserialize_product_id")]
     product_id: usize,
+
+    #[serde(skip_deserializing, skip_serializing)]
+    item: Option<Item>,
 }
 
 fn deserialize_date<'de, D>(deserializer: D) -> std::result::Result<Date, D::Error>
@@ -58,6 +63,10 @@ where
 }
 
 impl Invoice {
+    pub fn set_item(&mut self, item: Item) {
+        self.item = Some(item);
+    }
+
     pub fn date(&self) -> Date {
         self.date
     }
@@ -76,5 +85,9 @@ impl Invoice {
 
     pub fn product_id(&self) -> usize {
         self.product_id
+    }
+
+    pub fn item_as_ref(&self) -> Option<&Item> {
+        self.item.as_ref()
     }
 }
