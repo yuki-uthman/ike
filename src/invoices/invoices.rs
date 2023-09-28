@@ -198,7 +198,12 @@ impl Invoices {
     }
 
     pub fn inject_items(&mut self) {
-        for invoice in self.iter_mut() {
+        let invoices = self
+            .invoices
+            .iter_mut()
+            .filter(|invoice| invoice.product_id() != 0);
+
+        for invoice in invoices {
             if let Some(item) = ITEMS.get_by_id(invoice.product_id()) {
                 invoice.set_item(item.clone());
             } else {
