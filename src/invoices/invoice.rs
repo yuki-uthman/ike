@@ -116,4 +116,8 @@ impl Invoice {
     pub fn item_as_ref(&self) -> Option<&Item> {
         self.item.as_ref()
     }
+
+    pub fn profit(&self) -> f32 {
+        self.sub_total - self.item.as_ref().unwrap().cost() * self.quantity as f32
+    }
 }
