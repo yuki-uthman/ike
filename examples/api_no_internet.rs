@@ -8,4 +8,3 @@ async fn main() {
     // make sure it returns Error
     println!("{:#?}", api);
 }
-

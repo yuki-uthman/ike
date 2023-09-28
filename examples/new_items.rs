@@ -43,15 +43,14 @@ fn get_purchases(items: &Items, purchase_orders: &PurchaseOrders) -> Vec<Purchas
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
-    let invoices = Invoices::load_from_file("assets/Invoice.csv")
-        .map_err(|source| Error::Load { source })?;
+    let invoices =
+        Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
 
     let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv")
         .map_err(|source| Error::Load { source })?;
 
-    let mut items = Items::load_from_file("assets/Item.csv")
-        .map_err(|source| Error::Load { source })?;
+    let mut items =
+        Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
 
     items.set_created_date(&purchase_orders, &invoices);
 
@@ -75,12 +74,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         if item.name().is_empty() {
             continue;
         }
-        writer
-            .write_record(&[item.name().to_string()])
-            .unwrap();
+        writer.write_record(&[item.name().to_string()]).unwrap();
     }
     writer.flush().unwrap();
 
     Ok(())
 }
-

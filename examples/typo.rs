@@ -85,10 +85,9 @@ fn find_typos(dict: Dictionary, words_set: HashSet<String>) -> HashSet<String> {
     typos
 }
 
-
 fn main() -> Result<()> {
-    let aff_content = fs::read_to_string("assets/dictionary-en/index.aff")
-        .expect("failed to load config file");
+    let aff_content =
+        fs::read_to_string("assets/dictionary-en/index.aff").expect("failed to load config file");
     let dic_content = fs::read_to_string("assets/dictionary-en/index.dic")
         .expect("failed to load dictionary file");
 
@@ -123,11 +122,7 @@ fn main() -> Result<()> {
         false
     };
 
-    let mut items_with_typo: Items = items
-        .iter_mut()
-        .filter(is_typo)
-        .collect::<Vec<_>>()
-        .into();
+    let mut items_with_typo: Items = items.iter_mut().filter(is_typo).collect::<Vec<_>>().into();
 
     let highlight_typos = |item: &mut Item| {
         let highlighted_name = item
@@ -141,7 +136,8 @@ fn main() -> Result<()> {
                     word.to_string()
                 }
             })
-            .collect::<Vec<_>>().join(" ");
+            .collect::<Vec<_>>()
+            .join(" ");
 
         item.set_name(&highlighted_name);
     };

@@ -2,7 +2,7 @@ use colored::Colorize;
 use shop::Items;
 use shop::Loader;
 
-pub fn main() -> Result<(), Box<dyn std::error::Error>>{
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let items = Items::load_from_file("assets/Item.csv")?.get_active_items();
     let items_len = items.len();
 
@@ -18,9 +18,21 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>>{
     }
     println!();
 
-    println!("{}   : {}", "Total".bright_green().bold(), items_len.to_string().bright_green().bold());
-    println!("{}  : {}", "tagged".green().bold(), tagged_len.to_string().green().bold());
-    println!("{}: {}", "untagged".red().bold(), untagged_len.to_string().red().bold());
+    println!(
+        "{}   : {}",
+        "Total".bright_green().bold(),
+        items_len.to_string().bright_green().bold()
+    );
+    println!(
+        "{}  : {}",
+        "tagged".green().bold(),
+        tagged_len.to_string().green().bold()
+    );
+    println!(
+        "{}: {}",
+        "untagged".red().bold(),
+        untagged_len.to_string().red().bold()
+    );
     untagged.export("examples/output/untagged.csv")?;
     // let tagged_set = HashSet::from(tagged);
 

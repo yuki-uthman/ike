@@ -11,7 +11,6 @@ fn update_from_inventory(items: &mut Items) {
 
     println!();
     for item in items.iter_mut() {
-
         if item.is_counted() {
             item.set_quantity(item.stock_on_hand());
             println!(
@@ -53,9 +52,7 @@ fn update_from_inventory(items: &mut Items) {
             counted_quantity + restocked_quantity as isize - sold_quantity as isize;
 
         println!("   🔖 {}", inventory.name().green().bold());
-        let sold_on_counting_day = invoices
-            .on(counted_date)
-            .count_quantity_sold(item.id());
+        let sold_on_counting_day = invoices.on(counted_date).count_quantity_sold(item.id());
         if sold_on_counting_day > 0 {
             println!(
                 "      {}: {} {}",
@@ -66,9 +63,11 @@ fn update_from_inventory(items: &mut Items) {
         }
         println!(
             "      {} + {} - {} = {}\n",
-            counted_quantity.to_string().green(), restocked_quantity.to_string().green(), sold_quantity.to_string().red(), todays_quantity.to_string().green().bold()
+            counted_quantity.to_string().green(),
+            restocked_quantity.to_string().green(),
+            sold_quantity.to_string().red(),
+            todays_quantity.to_string().green().bold()
         );
-
 
         item.set_quantity(todays_quantity);
     }
@@ -82,7 +81,11 @@ pub fn main() {
     let pattern = std::env::args().nth(1);
     if let Some(pattern) = &pattern {
         println!();
-        println!(" 🔍 {} \"{}\"", "Searching for".yellow(), pattern.bright_yellow().bold());
+        println!(
+            " 🔍 {} \"{}\"",
+            "Searching for".yellow(),
+            pattern.bright_yellow().bold()
+        );
         items = items.find_all(pattern).unwrap();
     }
 

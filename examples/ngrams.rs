@@ -5,7 +5,8 @@ use shop::Loader;
 fn main() -> Result<(), Error> {
     use ngrams::Ngram;
 
-    let items = Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
+    let items =
+        Items::load_from_file("assets/Item.csv").map_err(|source| Error::Load { source })?;
 
     let mut map = std::collections::HashMap::new();
     let items = items

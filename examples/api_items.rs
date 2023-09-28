@@ -82,11 +82,9 @@ async fn main() {
     println!("{:#?}", &token);
 
     if token.is_expired() {
-
         println!("Token is not valid");
         return;
     }
-
 
     let items: SearchResponse = reqwest::Client::new()
         .get(&format!("{}/books/v3/items", token.api_domain()))

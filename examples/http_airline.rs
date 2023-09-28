@@ -14,8 +14,7 @@ struct Airline {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let resp = reqwest::get("https://api.instantwebtools.net/v1/airlines/1")
-        .await?;
+    let resp = reqwest::get("https://api.instantwebtools.net/v1/airlines/1").await?;
     let airline = resp.json::<Airline>().await?;
 
     println!("{:#?}", airline);

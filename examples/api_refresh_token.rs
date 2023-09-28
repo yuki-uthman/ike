@@ -1,6 +1,6 @@
+use colored::Colorize;
 use shop::api::Api;
 use shop::api::Error;
-use colored::Colorize;
 
 #[tokio::main]
 async fn main() {
@@ -30,7 +30,4 @@ async fn main() {
     api.refresh_access_token().await;
 
     println!("{:#?}", api.token());
-
 }
-
-

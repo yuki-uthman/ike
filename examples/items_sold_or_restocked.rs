@@ -5,8 +5,8 @@ use shop::Loader;
 use shop::PurchaseOrders;
 
 fn main() -> Result<(), Error> {
-
-    let invoices = Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
+    let invoices =
+        Invoices::load_from_file("assets/Invoice.csv").map_err(|source| Error::Load { source })?;
     let start = NaiveDate::from_ymd_opt(2023, 6, 20).unwrap();
     let today = chrono::Local::now().date_naive();
     let mut sold_items = invoices.between(start, today).unique_items();
@@ -14,8 +14,8 @@ fn main() -> Result<(), Error> {
     // sort by lowercase name
     sold_items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
 
-
-    let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv").map_err(|source| Error::Load { source })?;
+    let purchase_orders = PurchaseOrders::load_from_file("assets/Purchase_Order.csv")
+        .map_err(|source| Error::Load { source })?;
     let start = NaiveDate::from_ymd_opt(2023, 6, 20).unwrap();
     let today = chrono::Local::now().date_naive();
     let mut restocked_items = purchase_orders.between(start, today).unique_items();
@@ -36,12 +36,9 @@ fn main() -> Result<(), Error> {
         if item.name().is_empty() {
             continue;
         }
-        writer
-            .write_record(&[item.name().to_string()])
-            .unwrap();
+        writer.write_record(&[item.name().to_string()]).unwrap();
     }
     writer.flush().unwrap();
 
     Ok(())
 }
-

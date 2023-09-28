@@ -102,12 +102,15 @@ fn main() -> Result<()> {
         // hook | bracket
         Group::new("hook|bracket", &[Tag::Construction], false),
         // Construction
-        Group::new("plywood|blockboard|deformed|tile|\\bdoor|wpc|paint|spray|makita|cement", &[Tag::Construction], false),
+        Group::new(
+            "plywood|blockboard|deformed|tile|\\bdoor|wpc|paint|spray|makita|cement",
+            &[Tag::Construction],
+            false,
+        ),
         Group::new("plywood|blockboard|tile", &[Tag::Construction], false), // Tag::DIY?
         // cement
         Group::new("board", &[Tag::Construction], false),
         Group::new("tool box", &[Tag::Construction], false), // Tag::DIY?
-
         // drink
         Group::new(
             "(milkshake|tea|frappe|coffee|smoothie) powder|long beach",

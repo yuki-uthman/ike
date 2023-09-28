@@ -4,7 +4,6 @@ use shop::Loader;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-
     let mut api = Api::new("credentials".to_string())?;
 
     if api.token_is_expired() {

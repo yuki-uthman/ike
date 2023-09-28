@@ -16,7 +16,6 @@ pub fn main() {
 
     // iterate from launch date to today
     for date in launch.iter_days() {
-
         // let orders_count = invoices.on(date).count_frequency(item.id());
         // println!(
         //     "{}: {} {}",

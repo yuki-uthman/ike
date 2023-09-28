@@ -9,4 +9,3 @@ async fn main() {
     let token = client.get_initial_token(code).await.unwrap();
     token.write_to("credentials/token.json").unwrap();
 }
-
