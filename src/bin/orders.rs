@@ -25,7 +25,9 @@ pub fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
     let pattern = &args[1];
 
-    let items = Items::load_from_file("assets/Item.csv").unwrap().get_active_items();
+    let items = Items::load_from_file("assets/Item.csv")
+        .unwrap()
+        .get_active_items();
     let items = items.find_all(pattern).unwrap();
 
     let invoices = Invoices::load_from_file("assets/Invoice.csv")?.get_closed();

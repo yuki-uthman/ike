@@ -33,9 +33,11 @@ pub struct Invoice {
     #[serde(rename = "SubTotal")]
     sub_total: f32,
 
-    #[serde(rename = "Item Tax Amount", deserialize_with = "deserialize_tax_amount")]
+    #[serde(
+        rename = "Item Tax Amount",
+        deserialize_with = "deserialize_tax_amount"
+    )]
     item_tax_amount: f32,
-
 
     #[serde(skip_deserializing, skip_serializing)]
     item: Option<Item>,

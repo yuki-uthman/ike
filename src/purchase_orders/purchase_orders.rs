@@ -1,7 +1,7 @@
 use super::{purchase_order::Status, PurchaseOrder};
-use crate::Item;
 use crate::items::Items;
 use crate::loader::Loader;
+use crate::Item;
 use chrono::NaiveDate as Date;
 use std::ops::Deref;
 
@@ -68,8 +68,7 @@ impl PurchaseOrders {
         self.0.clone().into_iter().filter(predicate).collect()
     }
 
-    pub fn filter_by_item_id(&self, item_id: usize) -> PurchaseOrders
-    {
+    pub fn filter_by_item_id(&self, item_id: usize) -> PurchaseOrders {
         self.filter(move |po| po.product_id() == item_id)
     }
 
@@ -106,8 +105,7 @@ impl PurchaseOrders {
         items.into()
     }
 
-    pub fn first_bought_date(&self, item: &Item) -> Option<Date>
-    {
+    pub fn first_bought_date(&self, item: &Item) -> Option<Date> {
         self.filter(|po| po.product_id() == item.id())
             .into_iter()
             .map(|po| po.date())

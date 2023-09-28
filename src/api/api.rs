@@ -1,11 +1,11 @@
 #![allow(unused)]
-use online::check;
 use crate::Item;
+use online::check;
 
 use super::client::Client;
-use super::token::Token;
 use super::error::Error;
 use super::items::Item as ApiItem;
+use super::token::Token;
 
 #[derive(Debug)]
 pub struct Api {
@@ -22,9 +22,14 @@ impl Api {
         }
 
         let client = Client::from_file(&format!("{}/client.json", config)).unwrap();
-        let token = Token::from_file(&format!("{}/token.json", config)).map_err(|_| Error::NotInitialized )?;
+        let token = Token::from_file(&format!("{}/token.json", config))
+            .map_err(|_| Error::NotInitialized)?;
 
-        Ok(Self { config, client, token })
+        Ok(Self {
+            config,
+            client,
+            token,
+        })
     }
 
     pub fn token(&self) -> &Token {
@@ -36,7 +41,11 @@ impl Api {
     }
 
     pub async fn refresh_access_token(&mut self) {
-        let new_access_token = self.client.get_new_access_token(&self.token.refresh_token()).await.unwrap();
+        let new_access_token = self
+            .client
+            .get_new_access_token(&self.token.refresh_token())
+            .await
+            .unwrap();
         self.token.set_access_token(new_access_token);
         self.token.renew_time_stamp();
 
@@ -44,7 +53,7 @@ impl Api {
         self.token.write_to(&token_file).unwrap();
     }
 
-    pub async fn update_item(&self, item: &Item) -> Result<(), Error>{
+    pub async fn update_item(&self, item: &Item) -> Result<(), Error> {
         #[derive(serde::Deserialize, Debug)]
         struct Response {
             code: i32,
@@ -57,14 +66,15 @@ impl Api {
         let item = ApiItem::from(item);
 
         let result = reqwest::Client::new()
-            .put(format!("https://www.zohoapis.com/books/v3/items/{}", item_id))
+            .put(format!(
+                "https://www.zohoapis.com/books/v3/items/{}",
+                item_id
+            ))
             .header(
                 "Authorization",
                 &format!("Zoho-oauthtoken {}", self.token.access_token()),
             )
-            .query(&[
-                ("organization_id", &String::from("780294706")),
-            ])
+            .query(&[("organization_id", &String::from("780294706"))])
             .json(&item)
             .send()
             .await

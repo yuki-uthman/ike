@@ -21,7 +21,10 @@ impl From<String> for Status {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct PurchaseOrder {
-    #[serde(rename = "Purchase Order Status", deserialize_with = "deserialize_status")]
+    #[serde(
+        rename = "Purchase Order Status",
+        deserialize_with = "deserialize_status"
+    )]
     status: Status,
     #[serde(rename = "Purchase Order Date", deserialize_with = "deserialize_date")]
     date: Date,

@@ -14,10 +14,8 @@ pub struct Item {
     sku: String,
 }
 
-
 impl From<&FileItem> for Item {
     fn from(item: &FileItem) -> Self {
-
         let tags = CustomField {
             label: "tags".to_string(),
             value: item.tags().to_string(),

@@ -1,6 +1,6 @@
+use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::io::Result;
-use chrono::prelude::*;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Token {
@@ -38,7 +38,12 @@ impl From<serde_json::Value> for Token {
             refresh_token,
             api_domain,
             token_type,
-            expires_in: object.get("expires_in").unwrap().to_string().parse::<i64>().unwrap(),
+            expires_in: object
+                .get("expires_in")
+                .unwrap()
+                .to_string()
+                .parse::<i64>()
+                .unwrap(),
             time_stamp: Utc::now(),
         }
     }
@@ -65,7 +70,9 @@ impl Token {
 
     /// calculates how many seconds left before current token expires
     pub fn expires_in(&self) -> i64 {
-        let time_elapsed = Utc::now().signed_duration_since(self.time_stamp).num_seconds();
+        let time_elapsed = Utc::now()
+            .signed_duration_since(self.time_stamp)
+            .num_seconds();
         if time_elapsed < self.expires_in {
             self.expires_in - time_elapsed
         } else {
@@ -92,5 +99,4 @@ impl Token {
         serde_json::to_writer(file, self)?;
         Ok(())
     }
-
 }

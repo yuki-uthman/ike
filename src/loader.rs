@@ -48,11 +48,12 @@ pub trait Loader<Record: DeserializeOwned> {
         Self: Sized + From<Vec<Record>>,
         S: Into<String> + Clone,
     {
-        let mut reader =
-            csv::Reader::from_path(filename.clone().into()).map_err(|source| Error::FileNotFound {
+        let mut reader = csv::Reader::from_path(filename.clone().into()).map_err(|source| {
+            Error::FileNotFound {
                 source,
                 filename: filename.into(),
-            })?;
+            }
+        })?;
         let mut vec = Vec::new();
         for result in reader.deserialize() {
             let record: Record = result.map_err(|source| Error::DeserializeFailed { source })?;
@@ -81,9 +82,7 @@ pub trait Loader<Record: DeserializeOwned> {
                 .path();
 
             if file_count == 0 && path.file_name().unwrap() == ".DS_Store" {
-                return Err(Error::DirectoryEmpty {
-                    dir: dir.into(),
-                });
+                return Err(Error::DirectoryEmpty { dir: dir.into() });
             }
 
             if path.is_file() {

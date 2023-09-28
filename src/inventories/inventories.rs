@@ -39,8 +39,6 @@ impl Inventories {
             name: item_name.to_string(),
         })
     }
-
-
 }
 
 #[cfg(test)]

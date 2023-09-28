@@ -1,6 +1,11 @@
 use super::Tag;
 use serde::{Deserialize, Serialize};
-use std::{collections::HashSet, str::FromStr, fmt::{Formatter, Display}, ops::Deref};
+use std::{
+    collections::HashSet,
+    fmt::{Display, Formatter},
+    ops::Deref,
+    str::FromStr,
+};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tags(HashSet<Tag>);

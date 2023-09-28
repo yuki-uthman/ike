@@ -1,4 +1,3 @@
-
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Api not initialized")]
@@ -7,4 +6,3 @@ pub enum Error {
     #[error("No internet connection")]
     NoInternetConnection,
 }
-

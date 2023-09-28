@@ -34,6 +34,4 @@ struct ItemsResponse {
     page_context: PageContext,
 }
 
-pub struct Items {
-
-}
+pub struct Items {}

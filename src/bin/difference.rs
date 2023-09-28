@@ -23,7 +23,6 @@ pub fn main() -> Result<()> {
     }
     println!();
 
-
     let first_items = items.find_all(first_pattern)?;
     let second_items = items.find_all(second_pattern)?;
 
@@ -34,7 +33,6 @@ pub fn main() -> Result<()> {
         println!("     {}", item.name().green().bold());
     }
     println!();
-
 
     Ok(())
 }

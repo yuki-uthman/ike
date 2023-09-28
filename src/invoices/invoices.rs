@@ -107,8 +107,7 @@ impl Invoices {
     }
 
     pub fn count_quantity_sold(&self, item_id: usize) -> usize {
-        self
-            .filter_by_item_id(item_id)
+        self.filter_by_item_id(item_id)
             .get_sold()
             .iter()
             .map(|invoice| invoice.quantity())
@@ -157,8 +156,7 @@ impl Invoices {
         }
     }
 
-    pub fn first_sold_date(&self, item: &Item) -> Option<Date>
-    {
+    pub fn first_sold_date(&self, item: &Item) -> Option<Date> {
         let invoices = self
             .invoices
             .iter()

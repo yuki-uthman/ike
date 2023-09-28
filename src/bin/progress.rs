@@ -54,9 +54,7 @@ fn update_from_inventory(items: &mut Items) {
             counted_quantity + restocked_quantity as isize - sold_quantity as isize;
 
         println!("   🔖 {}", inventory.name().green().bold());
-        let sold_on_counting_day = invoices
-            .on(counted_date)
-            .count_quantity_sold(item.id());
+        let sold_on_counting_day = invoices.on(counted_date).count_quantity_sold(item.id());
         if sold_on_counting_day > 0 {
             println!(
                 "      {}: {} {}",

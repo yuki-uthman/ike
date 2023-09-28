@@ -1,5 +1,5 @@
-use serde::Deserialize;
 use super::Token;
+use serde::Deserialize;
 
 #[derive(serde::Deserialize, Debug, Clone, Default)]
 pub struct Client {
@@ -16,7 +16,6 @@ impl Client {
     }
 
     pub async fn get_initial_token(&self, code: &str) -> Result<Token, reqwest::Error> {
-
         let response = reqwest::Client::new()
             .post("https://accounts.zoho.com/oauth/v2/token")
             .form(&[
@@ -37,7 +36,10 @@ impl Client {
         Ok(Token::from(response))
     }
 
-    pub async fn get_new_access_token(&self, refresh_token: &str) -> Result<String, reqwest::Error> {
+    pub async fn get_new_access_token(
+        &self,
+        refresh_token: &str,
+    ) -> Result<String, reqwest::Error> {
         #[derive(Deserialize, Debug)]
         struct RefreshResponse {
             access_token: String,

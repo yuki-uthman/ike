@@ -2,12 +2,12 @@ mod loader;
 pub use loader::Loader;
 
 mod invoices;
-pub use invoices::{Invoice, Invoices};
 pub use invoices::Status as InvoiceStatus;
+pub use invoices::{Invoice, Invoices};
 
 mod items;
-pub use items::{Item, Items, Tags, Tag};
 pub use items::TaxName as ItemTaxName;
+pub use items::{Item, Items, Tag, Tags};
 
 mod inventories;
 pub use inventories::{Inventories, Inventory};
@@ -16,8 +16,8 @@ mod groups;
 pub use groups::{Group, Groups};
 
 mod purchase_orders;
-pub use purchase_orders::{PurchaseOrder, PurchaseOrders};
 pub use purchase_orders::Status as PurchaseOrderStatus;
+pub use purchase_orders::{PurchaseOrder, PurchaseOrders};
 
 pub mod api;
 

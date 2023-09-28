@@ -1,12 +1,11 @@
-use crate::ITEMS;
 use crate::Invoice;
+use crate::ITEMS;
 
 use super::Tag;
 use super::Tags;
+use chrono::NaiveDate as Date;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
-use chrono::NaiveDate as Date;
-
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize)]
 pub enum TaxName {
