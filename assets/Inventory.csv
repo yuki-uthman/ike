@@ -227,11 +227,11 @@ Quantity,Item Name,Date
 31,PLASTIC CANISTER RW0715 2 LITER,25/06/2023
 16,PLASTIC CANISTER RW1332 1.6LTR,25/06/2023
 10,PLASTIC CANISTER RW1333 2.5LTR,25/06/2023
--1,Cake Box White 10 inch 100Pcs,25/06/2023
--1,Cake Box White 12inch 100Pcs,25/06/2023
--1,Cake Box White 1X12X12X12"X50Pcs,25/06/2023
--1,Cake Box White 6inch 100pcs,25/06/2023
--1,Cake Box White 8inch 100Pcs,25/06/2023
+0,Cake Box White 10 inch 100Pcs,22/06/2023
+410,Cake Box White 12inch 100Pcs,22/06/2023
+-1,Cake Box White 1X12X12X12"X50Pcs,22/06/2023
+250,Cake Box White 6inch 100pcs,22/06/2023
+200,Cake Box White 8inch 100Pcs,22/06/2023
 -1,Kraft Lunch Box 1*50Pcs,25/06/2023
 -1,Paper Box Sandwich Wedge Window Brown,25/06/2023
 -1,Paper Box Sweet 15X10X4CM,25/06/2023
@@ -242,7 +242,10 @@ Quantity,Item Name,Date
 -1,Paper Lunch Box 6X4X2" 1*50Pcs,25/06/2023
 -1,pizza box 12 inch,25/06/2023
 -1,PIZZA BOX 22X22CM,25/06/2023
--1,Cake board round 10",25/06/2023
--1,Cake board round 12",25/06/2023
--1,Cake board round 6",25/06/2023
--1,Cake board round 8",25/06/2023
+6,Cake board round 10",22/06/2023
+100,Cake board round 12",22/06/2023
+50,Cake board round 6",22/06/2023
+100,Cake board round 8",22/06/2023
+48,Brown food wrap paper 1x100pcs,22/06/2023
+0,Food colour egg yellow 1x12btlx20g,22/06/2023
+160,Food wrap paper plain 12x12 inch  1x100pcsx20pkt,22/06/2023
