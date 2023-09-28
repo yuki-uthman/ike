@@ -81,6 +81,15 @@ impl Invoices {
         self.invoices.len()
     }
 
+    pub fn get_by_invoice_number(&self, invoice_number: &str) -> Option<&Invoice> {
+        self.invoices.iter().find(|invoice| {
+            invoice
+                .invoice_number()
+                .to_lowercase()
+                .contains(&invoice_number.to_lowercase())
+        })
+    }
+
     pub fn get_closed(&self) -> Self {
         self.invoices
             .clone()

@@ -21,10 +21,21 @@ pub struct Invoice {
     status: Status,
     #[serde(rename = "Item Name")]
     item_name: String,
+    #[serde(rename = "Item Price")]
+    item_price: f32,
     #[serde(rename = "Quantity")]
     quantity: usize,
     #[serde(rename = "Product ID", deserialize_with = "deserialize_product_id")]
     product_id: usize,
+
+    #[serde(rename = "Total")]
+    total: f32,
+    #[serde(rename = "SubTotal")]
+    sub_total: f32,
+
+    #[serde(rename = "Item Tax Amount", deserialize_with = "deserialize_tax_amount")]
+    item_tax_amount: f32,
+
 
     #[serde(skip_deserializing, skip_serializing)]
     item: Option<Item>,
@@ -62,9 +73,24 @@ where
     }
 }
 
+fn deserialize_tax_amount<'de, D>(deserializer: D) -> std::result::Result<f32, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let tax_amount = String::deserialize(deserializer).unwrap();
+    match tax_amount.parse::<f32>() {
+        Ok(tax_amount) => Ok(tax_amount),
+        Err(_) => Ok(0.0),
+    }
+}
+
 impl Invoice {
     pub fn set_item(&mut self, item: Item) {
         self.item = Some(item);
+    }
+
+    pub fn invoice_number(&self) -> String {
+        self.invoice_number.clone()
     }
 
     pub fn date(&self) -> Date {
