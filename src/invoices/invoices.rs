@@ -118,6 +118,21 @@ impl Invoices {
         self.filter_by_item_id(item_id).len()
     }
 
+    pub fn count_profit_by_item(&self, item_id: usize) -> f32 {
+        self.filter_by_item_id(item_id)
+            .get_sold()
+            .iter()
+            .map(|invoice| invoice.profit())
+            .sum()
+    }
+
+    pub fn count_profit(&self) -> f32 {
+        self.get_sold()
+            .iter()
+            .map(|invoice| invoice.profit())
+            .sum()
+    }
+
     pub fn unique_items(&self) -> Items {
         let mut items = Vec::new();
 
