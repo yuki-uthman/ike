@@ -53,7 +53,7 @@ mod tests {
         let inventories = Inventories::load_from_file("assets/Inventory.csv").unwrap();
         assert_yaml_snapshot!(inventories.len(), @r###"
         ---
-        247
+        250
         "###);
     }
 }
