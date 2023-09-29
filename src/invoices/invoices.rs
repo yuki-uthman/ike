@@ -127,10 +127,7 @@ impl Invoices {
     }
 
     pub fn count_profit(&self) -> f32 {
-        self.get_sold()
-            .iter()
-            .map(|invoice| invoice.profit())
-            .sum()
+        self.get_sold().iter().map(|invoice| invoice.profit()).sum()
     }
 
     pub fn unique_items(&self) -> Items {
@@ -217,6 +214,19 @@ impl Invoices {
             .into_iter()
             .filter(|invoice| invoice.product_id() != 0)
             .collect()
+    }
+
+    pub fn remove_by_item_id(&mut self, item_id: usize) {
+        self.invoices
+            .retain(|invoice| invoice.product_id() != item_id);
+    }
+
+    pub fn remove_by_item_name<S>(&mut self, item_name: S)
+    where
+        S: Into<String> + Clone,
+    {
+        self.invoices
+            .retain(|invoice| invoice.item_name() != item_name.clone().into());
     }
 
     pub fn inject_items(&mut self) {
