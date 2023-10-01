@@ -253,8 +253,11 @@ impl Items {
                 keyword: name.to_string(),
             });
         }
-        matches.sort_by(|a, b| a.name().cmp(&b.name()));
-        Ok(matches.into())
+
+        let mut items: Items = matches.into();
+        items.sort_by_name();
+
+        Ok(items)
     }
 
     pub fn get(&self, item_name: &str) -> Result<&Item> {
