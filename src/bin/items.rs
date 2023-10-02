@@ -7,7 +7,7 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 pub fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
 
-    let mut items = Items::load_from_file("assets/Item.csv")?.get_active_items();
+    let items = Items::load_from_file("assets/Item.csv")?.get_active_items();
 
     println!();
     for pattern in args.iter().skip(1) {

@@ -93,7 +93,7 @@ pub fn main() {
         items = items.find_all(pattern).unwrap();
     }
 
-    items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+    items.sort_by_name();
 
     update_from_inventory(&mut items);
 }

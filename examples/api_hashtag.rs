@@ -1,10 +1,13 @@
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+#![allow(dead_code)]
+
 use colored::Colorize;
 use shop::api::Api;
 use shop::Error;
 use shop::Invoices;
 use shop::Items;
 use shop::Loader;
-use shop::PurchaseOrders;
 use shop::Tag;
 
 #[tokio::main]

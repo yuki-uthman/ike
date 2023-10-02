@@ -1,10 +1,12 @@
+#![allow(unused_variables)]
+#![allow(dead_code)]
+
 use std::collections::HashSet;
 use std::ops::Add;
 
 use colored::Colorize;
 use serde::{Deserialize, Serialize};
 use shop::Invoices;
-use shop::Item;
 use shop::Loader;
 
 #[derive(Debug, Clone, PartialEq, Eq, Ord, Deserialize, Serialize)]
@@ -83,15 +85,15 @@ pub fn main() {
     let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
 
     let today = chrono::Local::now().date_naive();
-    let september = chrono::NaiveDate::from_ymd(2023, 9, 1);
-    let august = chrono::NaiveDate::from_ymd(2023, 8, 1);
-    let july = chrono::NaiveDate::from_ymd(2023, 7, 1);
-    let june = chrono::NaiveDate::from_ymd(2023, 6, 1);
-    let may = chrono::NaiveDate::from_ymd(2023, 5, 1);
-    let april = chrono::NaiveDate::from_ymd(2023, 4, 1);
-    let march = chrono::NaiveDate::from_ymd(2023, 3, 1);
-    let february = chrono::NaiveDate::from_ymd(2023, 2, 1);
-    let january = chrono::NaiveDate::from_ymd(2023, 1, 1);
+    let september = chrono::NaiveDate::from_ymd_opt(2023, 9, 1).unwrap();
+    let august = chrono::NaiveDate::from_ymd_opt(2023, 8, 1).unwrap();
+    let july = chrono::NaiveDate::from_ymd_opt(2023, 7, 1).unwrap();
+    let june = chrono::NaiveDate::from_ymd_opt(2023, 6, 1).unwrap();
+    let may = chrono::NaiveDate::from_ymd_opt(2023, 5, 1).unwrap();
+    let april = chrono::NaiveDate::from_ymd_opt(2023, 4, 1).unwrap();
+    let march = chrono::NaiveDate::from_ymd_opt(2023, 3, 1).unwrap();
+    let february = chrono::NaiveDate::from_ymd_opt(2023, 2, 1).unwrap();
+    let january = chrono::NaiveDate::from_ymd_opt(2023, 1, 1).unwrap();
 
     let mut items = invoices.between(january, today).get_sold().unique_items();
 

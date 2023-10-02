@@ -6,7 +6,7 @@ use shop::Loader;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-#[derive(Debug, Clone, PartialEq, Eq, Ord, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 struct Frequency {
     item_name: String,
     count: usize,
@@ -18,6 +18,15 @@ impl PartialOrd for Frequency {
             return self.item_name.partial_cmp(&other.item_name);
         }
         self.count.partial_cmp(&other.count)
+    }
+}
+
+impl Ord for Frequency {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        if self.count == other.count {
+            return self.item_name.cmp(&other.item_name);
+        }
+        self.count.cmp(&other.count)
     }
 }
 

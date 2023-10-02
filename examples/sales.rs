@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 use colored::Colorize;
 use shop::Invoices;
 use shop::Loader;

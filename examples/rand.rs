@@ -1,6 +1,9 @@
 // use rand::prelude::*;
 // use rand_chacha::ChaCha8Rng;
 
+#![allow(unused_variables)]
+#![allow(dead_code)]
+
 use shop::Items;
 use shop::Loader;
 

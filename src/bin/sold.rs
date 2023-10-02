@@ -43,7 +43,7 @@ pub fn main() {
 
             println!(
                 "     {}: {} {}",
-                date.to_string(),
+                date,
                 orders_count.to_string().green().bold(),
                 "pcs sold".green()
             );

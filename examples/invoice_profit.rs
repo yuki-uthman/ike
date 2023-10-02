@@ -1,3 +1,7 @@
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+#![allow(dead_code)]
+
 use std::fs::File;
 
 use chrono::NaiveDate as Date;
@@ -23,8 +27,8 @@ pub fn main() {
     invoices.remove_by_item_name("TEAK PVC GLOSSY 0.5MM(960) X 22MM");
 
     // September
-    let start = chrono::NaiveDate::from_ymd_opt(2023, 9, 1);
-    let end = chrono::NaiveDate::from_ymd_opt(2023, 9, 28);
+    let start = chrono::NaiveDate::from_ymd_opt(2023, 9, 1).unwrap();
+    let end = chrono::NaiveDate::from_ymd_opt(2023, 9, 28).unwrap();
 
     let mut profits = Vec::new();
     for date in start.iter_days() {
