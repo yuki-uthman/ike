@@ -143,7 +143,7 @@ impl Invoices {
                 items.push(item);
             }
         }
-        if items.len() == 0 {
+        if items.is_empty() {
             panic!("No products found");
         }
         items.into()
@@ -161,11 +161,7 @@ impl Invoices {
             })
             .collect::<Vec<_>>();
 
-        if let Some(item) = invoices.last() {
-            Some(item.date().clone())
-        } else {
-            None
-        }
+        invoices.last().map(|invoice| invoice.date())
     }
 
     pub fn first_sold_date(&self, item: &Item) -> Option<Date> {
@@ -175,11 +171,7 @@ impl Invoices {
             .filter(|invoice| invoice.product_id() == item.id())
             .collect::<Vec<_>>();
 
-        if let Some(invoice) = invoices.first() {
-            Some(invoice.date().clone())
-        } else {
-            None
-        }
+        invoices.first().map(|invoice| invoice.date())
     }
 
     pub fn filter<F>(&self, f: F) -> Self

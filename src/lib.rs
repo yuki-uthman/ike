@@ -1,3 +1,14 @@
+// #![allow(clippy::correctness)]
+// #![allow(clippy::suspicious)]
+// #![allow(clippy::complexity)]
+// #![allow(clippy::perf)]
+// #![allow(clippy::style)]
+// #![allow(clippy::pedantic)]
+// #![allow(clippy::restriction)]
+
+#![allow(clippy::module_inception)]
+#![allow(clippy::len_without_is_empty)]
+
 mod loader;
 pub use loader::Loader;
 
@@ -28,7 +39,6 @@ lazy_static! {
     pub static ref ITEMS: Items = Items::load_from_file("assets/Item.csv").unwrap();
 }
 
-use thiserror;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {

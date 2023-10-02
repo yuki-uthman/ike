@@ -5,10 +5,11 @@ fn main() {
     let mut items = Items::load_from_file("assets/Item.csv")
         .unwrap()
         .get_active_items()
-        .get_counted_items();
+        .get_counted_items()
+        .get_non_combo_items();
 
     // lowercase
-    items.sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+    items.sort_by_name();
 
     // calculate the value of the items price x quantity
     let mut total_value = 0.0;
@@ -32,7 +33,7 @@ fn main() {
 
     let mut writer = csv::Writer::from_path(filename).unwrap();
     writer
-        .write_record(&["Name", "Cost", "Quantity", "Total Value"])
+        .write_record(["Name", "Cost", "Quantity", "Total Value"])
         .unwrap();
 
     for item in items.iter() {

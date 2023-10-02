@@ -17,7 +17,7 @@ pub struct Api {
 
 impl Api {
     pub fn new(config: String) -> Result<Self, Error> {
-        if !check(Some(5)).is_ok() {
+        if check(Some(5)).is_err() {
             return Err(Error::NoInternetConnection);
         }
 
@@ -43,7 +43,7 @@ impl Api {
     pub async fn refresh_access_token(&mut self) {
         let new_access_token = self
             .client
-            .get_new_access_token(&self.token.refresh_token())
+            .get_new_access_token(self.token.refresh_token())
             .await
             .unwrap();
         self.token.set_access_token(new_access_token);

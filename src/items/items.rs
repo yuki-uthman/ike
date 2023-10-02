@@ -22,7 +22,7 @@ impl From<Vec<Item>> for Items {
 
 impl From<Vec<&Item>> for Items {
     fn from(vec: Vec<&Item>) -> Items {
-        Items(vec.into_iter().map(|item| item.clone()).collect())
+        Items(vec.into_iter().cloned().collect())
     }
 }
 
@@ -49,6 +49,12 @@ impl From<Items> for HashSet<String> {
             .map(|item| item.name().to_string())
             .collect::<HashSet<String>>();
         set
+    }
+}
+
+impl Default for Items {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -129,7 +135,7 @@ impl Items {
     pub fn created_after(&self, date: NaiveDate) -> Self {
         self.iter()
             .filter(|item| item.created_date() > date)
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -137,7 +143,7 @@ impl Items {
     pub fn created_on(&self, date: NaiveDate) -> Self {
         self.iter()
             .filter(|item| item.created_date() == date)
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -155,7 +161,7 @@ impl Items {
     {
         self.iter()
             .filter(|i| f(i))
-            .map(|i| i.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -163,7 +169,7 @@ impl Items {
     pub fn get_active_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_active())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -171,7 +177,7 @@ impl Items {
     pub fn get_inactive_items(&self) -> Self {
         self.iter()
             .filter(|item| !item.is_active())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -179,7 +185,7 @@ impl Items {
     pub fn get_untagged_items(&self) -> Self {
         self.iter()
             .filter(|item| item.group().is_empty())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -187,7 +193,7 @@ impl Items {
     pub fn get_tagged_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_tagged())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -205,7 +211,7 @@ impl Items {
     pub fn get_counted_items(&self) -> Self {
         self.iter()
             .filter(|item| item.is_counted())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -213,7 +219,7 @@ impl Items {
     pub fn get_uncounted_items(&self) -> Self {
         self.iter()
             .filter(|item| !item.is_counted())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -221,7 +227,7 @@ impl Items {
     pub fn get_non_combo_items(&self) -> Self {
         self.iter()
             .filter(|item| !item.is_combo_product())
-            .map(|item| item.clone())
+            .cloned()
             .collect::<Vec<Item>>()
             .into()
     }
@@ -244,7 +250,7 @@ impl Items {
             .unwrap();
 
         for item in &self.0 {
-            if re.is_match(&item.name()) || re.is_match(&item.group()) {
+            if re.is_match(item.name()) || re.is_match(item.group()) {
                 matches.push(item.clone());
             }
         }
@@ -290,12 +296,7 @@ impl Items {
     }
 
     pub fn get_by_id(&self, id: usize) -> Option<&Item> {
-        for item in &self.0 {
-            if item.id() == id {
-                return Some(item);
-            }
-        }
-        None
+        self.0.iter().find(|item| item.id() == id)
     }
 
     pub fn len(&self) -> usize {
@@ -333,7 +334,7 @@ impl Items {
 
     pub fn sort_by_name(&mut self) {
         self.0
-            .sort_by(|a, b| a.name().to_lowercase().cmp(&b.name().to_lowercase()));
+            .sort_by_key(|item| item.name().to_lowercase().to_string());
     }
 }
 

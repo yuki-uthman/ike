@@ -93,7 +93,7 @@ where
 {
     let string = String::deserialize(deserializer)?;
     let s = string.trim_start_matches("MVR ");
-    Ok(s.parse().map_err(serde::de::Error::custom)?)
+    s.parse().map_err(serde::de::Error::custom)
 }
 
 fn de_tags<'de, D>(deserializer: D) -> std::result::Result<Tags, D::Error>

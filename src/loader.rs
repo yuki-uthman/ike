@@ -1,6 +1,5 @@
 use serde::de::DeserializeOwned;
 use std::fs::read_dir;
-use thiserror;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -74,9 +73,7 @@ pub trait Loader<Record: DeserializeOwned> {
             dir: dir.clone().into(),
         })?;
 
-        let mut file_count = 0;
-
-        for entry in dir_iter {
+        for (file_count, entry) in dir_iter.enumerate() {
             let path = entry
                 .map_err(|source| Error::DirectoryIteration { source })?
                 .path();
@@ -97,7 +94,6 @@ pub trait Loader<Record: DeserializeOwned> {
                     vec.push(record);
                 }
             }
-            file_count += 1;
         }
         Ok(vec.into())
     }
