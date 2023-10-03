@@ -1,12 +1,12 @@
 use shop::Items;
 use shop::Loader;
 
-fn main() {
-    let mut items = Items::load_from_file("assets/Item.csv")
-        .unwrap()
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut items = Items::load_from_file("assets/Item.csv")?
         .get_active_items()
         .get_counted_items()
-        .get_non_combo_items();
+        .get_non_combo_items()
+        .get_has_stock_items();
 
     // lowercase
     items.sort_by_name();
@@ -17,9 +17,9 @@ fn main() {
         let value = item.cost() * item.stock_on_hand() as f32;
         total_value += value;
         println!(
-            "{:>8}: {} x {} = {}",
-            value,
-            item.price(),
+            "{:>10}: MVR{:>5} x {:>5} {}",
+            value as u32,
+            item.price() as u32,
             item.stock_on_hand(),
             item.name()
         );
@@ -42,7 +42,7 @@ fn main() {
         }
         let value = item.cost() * item.stock_on_hand() as f32;
         writer
-            .write_record(&[
+            .write_record([
                 item.name().to_string(),
                 item.price().to_string(),
                 item.stock_on_hand().to_string(),
@@ -51,4 +51,6 @@ fn main() {
             .unwrap();
     }
     writer.flush().unwrap();
+
+    Ok(())
 }
