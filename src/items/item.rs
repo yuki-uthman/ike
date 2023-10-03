@@ -334,4 +334,8 @@ impl Item {
     pub fn is_tagged(&self) -> bool {
         !self.tags.is_empty()
     }
+
+    pub fn has_stock(&self) -> bool {
+        self.stock_on_hand > 0
+    }
 }

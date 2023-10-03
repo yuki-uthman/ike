@@ -232,6 +232,14 @@ impl Items {
             .into()
     }
 
+    pub fn get_has_stock_items(&self) -> Self {
+        self.iter()
+            .filter(|item| item.has_stock())
+            .cloned()
+            .collect::<Vec<Item>>()
+            .into()
+    }
+
     pub fn add(&mut self, item: Item) {
         self.0.push(item);
     }
