@@ -20,7 +20,6 @@ pub fn main() {
     let items = Items::load_from_file("assets/Item.csv")
         .unwrap()
         .get_active_items()
-        .get_uncounted_items()
         .find_all(&item_pattern)
         .unwrap();
 
