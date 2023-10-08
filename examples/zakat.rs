@@ -19,7 +19,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!(
             "{:>10}: MVR{:>5} x {:>5} {}",
             value as u32,
-            item.price() as u32,
+            item.cost() as u32,
             item.stock_on_hand(),
             item.name()
         );
@@ -36,20 +36,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .write_record(["Name", "Cost", "Quantity", "Total Value"])
         .unwrap();
 
+    let mut sum = 0.0;
     for item in items.iter() {
         if item.name().is_empty() {
             continue;
         }
         let value = item.cost() * item.stock_on_hand() as f32;
+        sum += value;
+
         writer
             .write_record([
                 item.name().to_string(),
-                item.price().to_string(),
+                item.cost().to_string(),
                 item.stock_on_hand().to_string(),
                 value.to_string(),
             ])
             .unwrap();
     }
+
+    writer
+        .write_record(["", "", "Total", &sum.to_string()])
+        .unwrap();
+
     writer.flush().unwrap();
 
     Ok(())
