@@ -247,7 +247,7 @@ mod tests {
         let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
         assert_yaml_snapshot!(invoices.len(), @r###"
         ---
-        7915
+        8120
         "###);
     }
 
