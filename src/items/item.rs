@@ -70,7 +70,7 @@ pub struct Item {
         serialize_with = "se_tags"
     )]
     tags: Tags,
-    #[serde(rename = "CF.group")]
+    #[serde(skip)]
     group: String,
 
     #[serde(rename = "Is Combo Product", deserialize_with = "de_is_combo_product")]
