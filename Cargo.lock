@@ -53,6 +53,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "arrayvec"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96d30a06541fbafbc7f82ed10c06164cfbd2c401138f6addd8404629c4b16711"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -660,6 +666,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad9273e27d7914b3d11aeac20a91c0da7ef1e89edc4e3825021ebb8ac3b83bf2"
 
 [[package]]
+name = "num-format"
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a652d9771a63711fd3c3deb670acfbe5c30a4072e664d7a3bf5a9e1056ac72c3"
+dependencies = [
+ "arrayvec",
+ "itoa",
+]
+
+[[package]]
 name = "num-traits"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -999,6 +1015,7 @@ dependencies = [
  "insta",
  "lazy_static",
  "ngrams",
+ "num-format",
  "online",
  "regex",
  "reqwest",
