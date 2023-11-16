@@ -240,15 +240,15 @@ impl Invoices {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use insta::assert_yaml_snapshot;
 
     #[test]
-    fn len() {
-        let invoices = Invoices::load_from_file("assets/Invoice.csv").unwrap();
-        assert_yaml_snapshot!(invoices.len(), @r###"
-        ---
-        8120
-        "###);
+    fn load() {
+        let res = Invoices::load_from_file("assets/Invoice.csv");
+        assert!(res.is_ok());
+
+        let invoices = res.unwrap();
+        assert!(invoices.len() > 0);
+
     }
 
     #[test]

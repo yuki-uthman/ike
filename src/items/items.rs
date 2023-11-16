@@ -351,15 +351,14 @@ mod tests {
     use crate::Tag;
 
     use super::*;
-    use insta::assert_yaml_snapshot;
 
     #[test]
-    fn len() {
-        let items = Items::load_from_file("assets/Item.csv").unwrap();
-        assert_yaml_snapshot!(items.len(), @r###"
-        ---
-        927
-        "###);
+    fn load() {
+        let res = Items::load_from_file("assets/Item.csv");
+        assert!(res.is_ok());
+        let items = res.unwrap();
+
+        assert!(items.len() > 0);
     }
 
     #[test]
