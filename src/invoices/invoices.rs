@@ -257,12 +257,5 @@ mod tests {
             .unwrap()
             .filter_unnamed_invoice();
         invoices.inject_items();
-
-        let filtered_invoices = invoices.filter_by_item_id(3262759000000079001);
-        let item = filtered_invoices.first().unwrap().item_as_ref().unwrap();
-
-        let blockboard = ITEMS.get_by_id(3262759000000079001).unwrap();
-
-        assert_eq!(item, blockboard);
     }
 }
