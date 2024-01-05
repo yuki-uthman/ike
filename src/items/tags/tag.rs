@@ -20,7 +20,10 @@ pub enum Tag {
     FoodPowder,
     Cutlery,
     Counted,
-    Thinadhoo
+    Thinadhoo,
+    ChinaRack,
+    ChinaBagasse,
+    Haru
 }
 
 impl FromStr for Tag {
@@ -46,6 +49,9 @@ impl FromStr for Tag {
             "#cutlery" => Ok(Tag::Cutlery),
             "#counted" => Ok(Tag::Counted),
             "#thinadhoo" => Ok(Tag::Thinadhoo),
+            "#china-rack" => Ok(Tag::ChinaRack),
+            "#china-bagasse" => Ok(Tag::ChinaBagasse),
+            "#haru" => Ok(Tag::Haru),
             _ => Err(format!("{} is not a valid tag", s)),
         }
     }
@@ -72,6 +78,9 @@ impl Display for Tag {
             Tag::Cutlery => "#cutlery",
             Tag::Counted => "#counted",
             Tag::Thinadhoo => "#thinadhoo",
+            Tag::ChinaRack => "#china-rack",
+            Tag::ChinaBagasse => "#china-bagasse",
+            Tag::Haru => "#haru",
         };
         write!(f, "{}", s)
     }
@@ -98,6 +107,9 @@ impl AsRef<str> for Tag {
             Tag::Cutlery => "#cutlery",
             Tag::Counted => "#counted",
             Tag::Thinadhoo => "#thinadhoo",
+            Tag::ChinaRack => "#china-rack",
+            Tag::ChinaBagasse => "#china-bagasse",
+            Tag::Haru => "#haru",
         }
     }
 }
