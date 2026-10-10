@@ -1,17 +1,19 @@
 # Ike Sales
 
 A small, free dashboard of daily takings at MRH Investment — the money that
-actually arrived each day, counted once each. This repo is **static only**: no
-secret, no cron, no build step. It just fetches its data live from
-[ike-data](https://github.com/yuki-uthman/ike-data), the shared Odoo pipeline
-that also backs any future dashboards (expenses, etc.).
+actually arrived each day, counted once each — with a follow-up list of open
+quotations and a way for staff to record expenses. The page itself is **static**:
+one `index.html`, no secret, no build step. It reads its data live from
+[ike-data](https://github.com/yuki-uthman/ike-data), the shared Odoo pipeline.
+The one exception is the Expenses pane, which saves through a small Cloudflare
+Worker kept in this repo (see below).
 
-## Two panes: Sales and Quotations
+## Three panes: Sales, Quotations and Expenses
 
-The page is two panes side by side — **Sales** on the left (the default) and
-**Quotations** on the right, the follow-up list that used to be its own repo,
-`ike-quotations`. Swipe left or right to move between them, or tap either tab
-in the bar along the bottom. The bar's indicator follows the swipe as it
+The page is three panes side by side — **Sales** on the left (the default),
+**Quotations** in the middle (the follow-up list that used to be its own repo,
+`ike-quotations`) and **Expenses** on the right. Swipe left or right to move
+between them, or tap a tab in the bar along the bottom. The bar's indicator follows the swipe as it
 happens, so it always shows which pane you are on.
 
 Two things follow from the swipe belonging to the pager:
@@ -22,8 +24,12 @@ Two things follow from the swipe belonging to the pager:
   stops there at its ends. Start the swipe anywhere else, or tap the tab.
 
 Each pane keeps its own accent: teal for money banked, amber for money still
-awaited. The two share one file but not their code — every id and class in a
-pane is scoped to it (`s-…` / `q-…`, `.pane-sales` / `.pane-quotes`).
+awaited, plum for money spent. The panes share one file but not their code —
+every id and class in a pane is scoped to it (`s-…` / `q-…`,
+`.pane-sales` / `.pane-quotes` / `.pane-expenses`).
+
+The selected day is shared by all three panes: pick a day in one and the others
+follow. (Quotations' **All** stays local to that pane.)
 
 ## One-time setup
 
@@ -31,9 +37,10 @@ pane is scoped to it (`s-…` / `q-…`, `.pane-sales` / `.pane-quotes`).
 Branch: `main`, folder `/ (root)`. The page will be at
 `https://<your-username>.github.io/ike-sales/`.
 
-That's it — there's nothing else to configure here. Data freshness, the Odoo
-credential, and the de-duplication logic all live in
-[ike-data](https://github.com/yuki-uthman/ike-data).
+For the Sales and Quotations panes that's it — there's nothing else to configure
+here. Data freshness, the Odoo credential, and the de-duplication logic all live
+in [ike-data](https://github.com/yuki-uthman/ike-data). The Expenses pane also
+needs the Worker deployed (see below).
 
 ## What a day's number means
 
@@ -99,6 +106,50 @@ refresh. Unlike `sales.json` it keeps no history — it is a live snapshot, and
 its day span shrinks as old quotations settle. The pane shows **customer names,
 order references and amounts owing**, so the visibility note below applies to
 it in full.
+
+## The Expenses pane
+
+Staff record a **bank-transfer expense** from a phone: pick a category, enter
+the amount in MVR, optionally type a description and attach a receipt photo,
+then enter the shared PIN and save. The day's entries are listed under day pills
+(oldest on the left, today on the right), each with a status chip.
+
+What it does and does not do, by design:
+
+- **It only creates a draft `hr.expense` in Odoo.** It never submits, approves,
+  posts or pays. The accountant does that in Odoo.
+- **Save first, send later.** The entry is stored in the Worker's own database
+  immediately, then synced to Odoo. A failed send is retried on a schedule and
+  can be retried by hand; an entry is never lost and never duplicated in Odoo.
+- **Status chips** say where an entry stands: *Waiting to send*, *Not sent*
+  (with the next retry time and a Retry button), *Draft* (in Odoo, not yet
+  confirmed) and the confirmed states read back from Odoo.
+- **The PIN is one shared key.** It authorises saving; it does not identify a
+  person. The owner changes it in the Cloudflare dashboard, and wrong guesses
+  are rate-limited.
+- **The expense date is the Maldives date it was saved**, not the date it
+  reached Odoo.
+- The description Odoo shows is exactly what staff typed, or the category when
+  they typed nothing.
+
+The confirmed and pending spend shown here is read from
+`https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/expenses.json`,
+like the other panes. Only saving, listing the day's entries, the category list
+and retry go to the Worker.
+
+### The Worker
+
+`worker/` is a Cloudflare Worker (name `odoo`) with a D1 database (`ike-odoo`).
+It is the only part of the three ike repos that writes to Odoo, and it holds the
+Odoo key as a Worker secret; the page never sees it. It checks the PIN and the
+page's origin, and a Cloudflare cron every 15 minutes retries unsent entries and
+reads their status back from Odoo (that read is read-only).
+
+The decisions behind all of this are in `docs/product/brief.md` and
+`docs/product/architecture/brief.md`; `worker/migrations/` is the database
+schema. `npm test` runs the acceptance tests in `tests/` against the page in a
+real browser and the Worker under Miniflare, with no call to the real Odoo.
+Deploying the Worker is a manual step by the owner.
 
 ## Visibility
 
