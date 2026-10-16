@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ike Sales</title>
+<!-- Installable web app (Android Chrome: menu → Install app). -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1d3f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ike Sales">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <!-- The expenses service's public base URL, filled in once by the owner after
      `wrangler deploy` (D9: no build step; D10: no secret in the page — a URL is
      not a secret and no PIN or key is ever placed here). While it is empty the
@@ -2746,6 +2754,11 @@ window.ikeDay = (function () {
     if (!document.hidden) { loadFeed(); loadEntries(); loadCategories(); }
   });
 })();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
 </script>
 </body>
 </html>

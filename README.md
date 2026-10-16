@@ -42,6 +42,21 @@ here. Data freshness, the Odoo credential, and the de-duplication logic all live
 in [ike-data](https://github.com/yuki-uthman/ike-data). The Expenses pane also
 needs the Worker deployed (see below).
 
+## Installing it on Android
+
+The page is an installable web app. Open the Pages URL in Chrome on the phone,
+tap the ⋮ menu, then **Install app** (or **Add to Home screen**). It gets the
+Ike icon and opens full-screen with no browser bar.
+
+- `manifest.webmanifest` names the app and lists the icons in `icons/`. The
+  `maskable-*` icons are full-bleed so Android can cut them to any shape; the
+  `icon-*` ones keep the rounded tile.
+- `sw.js` exists to make the app installable and to open the shell with no
+  signal. It never caches data: JSON and Expenses calls go straight to the
+  network, and the page itself is fetched network-first.
+- To change the icon, replace the files in `icons/` (192 and 512 px, plain and
+  maskable) and keep the paths in the manifest.
+
 ## What a day's number means
 
 **Money received that day**, not sales made that day — the same question
