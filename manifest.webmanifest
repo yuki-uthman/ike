@@ -1,6 +1,6 @@
 {
-  "name": "Ike Sales",
-  "short_name": "Ike Sales",
+  "name": "Ike",
+  "short_name": "Ike",
   "description": "Sales, quotations and expenses for MRH Investment.",
   "start_url": "./",
   "scope": "./",

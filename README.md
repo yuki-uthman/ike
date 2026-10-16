@@ -35,7 +35,7 @@ follow. (Quotations' **All** stays local to that pane.)
 
 **Enable GitHub Pages**: Settings → Pages → Source: "Deploy from a branch" →
 Branch: `main`, folder `/ (root)`. The page will be at
-`https://<your-username>.github.io/ike-sales/`.
+`https://<your-username>.github.io/ike/`.
 
 For the Sales and Quotations panes that's it — there's nothing else to configure
 here. Data freshness, the Odoo credential, and the de-duplication logic all live
