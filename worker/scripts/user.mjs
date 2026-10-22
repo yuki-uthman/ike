@@ -66,6 +66,10 @@ export function checkUsername(name) {
   return name;
 }
 
+// The printed SQL names the table `user` WITHOUT quotes: it is pasted inside
+// --command "…", where a double-quoted "user" would close the shell string. It
+// is not an SQLite keyword, so the bare name means the same table.
+
 /**
  * The statement that creates `name` with `password`, or gives an existing `name`
  * that password (and re-enables it). Existing sessions are left alone: ending
@@ -75,7 +79,7 @@ export async function addUserSql(name, password, { salt = newSalt(), rounds = PA
   now = new Date() } = {}) {
   checkUsername(name);
   const hash = await hashPassword(password, salt, rounds);
-  return 'INSERT INTO "user" (username, password_hash, salt, rounds, created_at)'
+  return 'INSERT INTO user (username, password_hash, salt, rounds, created_at)'
     + ` VALUES (${quote(name)}, ${quote(hash)}, ${quote(salt)}, ${rounds},`
     + ` ${quote(now.toISOString())})`
     + ' ON CONFLICT(username) DO UPDATE SET password_hash = excluded.password_hash,'
@@ -84,11 +88,11 @@ export async function addUserSql(name, password, { salt = newSalt(), rounds = PA
 
 export function signoutSql(name) {
   checkUsername(name);
-  return `DELETE FROM session WHERE user_id IN (SELECT id FROM "user" WHERE username = ${quote(name)});`;
+  return `DELETE FROM session WHERE user_id IN (SELECT id FROM user WHERE username = ${quote(name)});`;
 }
 
 export function removeSql(name) {
-  return `${signoutSql(name)} DELETE FROM "user" WHERE username = ${quote(name)};`;
+  return `${signoutSql(name)} DELETE FROM user WHERE username = ${quote(name)};`;
 }
 
 async function main(argv) {

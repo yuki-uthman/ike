@@ -102,24 +102,44 @@ export function signinWindowEnd(index) {
   return new Date((index + 1) * SIGNIN_WINDOW_MS);
 }
 
-/** Failures already recorded for this source in this window. */
-export async function signinFailures(db, source, index) {
+/**
+ * Take one try from this source's budget for this window, BEFORE the password
+ * is checked, and answer how many it has now used. Reserving first, in one
+ * statement, is what holds the limit against parallel requests: a read-then-
+ * write lets every request in a burst see the same unspent budget.
+ */
+export async function reserveSigninTry(db, source, index) {
   const row = await db
-    .prepare('SELECT misses FROM signin_attempt WHERE source = ? AND "window" = ?')
-    .bind(source, index)
-    .first();
-  return row ? Number(row.misses) : 0;
-}
-
-/** Only a failed sign-in consumes budget. */
-export async function recordSigninFailure(db, source, index) {
-  await db
     .prepare(
       'INSERT INTO signin_attempt (source, "window", misses) VALUES (?, ?, 1)'
       + ' ON CONFLICT(source, "window") DO UPDATE SET misses = misses + 1'
+      + ' RETURNING misses'
+    )
+    .bind(source, index)
+    .first();
+  return Number(row.misses);
+}
+
+/** Only a failed sign-in consumes budget: a success gives its try back. */
+export async function refundSigninTry(db, source, index) {
+  await db
+    .prepare(
+      'UPDATE signin_attempt SET misses = MAX(misses - 1, 0)'
+      + ' WHERE source = ? AND "window" = ?'
     )
     .bind(source, index)
     .run();
+}
+
+/**
+ * Housekeeping for the 15-minute schedule: sessions past their expiry and
+ * failure windows before the current one hold nothing anyone can use.
+ */
+export async function pruneAuth(db, now) {
+  await db.batch([
+    db.prepare('DELETE FROM session WHERE expires_at <= ?').bind(new Date(now).toISOString()),
+    db.prepare('DELETE FROM signin_attempt WHERE "window" < ?').bind(signinWindow(now))
+  ]);
 }
 
 /**

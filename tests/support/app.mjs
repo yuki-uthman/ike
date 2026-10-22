@@ -63,13 +63,8 @@ export async function startApp({ bindings = {}, persist, schema = true, user = t
     d1Databases: { [binding]: cfg.d1_databases[0].database_id || binding },
     d1Persist: persist,
     bindings: { ...(cfg.vars || {}), ...bindings },
-    assets: {
-      directory: path.resolve(WORKER, cfg.assets.directory),
-      routerConfig: {
-        has_user_worker: true,
-        static_routing: { user_worker: cfg.assets.run_worker_first }
-      }
-    },
+    assets: assetsOptions(cfg),
+    unsafeTriggerHandlers: true,
     ...(host ? { host } : {}),
     port: 0
   });
@@ -105,6 +100,13 @@ export async function startApp({ bindings = {}, persist, schema = true, user = t
   };
 
   /** Sign in and return the session cookie ('ike_session=<token>'). */
+  /** Fire the 15-minute schedule through workerd's own cron port. */
+  const tick = async () => {
+    const res = await fetch(`${origin}/cdn-cgi/handler/scheduled?cron=${encodeURIComponent('*/15 * * * *')}`);
+    await res.text();
+    return res.status;
+  };
+
   const signIn = async (username = USERNAME, password = PASSWORD, opts = {}) => {
     const r = await call('POST', '/auth/signin', { body: { username, password }, ...opts });
     if (r.res.status !== 200) {
@@ -113,7 +115,7 @@ export async function startApp({ bindings = {}, persist, schema = true, user = t
     return sessionCookieOf(r.res);
   };
 
-  return { mf, db, cfg, origin, call, signIn, close: () => mf.dispose() };
+  return { mf, db, cfg, origin, call, signIn, tick, close: () => mf.dispose() };
 }
 
 /** The 'name=value' of the session cookie a response sets, or null. */
@@ -130,14 +132,8 @@ export function sessionCookieOf(res) {
  * yesterday opens the app: it holds the session cookie, so the page opens on
  * the app and not on the sign-in screen.
  */
-export async function signedInContext(browser, app, contextOptions = {}) {
-  const cookie = await app.signIn();
-  const [name, value] = cookie.split('=');
-  const context = await browser.newContext(contextOptions);
-  await context.addCookies([{
-    name, value, url: app.origin, httpOnly: true, secure: true, sameSite: 'Strict'
-  }]);
-  return context;
+export function signedInContext(browser, app, contextOptions = {}) {
+  return signedInContextAt(browser, app.origin, app.db, contextOptions);
 }
 
 /**

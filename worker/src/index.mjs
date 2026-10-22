@@ -17,11 +17,12 @@ import {
   checkPassword,
   clearedSessionCookie,
   endSession,
-  recordSigninFailure,
+  pruneAuth,
+  refundSigninTry,
+  reserveSigninTry,
   sessionCookie,
   sessionToken,
   sessionUser,
-  signinFailures,
   signinWindow,
   signinWindowEnd,
   SIGNIN_LIMIT,
@@ -109,16 +110,17 @@ async function readJsonObject(request) {
 // ---- /auth: the one area open without a session (D23-D25) ----
 
 /**
- * Sign-in. The failure budget is read BEFORE the password is checked, so an
+ * Sign-in. A try is taken from the budget BEFORE the password is checked, so an
  * exhausted window answers 429 even to the right password, and an unknown
- * username and a wrong password are one answer with one message (D25).
+ * username and a wrong password are one answer with one message (D25). A
+ * success, and a body that is not a sign-in at all, give the try back.
  */
 async function handleSignin(request, env) {
   const source = request.headers.get('CF-Connecting-IP') || 'unknown';
   const now = Date.now();
   const index = signinWindow(now);
 
-  if (await signinFailures(env.DB, source, index) >= SIGNIN_LIMIT) {
+  if (await reserveSigninTry(env.DB, source, index) > SIGNIN_LIMIT) {
     const end = signinWindowEnd(index);
     const seconds = Math.max(0, Math.ceil((end.getTime() - now) / 1000));
     return refuse(429, 'too_many_attempts',
@@ -126,13 +128,14 @@ async function handleSignin(request, env) {
   }
 
   const body = await readJsonObject(request);
-  if (!body) return refuse(422, 'bad_json');
+  if (!body) {
+    await refundSigninTry(env.DB, source, index);
+    return refuse(422, 'bad_json');
+  }
 
   const user = await checkPassword(env.DB, body.username, body.password);
-  if (!user) {
-    await recordSigninFailure(env.DB, source, index);
-    return refuse(401, 'wrong_username_or_password');
-  }
+  if (!user) return refuse(401, 'wrong_username_or_password');
+  await refundSigninTry(env.DB, source, index);
   const token = await startSession(env.DB, user.id, now);
   return json(200, { signed_in: true, username: user.username },
     { 'Set-Cookie': sessionCookie(token) });
@@ -251,66 +254,98 @@ async function route(request, url, env) {
   }
   if (request.method === 'POST') {
     const retry = RETRY_PATH.exec(path);
-    if (retry) return handleRetry(decodeURIComponent(retry[1]), env);
+    if (retry) {
+      let id;
+      try {
+        id = decodeURIComponent(retry[1]);
+      } catch {
+        return refuse(404, 'not_found'); // a malformed escape names no entry
+      }
+      return handleRetry(id, env);
+    }
   }
   return refuse(404, 'not_found');
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-
-    // GATE 1 (D27), decided before any body is read, on every path. A browser
-    // sends Origin on every cross-origin request and on every same-origin
-    // non-GET, so a non-GET without OUR origin is a forged or foreign call.
-    // Reads are left to gate 2: a same-origin GET or navigation carries no
-    // Origin at all.
-    const reads = request.method === 'GET' || request.method === 'HEAD';
-    if (!reads && request.headers.get('Origin') !== url.origin) {
-      return refuse(403, 'origin_not_allowed');
-    }
-
-    if (inArea(url.pathname, AUTH)) {
-      const route = url.pathname.slice(AUTH.length);
-      if (request.method === 'POST' && route === '/signin') return handleSignin(request, env);
-      if (request.method === 'POST' && route === '/signout') return handleSignout(request, env);
-      if (request.method === 'GET' && route === '/session') {
-        const user = await sessionUser(env.DB, sessionToken(request.headers.get('Cookie')),
-          Date.now());
-        return user
-          ? json(200, { signed_in: true, username: user.username })
-          : refuse(401, 'signed_out');
-      }
-      return refuse(404, 'not_found');
-    }
-
-    // Everything else this layer serves lives under an area prefix. An unknown
-    // path is the plain 404; with the static-assets binding in front, the
-    // Worker only sees a path here when no page file answered it.
-    if (!SIGNED_IN_AREAS.some(area => inArea(url.pathname, area))) {
-      return refuse(404, 'not_found');
-    }
-
-    // GATE 2 (D27): every data route needs a live session.
+/** /auth: sign-in, sign-out and "am I signed in", the one area open without a session. */
+async function authRoute(request, url, env) {
+  const action = url.pathname.slice(AUTH.length);
+  if (request.method === 'POST' && action === '/signin') return handleSignin(request, env);
+  if (request.method === 'POST' && action === '/signout') return handleSignout(request, env);
+  if (request.method === 'GET' && action === '/session') {
     const token = sessionToken(request.headers.get('Cookie'));
     const user = await sessionUser(env.DB, token, Date.now());
     if (!user) return refuse(401, 'signed_out');
-    const res = await route(request, url, env);
-    // A renewed session hands the phone the new lifetime with this answer.
-    if (user.renewed) res.headers.append('Set-Cookie', sessionCookie(token));
-    return res;
+    // The page asks this first on every open, so it is usually the call that
+    // renews: the phone must be handed the new lifetime here too (D24).
+    return json(200, { signed_in: true, username: user.username },
+      user.renewed ? { 'Set-Cookie': sessionCookie(token) } : {});
+  }
+  return refuse(404, 'not_found');
+}
+
+/** Both gates, then the route (D27). */
+async function answer(request, env) {
+  const url = new URL(request.url);
+
+  // GATE 1 (D27), decided before any body is read, on every path. A browser
+  // sends Origin on every cross-origin request and on every same-origin
+  // non-GET, so a non-GET without OUR origin is a forged or foreign call.
+  // Reads are left to gate 2: a same-origin GET or navigation carries no
+  // Origin at all.
+  const reads = request.method === 'GET' || request.method === 'HEAD';
+  if (!reads && request.headers.get('Origin') !== url.origin) {
+    return refuse(403, 'origin_not_allowed');
+  }
+
+  if (inArea(url.pathname, AUTH)) return authRoute(request, url, env);
+
+  // Everything else this layer serves lives under an area prefix. An unknown
+  // path is the plain 404; with the static-assets binding in front, the
+  // Worker only sees a path here when no page file answered it.
+  if (!SIGNED_IN_AREAS.some(area => inArea(url.pathname, area))) {
+    return refuse(404, 'not_found');
+  }
+
+  // GATE 2 (D27): every data route needs a live session.
+  const token = sessionToken(request.headers.get('Cookie'));
+  const user = await sessionUser(env.DB, token, Date.now());
+  if (!user) return refuse(401, 'signed_out');
+  const res = await route(request, url, env);
+  // A renewed session hands the phone the new lifetime with this answer.
+  if (user.renewed) res.headers.append('Set-Cookie', sessionCookie(token));
+  return res;
+}
+
+export default {
+  async fetch(request, env) {
+    try {
+      return await answer(request, env);
+    } catch (err) {
+      // A store that cannot be read is Indeterminate, never a non-JSON 500
+      // (decision 16): the session lookup, the sign-in budget and the account
+      // check all read D1 before any route's own error handling is reached.
+      return refuse(503, 'not_read', { detail: String(err && err.message || err) });
+    }
   },
 
-  // The cron driving port (D13). Both steps are AWAITED rather than deferred to
+  // The cron driving port (D13). Every step is AWAITED rather than deferred to
   // ctx.waitUntil: the schedule's whole job is that run.
   //
-  // Sync first, read-back last (decision 14): the sync carries the owner's own
-  // promise and must not queue behind a read that can take 10 s, and reading
-  // last means an expense created in this very run is already in the id set, so
-  // a chip is never a run stale. The read-back is attempted even when the sync
-  // step failed — the two steps are independent, so one entry Odoo refuses
-  // cannot freeze every chip.
+  // Housekeeping first and cheap: expired sessions and spent sign-in windows
+  // go, and its failure stands in the way of nothing. Then sync, then
+  // read-back (decision 14): the sync carries the owner's own promise and must
+  // not queue behind a read that can take 10 s, and reading last means an
+  // expense created in this very run is already in the id set, so a chip is
+  // never a run stale. The read-back is attempted even when the sync step
+  // failed — the two steps are independent, so one entry Odoo refuses cannot
+  // freeze every chip.
   async scheduled(event, env) {
+    try {
+      await pruneAuth(env.DB, Date.now());
+    } catch (err) {
+      // Housekeeping never stands in the way of the owner's sync.
+    }
     try {
       await runSync(env);
     } catch (err) {

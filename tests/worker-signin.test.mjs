@@ -137,7 +137,7 @@ test('five_failures_per_source_per_window_then_429_even_for_the_right_password',
   assert.equal(other.res.status, 200, 'the limit is per source');
   const row = await app.db.prepare('SELECT misses FROM signin_attempt WHERE source = ?')
     .bind('203.0.113.10').first();
-  assert.equal(row, null, 'a successful sign-in consumes no budget');
+  assert.ok(!row || Number(row.misses) === 0, 'a successful sign-in consumes no budget');
 
   // The budget comes back with the next window.
   await app.db.prepare('UPDATE signin_attempt SET "window" = "window" - 1 WHERE source = ?')
@@ -261,6 +261,15 @@ test('a_session_expires_30_days_after_last_use_and_is_renewed_at_most_daily', as
   assert.equal(sessionCookieOf(renewed.res), cookie,
     'the renewed answer re-sends the same session cookie with a fresh Max-Age');
 
+  // The page's FIRST call on every open is /auth/session, so that is where a
+  // daily phone is usually renewed: it must hand back the cookie too, or the
+  // cookie would lapse 30 days after sign-in however often the phone was used.
+  await age(DAY_MS + 60 * 1000);
+  const viaSession = await app.call('GET', '/auth/session', { cookie });
+  assert.equal(viaSession.res.status, 200);
+  assert.equal(sessionCookieOf(viaSession.res), cookie,
+    'a renewal through /auth/session re-sends the session cookie');
+
   // Past its expiry: no session, on every route.
   await app.db.prepare('UPDATE session SET expires_at = ?')
     .bind(new Date(Date.now() - 1000).toISOString()).run();
@@ -281,7 +290,7 @@ test('the_owners_script_prints_sql_with_a_generated_password_that_signs_in', asy
   const parts = password.split('-');
   assert.equal(parts.length, 5, 'a password is five words joined by "-" (D23)');
   for (const w of parts) assert.ok(words.includes(w), `"${w}" is from the list`);
-  const sql = lines.find(l => l.startsWith('INSERT INTO "user"'));
+  const sql = lines.find(l => l.startsWith('INSERT INTO user '));
   assert.ok(sql, 'add prints the SQL to run');
   assert.ok(!sql.includes(password), 'the printed SQL holds the hash, never the password');
   assert.match(sql, /, 10000,/, 'new passwords are hashed with 10,000 rounds (D23)');
@@ -295,7 +304,7 @@ test('the_owners_script_prints_sql_with_a_generated_password_that_signs_in', asy
   const l2 = second.stdout.split('\n');
   const newPassword = l2[l2.findIndex(l => l.startsWith('Password for manager')) + 1].trim();
   assert.notEqual(newPassword, password, 'every add draws a fresh password');
-  await app.db.exec(l2.find(l => l.startsWith('INSERT INTO "user"')));
+  await app.db.exec(l2.find(l => l.startsWith('INSERT INTO user ')));
   assert.equal((await app.db.prepare('SELECT COUNT(*) AS n FROM "user"').first()).n, 1,
     'the same name is one account');
   assert.equal((await app.call('POST', '/auth/signin',
@@ -316,4 +325,56 @@ test('the_owners_script_prints_sql_with_a_generated_password_that_signs_in', asy
   // The tests' own account goes through the same statement.
   await addUser(app.db, 'second', 'two-words');
   assert.ok(await app.signIn('second', 'two-words'));
+});
+
+test('a_burst_of_parallel_sign_ins_buys_no_more_than_five_tries', async t => {
+  const app = await startApp();
+  t.after(() => app.close());
+  const ip = '198.18.0.1';
+  const answers = await Promise.all(Array.from({ length: 20 }, () =>
+    app.call('POST', '/auth/signin', { body: { username: USERNAME, password: 'wrong' }, ip })));
+  const checked = answers.filter(a => a.res.status === 401).length;
+  const limited = answers.filter(a => a.res.status === 429).length;
+  assert.ok(checked <= 5, `at most five passwords were checked (${checked})`);
+  assert.equal(checked + limited, 20, 'every other try in the burst was refused as limited');
+});
+
+test('the_schedule_prunes_expired_sessions_and_spent_sign_in_windows', async t => {
+  const app = await startApp();
+  t.after(() => app.close());
+  const live = await app.signIn();
+  await app.signIn();
+  await app.db.prepare('UPDATE session SET expires_at = ? WHERE rowid = (SELECT MAX(rowid) FROM session)')
+    .bind(new Date(Date.now() - 1000).toISOString()).run();
+  await app.db.prepare('INSERT INTO signin_attempt (source, "window", misses) VALUES (?, ?, 3)')
+    .bind('198.18.0.2', Math.floor(Date.now() / (15 * 60 * 1000)) - 1).run();
+  await app.call('POST', '/auth/signin', { body: { username: USERNAME, password: 'x' }, ip: '198.18.0.3' });
+
+  assert.equal(await app.tick(), 200, 'the scheduled run completes');
+  assert.equal((await app.db.prepare('SELECT COUNT(*) AS n FROM session').first()).n, 1,
+    'the expired session is gone and the live one is kept');
+  assert.equal((await app.call('GET', '/auth/session', { cookie: live })).res.status, 200);
+  const windows = (await app.db.prepare('SELECT source FROM signin_attempt').all())
+    .results.map(r => r.source);
+  assert.ok(!windows.includes('198.18.0.2'), 'a window before the current one is gone');
+  assert.ok(windows.includes('198.18.0.3'), 'the current window\'s failure is kept');
+});
+
+test('a_store_that_cannot_answer_is_a_json_503_and_a_malformed_retry_is_a_404', async t => {
+  const app = await startApp();
+  t.after(() => app.close());
+  const cookie = await app.signIn();
+
+  const bad = await app.call('POST', '/expenses/entries/%E0%A4/retry', { cookie });
+  assert.equal(bad.res.status, 404, 'a malformed escape names no entry');
+  assert.deepEqual(bad.json, { saved: false, error: 'not_found' });
+
+  await app.db.prepare('DROP TABLE session').run();
+  for (const [method, route, body] of [['GET', '/expenses/categories'], ['GET', '/auth/session'],
+    ['POST', '/auth/signin', { username: USERNAME, password: PASSWORD }]]) {
+    const r = await app.call(method, route, { cookie, body });
+    assert.equal(r.res.status, 503, `${method} ${route} is Indeterminate when the store fails`);
+    assert.match(r.res.headers.get('content-type') || '', /application\/json/, 'and still JSON');
+    assert.equal(r.json.error, 'not_read');
+  }
 });

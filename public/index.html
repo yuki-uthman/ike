@@ -832,9 +832,13 @@ window.ikeAuth = (function () {
           return;
         }
         passEl.value = '';
-        errorEl.textContent = r.status === 429
-          ? 'Too many tries. Try again at ' + maldivesHHMM(r.body && r.body.retry_at) + '.'
-          : 'Wrong username or password.';
+        // Only a refused password says so: a store that could not answer, or
+        // a refused origin, must not send a manager off for a new password.
+        if (r.status === 401) errorEl.textContent = 'Wrong username or password.';
+        else if (r.status === 429) {
+          errorEl.textContent = 'Too many tries. Try again at '
+            + maldivesHHMM(r.body && r.body.retry_at) + '.';
+        } else errorEl.textContent = 'Could not sign in just now (' + r.status + '). Try again.';
       })
       .catch(function () {
         goEl.disabled = false;
@@ -2687,12 +2691,6 @@ window.ikeAuth = (function () {
   }
 
   // ---- The save ----
-  function hhmm(iso8601) {
-    var d = new Date(iso8601);
-    if (isNaN(d.getTime())) return String(iso8601);
-    return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
-  }
-
   function refusalMessage(status, body) {
     var error = (body && body.error) || '';
     if (error === 'unknown_category') return 'Choose one of the listed categories.';

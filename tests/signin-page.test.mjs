@@ -92,6 +92,15 @@ test('a_signed_out_phone_sees_only_the_sign_in_screen_and_signs_in_and_out', asy
   assert.equal(await password.inputValue(), '', 'the wrong password is cleared');
   assert.equal(await username.inputValue(), USERNAME, 'the username is kept');
 
+  // ---- A service that cannot answer is not called a wrong password ----
+  await page.route(app.origin + '/auth/signin', route =>
+    route.fulfill({ status: 503, contentType: 'application/json',
+      body: '{"saved":false,"error":"not_read"}' }), { times: 1 });
+  await password.fill(PASSWORD);
+  await go.click();
+  await waitFor('the could-not-sign-in line', async () =>
+    /^Could not sign in just now \(503\)\. Try again\.$/.test(flat(await error.innerText())));
+
   // ---- The right one: the app, and who is signed in ----
   await password.fill(PASSWORD);
   await go.click();
