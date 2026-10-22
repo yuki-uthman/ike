@@ -136,3 +136,19 @@ export async function signedInContext(browser, app, contextOptions = {}) {
   }]);
   return context;
 }
+
+/**
+ * For a suite that starts its own Worker-only miniflare (the Odoo suites): make
+ * sure the shared account exists in `db`, sign in at `base` as the page would,
+ * and return the session cookie. Call it after the schema is applied.
+ */
+export async function signInAt(base, db, { username = USERNAME, password = PASSWORD } = {}) {
+  await addUser(db, username, password);
+  const res = await fetch(base + '/auth/signin', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', Origin: base, 'CF-Connecting-IP': '127.0.0.1' },
+    body: JSON.stringify({ username, password })
+  });
+  if (res.status !== 200) throw new Error(`sign-in at ${base} answered ${res.status}`);
+  return sessionCookieOf(res);
+}

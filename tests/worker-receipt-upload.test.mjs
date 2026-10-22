@@ -32,11 +32,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Miniflare } from 'miniflare';
+import { signInAt } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WORKER = path.join(REPO, 'worker');
 
-const PIN = '4821';
 const CRON = '*/15 * * * *';
 
 const DRAFT = 'Draft';
@@ -299,7 +299,6 @@ async function startWorker(cfg, { persist, odooUrl, apiKey = ODOO_KEY, username 
     unsafeTriggerHandlers: true,
     bindings: {
       ...(cfg.vars || {}),
-      EXPENSE_PIN: PIN,
       ODOO_URL: odooUrl,
       ODOO_DB: ODOO_DB,
       ODOO_USERNAME: username,
@@ -312,10 +311,15 @@ async function startWorker(cfg, { persist, odooUrl, apiKey = ODOO_KEY, username 
   const url = await mf.ready;
   const db = await mf.getD1Database(binding);
   const base = url.origin;
-  const allowed = cfg.vars.ALLOWED_ORIGIN;
+  // The page shares the Worker's origin (D27), so its own origin is the one a
+  // browser puts on every POST, and every call below is signed in.
+  const allowed = base;
+  let session = null;
 
   const call = async (method, pathname, { body, ip = '127.0.0.1' } = {}) => {
     const headers = { 'CF-Connecting-IP': ip, Origin: allowed };
+    if (!session) session = await signInAt(base, db);
+    headers.Cookie = session;
     if (body !== undefined) headers['content-type'] = 'application/json';
     const res = await fetch(base + pathname, {
       method, headers, body: body === undefined ? undefined : JSON.stringify(body)
@@ -375,7 +379,7 @@ async function setup(t) {
   await applySchema(w.db, cfg);
   const today = maldivesDate();
   const save = (id, receipt) => w.call('POST', '/expenses/entries', {
-    body: { pin: PIN, category: 'Salary', amount: '250.50', client_entry_id: id, receipt: b64(receipt) }
+    body: { category: 'Salary', amount: '250.50', client_entry_id: id, receipt: b64(receipt) }
   });
   const status = async id => {
     const day = await w.call('GET', `/expenses/entries?date=${today}`);
