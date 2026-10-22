@@ -365,11 +365,13 @@ export default {
   // deferred to ctx.waitUntil: the schedule's whole job is that run.
   //
   // The quotations schedule runs the quotations build and nothing else. A
-  // failed build keeps the previous snapshot and is simply tried again at the
-  // next quarter hour.
+  // failed build keeps the previous snapshot and is tried again at the next
+  // quarter hour; it throws its closed code, so the run shows as failed in the
+  // Worker's cron events rather than passing in silence.
   //
-  // Every other schedule is the expenses run. Housekeeping first and cheap: expired sessions and spent sign-in windows
-  // go, and its failure stands in the way of nothing. Then sync, then
+  // Every other schedule is the expenses run. Housekeeping first and cheap:
+  // expired sessions and spent sign-in windows go, and its failure stands in
+  // the way of nothing. Then sync, then
   // read-back (decision 14): the sync carries the owner's own promise and must
   // not queue behind a read that can take 10 s, and reading last means an
   // expense created in this very run is already in the id set, so a chip is
@@ -378,7 +380,8 @@ export default {
   // freeze every chip.
   async scheduled(event, env) {
     if (event.cron === QUOTATIONS_CRON) {
-      await runQuotations(env);
+      const built = await runQuotations(env);
+      if (!built.ok) throw new Error('quotations build failed: ' + built.code);
       return;
     }
     try {

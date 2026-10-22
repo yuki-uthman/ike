@@ -118,10 +118,18 @@ export async function buildOpenQuotations(odoo, now = Date.now()) {
   }
 
   // --- Channel 2: the POS counter, settling order lines directly ---
-  const posLines = await odoo.call('pos.order.line', 'search_read',
-    [['sale_order_line_id', '!=', false]],
-    { fields: ['order_id', 'price_subtotal_incl', 'sale_order_line_id'] });
-  if (!posLines.ok) return posLines;
+  // Only the lines that settle one of these quotations: fetch_quotations.py
+  // reads every linked POS line (it also lists confirmed orders), and the
+  // ones pointing at a confirmed order would only be read to be dropped.
+  const lineToOrder = new Map();
+  for (const o of orders.value) for (const lid of o.order_line || []) lineToOrder.set(lid, o.id);
+  let posLines = { ok: true, value: [] };
+  if (lineToOrder.size) {
+    posLines = await odoo.call('pos.order.line', 'search_read',
+      [['sale_order_line_id', 'in', [...lineToOrder.keys()]]],
+      { fields: ['order_id', 'price_subtotal_incl', 'sale_order_line_id'] });
+    if (!posLines.ok) return posLines;
+  }
   // Only the POS orders those lines point at, never every till receipt.
   const posOrderIds = [...new Set(posLines.value.map(pl => relId(pl.order_id)))]
     .filter(id => id !== null)
@@ -133,8 +141,6 @@ export async function buildOpenQuotations(odoo, now = Date.now()) {
     if (!posOrders.ok) return posOrders;
     for (const p of posOrders.value) posState.set(p.id, p.state);
   }
-  const lineToOrder = new Map();
-  for (const o of orders.value) for (const lid of o.order_line || []) lineToOrder.set(lid, o.id);
   const posSettled = new Map();
   for (const pl of posLines.value) {
     const id = relId(pl.order_id);

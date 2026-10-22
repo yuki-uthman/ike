@@ -99,12 +99,12 @@ test('each_schedule_runs_only_its_own_work', async t => {
 
 test('a_failed_build_keeps_the_previous_snapshot', async t => {
   const { app, cookie, fire, odoo } = await start(t);
-  await fire(QUOTATIONS_CRON);
+  assert.equal(await fire(QUOTATIONS_CRON), 200, 'a good build is a good run');
   const before = (await app.call('GET', '/quotations/open', { cookie })).text;
 
   odoo.state.records['sale.order'][3].amount_total = 999;   // a change a failed run must not show
   odoo.fail('account.payment');
-  await fire(QUOTATIONS_CRON);
+  assert.notEqual(await fire(QUOTATIONS_CRON), 200, 'a failed build is a failed run, never a silent one');
   assert.equal((await app.call('GET', '/quotations/open', { cookie })).text, before);
 
   odoo.heal();

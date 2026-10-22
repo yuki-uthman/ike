@@ -126,6 +126,9 @@ test('the_reads_are_the_filtered_json2_reads_and_nothing_else', async t => {
   assert.deepEqual(calls[0].body.domain,
     [['state', 'in', ['draft', 'sent']], ['amount_total', '>', 0]],
     'quotations only, and never an empty one');
+  // POS lines only for these quotations' lines, never every linked till line.
+  assert.deepEqual(calls[2].body.domain,
+    [['sale_order_line_id', 'in', [1011, 1012, 1013, 1021, 1031, 1041]]]);
   // Lines are read only for the quotations that made the cut.
   assert.deepEqual(calls[5].body.ids, [1011, 1012, 1013, 1031, 1041]);
 });

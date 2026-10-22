@@ -94,7 +94,7 @@ test('the_pane_lists_open_quotations_only_and_not_interested_still_works', async
   await waitFor('three rows', async () => (await rowRefs(page)).length === 3);
   assert.deepEqual(await rowRefs(page), ['S00101', 'S00103', 'S00104']);
   assert.equal(await page.textContent('#q-heroValue'), '1,351');
-  assert.equal(await page.textContent('#q-subline'), '3 quotations still owing');
+  assert.equal(await page.textContent('#q-subline'), '3 records still owing');
 
   const cards = await page.$$eval('#q-content .card .kind', els => els.map(e => e.textContent.trim()));
   assert.deepEqual(cards, ['Quotations'], 'one card: there is no Unpaid orders card');
