@@ -72,13 +72,11 @@ const PRE_EXISTING = [
   'https://fonts.googleapis.com/',
   'https://fonts.gstatic.com/',
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/sales.json',
-  'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/quotations.json',
   FEED_URL
 ];
 
 const EMPTY_FEEDS = {
-  'sales.json': '{"days":[]}',
-  'quotations.json': '{"records":[],"days":[]}'
+  'sales.json': '{"days":[]}'
 };
 
 /** D16: the Maldives (UTC+5) date, the day the pane opens on. */
@@ -129,7 +127,7 @@ function post(app, cookie, body) {
   return service(app, cookie, 'POST', '/expenses/entries', { body, ip: `198.51.100.${sources}` });
 }
 
-const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*|quotations\/open)?$/;
 
 /** Open index.html, with every request accounted for and every POST recorded. */
 async function openPage(browser, app, { feed }) {

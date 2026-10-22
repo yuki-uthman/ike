@@ -29,6 +29,7 @@ import {
   startSession
 } from './auth.mjs';
 import { listDay, maldivesDate, saveEntry } from './save.mjs';
+import { readFeed, runQuotations } from './quotations.mjs';
 import { runReadBack } from './readback.mjs';
 import { runSync, syncEntry } from './sync.mjs';
 
@@ -39,11 +40,16 @@ const RETRY_PATH = /^\/entries\/([^/]+)\/retry$/;
 // ('/entries', '/categories', RETRY_PATH) stays area-free, so a later Odoo area
 // is one more constant and one more gate rather than a rewrite of a handler.
 const AREA = '/expenses';
+const QUOTATIONS = '/quotations';
 
-// The areas that need a session (D27). Quotations has no route yet — it is the
-// next issue's — but it is gated now, so its first route cannot be born open.
-const SIGNED_IN_AREAS = [AREA, '/quotations'];
+// The areas that need a session (D27).
+const SIGNED_IN_AREAS = [AREA, QUOTATIONS];
 const AUTH = '/auth';
+
+// The two schedules in worker/wrangler.json (D31). The expenses sync and
+// read-back keep the quarter hours; the quotations build runs seven minutes
+// later, so the two never share a run.
+const QUOTATIONS_CRON = '7-59/15 * * * *';
 
 const RECEIPT_CAP_BYTES = 1000000; // the Worker's own declared cap (decision 16)
 const BASE64 = /^[A-Za-z0-9+/]*={0,2}$/;
@@ -238,8 +244,34 @@ async function handleRetry(clientEntryId, env) {
   return json(200, { entry });
 }
 
+// ---- /quotations ----
+
+/**
+ * The last good snapshot, served as it was stored (D31). Before the first
+ * build there is none: 503 not_ready, and the page says when to look again.
+ */
+async function handleOpenQuotations(env) {
+  let feed;
+  try {
+    feed = await readFeed(env.DB);
+  } catch (err) {
+    return refuse(503, 'not_read', { detail: String(err && err.message || err) });
+  }
+  if (feed === null) return json(503, { error: 'not_ready' });
+  return new Response(feed, {
+    status: 200,
+    headers: { 'content-type': 'application/json', 'cache-control': 'no-store' }
+  });
+}
+
 /** The data routes, reached only past both gates. */
 async function route(request, url, env) {
+  if (inArea(url.pathname, QUOTATIONS)) {
+    if (request.method === 'GET' && url.pathname === QUOTATIONS + '/open') {
+      return handleOpenQuotations(env);
+    }
+    return refuse(404, 'not_found');
+  }
   if (!inArea(url.pathname, AREA)) return refuse(404, 'not_found');
   const path = url.pathname.slice(AREA.length);
 
@@ -329,11 +361,17 @@ export default {
     }
   },
 
-  // The cron driving port (D13). Every step is AWAITED rather than deferred to
-  // ctx.waitUntil: the schedule's whole job is that run.
+  // The cron driving port (D13, D31). Every step is AWAITED rather than
+  // deferred to ctx.waitUntil: the schedule's whole job is that run.
   //
-  // Housekeeping first and cheap: expired sessions and spent sign-in windows
-  // go, and its failure stands in the way of nothing. Then sync, then
+  // The quotations schedule runs the quotations build and nothing else. A
+  // failed build keeps the previous snapshot and is tried again at the next
+  // quarter hour; it throws its closed code, so the run shows as failed in the
+  // Worker's cron events rather than passing in silence.
+  //
+  // Every other schedule is the expenses run. Housekeeping first and cheap:
+  // expired sessions and spent sign-in windows go, and its failure stands in
+  // the way of nothing. Then sync, then
   // read-back (decision 14): the sync carries the owner's own promise and must
   // not queue behind a read that can take 10 s, and reading last means an
   // expense created in this very run is already in the id set, so a chip is
@@ -341,6 +379,11 @@ export default {
   // failed — the two steps are independent, so one entry Odoo refuses cannot
   // freeze every chip.
   async scheduled(event, env) {
+    if (event.cron === QUOTATIONS_CRON) {
+      const built = await runQuotations(env);
+      if (!built.ok) throw new Error('quotations build failed: ' + built.code);
+      return;
+    }
     try {
       await pruneAuth(env.DB, Date.now());
     } catch (err) {

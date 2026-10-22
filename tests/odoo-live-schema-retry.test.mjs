@@ -362,8 +362,8 @@ async function readConfig() {
     `the guessed name '${ABSENT_LINE_NAME}' appears nowhere in the config`);
 
   // Unchanged by Vb.
-  assert.deepEqual((cfg.triggers || {}).crons, [CRON],
-    'the config still declares exactly the */15 cron driving port');
+  assert.deepEqual((cfg.triggers || {}).crons, [CRON, '7-59/15 * * * *'],
+    'the config declares exactly the */15 cron driving port and D31\'s quotations cron');
   assert.equal(vars.ODOO_URL, 'https://mrh-investment.odoo.com',
     'the Odoo endpoint still lives in config, not as a literal in code');
   assert.equal(vars.ODOO_DB, ODOO_DB);

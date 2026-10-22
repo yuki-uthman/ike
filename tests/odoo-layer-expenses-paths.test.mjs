@@ -57,7 +57,7 @@ const retryPath = id => AREA + '/entries/' + id + '/retry';
 // The addresses the Worker answered before Va, and answers no longer.
 const OLD_PATHS = ['/entries', '/categories'];
 
-const CRON = ['*/15 * * * *'];
+const CRON = ['*/15 * * * *', '7-59/15 * * * *']; // D13's run, then D31's quotations build
 
 // The design screens are drawn at 390x844 — "on a phone".
 const PHONE = { width: 390, height: 844 };
@@ -100,7 +100,7 @@ async function readConfig() {
   assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, undefined,
     'ALLOWED_ORIGIN is gone from config: nothing calls the layer from another origin (D27)');
   assert.deepEqual((cfg.triggers || {}).crons, CRON,
-    'the config still declares exactly the */15 cron trigger (D13)');
+    'the config declares exactly the */15 cron (D13) and the 7-59/15 quotations cron (D31)');
   return cfg;
 }
 
@@ -273,11 +273,13 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
 
   // ===================================================================== §2
   // Obligation C: the page calls only the /expenses/ paths — both halves. The
-  // page's own files, its sign-in check (/auth/session) and the service
-  // worker's shell are the same origin and are not layer calls.
+  // page's own files, its sign-in check (/auth/session), the service worker's
+  // shell and the Quotations pane's one read (/quotations/open, D31) are the
+  // same origin and are not expenses calls.
   const pageFiles = /\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+)?$/;
   const toLayer = requested.filter(u => u.startsWith(base)
-    && !pageFiles.test(new URL(u).pathname) && !u.startsWith(base + '/auth/'));
+    && !pageFiles.test(new URL(u).pathname) && !u.startsWith(base + '/auth/')
+    && u !== base + '/quotations/open');
   for (const url of [
     `${base}${ENTRIES}?date=${TODAY}`,
     base + CATEGORIES,

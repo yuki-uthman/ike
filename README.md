@@ -139,19 +139,22 @@ counts.
 
 ## The Quotations pane
 
-Every quotation and sales order that still has money owing on it — what hasn't
-closed yet, so it can be chased. Two cards: **Quotations** that were never
-confirmed, and **Unpaid orders** that were. Above them, a bar per day showing
-how much still-open value was raised that day. It opens on today; **All**, the
-pinned pill on the left, is the whole pipeline.
+Every quotation that still has money owing on it — what hasn't closed yet, so
+it can be chased. One card, **Quotations**: open quotations only (state
+*Quotation* or *Quotation Sent*, total above zero). Confirmed sales orders are
+not listed; the old **Unpaid orders** card was dropped on 2026-10-21. Above the
+card, a bar per day showing how much still-open value was raised that day
+(Maldives days). It opens on today; **All**, the pinned pill on the left, is
+the whole pipeline.
 
 **Still open** means any part of the value is unsettled, and a record leaves the
 moment the last rufiyaa arrives — by invoice or at the POS. "Paid" is
 *computed*, not read: `invoice_status` and `invoice_ids` both lie on this Odoo
 instance, so the number behind each row is
-`amount_total − (paid invoice value + POS-settled value)`. A part-paid order
-shows its remaining balance, with the total beneath. The reasoning lives in
-`ike-data/scripts/fetch_quotations.py`.
+`amount_total − (paid invoice value + POS-settled value)`. A part-paid
+quotation shows its remaining balance, with the total beneath. The rules are
+those of `ike-data/scripts/fetch_quotations.py` (read its header for why),
+ported to `worker/src/quotations.mjs`; the two give the same figures.
 
 **Not interested ×** (inside an expanded row) hides a dead lead and takes its
 value out of the totals and the day's bar. It does **not** touch Odoo, and it
@@ -159,14 +162,17 @@ is remembered only in that browser's `localStorage` — dismiss on a laptop and 
 is still there on a phone. A counter at the bottom of the pane lists what is
 hidden and restores it.
 
-It reads
-`https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/quotations.json`
-on load, then again every 60 seconds and whenever the tab becomes visible
-(the file itself refreshes every 15 minutes). Open rows are remembered across a
-refresh. Unlike `sales.json` it keeps no history — it is a live snapshot, and
-its day span shrinks as old quotations settle. The pane shows **customer names,
-order references and amounts owing**, so the visibility note below applies to
-it in full.
+The Worker builds this list itself: at 7, 22, 37 and 52 minutes past each
+hour it reads Odoo (read-only, over Odoo's JSON-2 API) and keeps the result in
+its database. The pane reads it from `GET /quotations/open` (signed in only) on
+load, then again every 60 seconds and whenever the tab becomes visible. Open
+rows are remembered across a refresh. A build that fails keeps the last good
+list. Right after the first deploy there is no list yet, and the pane says
+*"Quotations appear after the next refresh, within 15 minutes."* It is a live
+snapshot with no history; its day span shrinks as old quotations settle.
+
+ike-data still writes `quotations.json` (with the unpaid orders) on its own
+schedule, but this page no longer reads it.
 
 ## The Expenses pane
 
@@ -205,8 +211,10 @@ It serves the page (`public/`) and its own routes from one origin. It is the onl
 part of the ike repos that writes to Odoo, and it holds the Odoo key as a Worker
 secret; the page never sees it. Every data route (`/expenses/*`, `/quotations/*`)
 needs a signed-in session, and every request that is not a read must carry the
-Worker's own origin. A Cloudflare cron every 15 minutes retries unsent entries
-and reads their status back from Odoo (that read is read-only).
+Worker's own origin. Two Cloudflare crons run every 15 minutes: on the quarter
+hour one retries unsent entries and reads their status back from Odoo (that
+read is read-only); seven minutes later the other builds the open quotations
+(read-only too, see above).
 
 The decisions behind all of this are in `docs/product/brief.md` and
 `docs/product/architecture/brief.md`; `worker/migrations/` is the database
@@ -223,8 +231,10 @@ protect:
 
 - **The page's source** (`public/`) is served to anyone, signed in or not; it
   holds no secret.
-- **The figures come from ike-data's public files** on
+- **The Sales and Expenses figures come from ike-data's public files** on
   raw.githubusercontent.com. The sign-in hides them behind the screen but does
   not make them secret: anyone who knows the file URLs can read them, and the
-  ike-data history keeps old ones, until that repo is made private.
+  ike-data history keeps old ones, until that repo is made private. The
+  Quotations pane reads the Worker, behind the sign-in, but ike-data still
+  publishes the same quotations in its public `quotations.json`.
 - ike-pos and ike-po have no sign-in, by design (staff use them on PCs).

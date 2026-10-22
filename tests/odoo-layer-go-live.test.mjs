@@ -61,7 +61,7 @@ const DATABASE_NAME = 'ike-odoo';
 const AREA = '/expenses';
 const CATEGORIES = AREA + '/categories';
 const ENTRIES = AREA + '/entries';
-const CRON = ['*/15 * * * *'];
+const CRON = ['*/15 * * * *', '7-59/15 * * * *']; // D13's run, then D31's quotations build
 
 // D27: the areas the Worker runs first for; every other path is a page file.
 const RUN_WORKER_FIRST = ['/auth/*', '/expenses/*', '/quotations/*'];
@@ -203,7 +203,7 @@ test('the_shipped_page_off_loopback_calls_only_its_own_origin_and_wrangler_accep
     assert.equal(cfg.d1_databases[0].database_name, DATABASE_NAME,
       "the layer's database is named 'ike-odoo' (D17)");
     assert.deepEqual((cfg.triggers || {}).crons, CRON,
-      "the config still declares exactly D13's */15 cron trigger");
+      "the config declares exactly D13's */15 cron and D31's 7-59/15 quotations cron");
     assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, undefined,
       'ALLOWED_ORIGIN is gone: the page shares the Worker\'s origin (D27)');
     assert.equal(cfg.assets && cfg.assets.directory, '../public',
@@ -367,11 +367,13 @@ test('the_shipped_page_off_loopback_calls_only_its_own_origin_and_wrangler_accep
 
     // =================================================================== §3
     // Where every request went. The page's own files and its sign-in check are
-    // same-origin too; every OTHER same-origin request is a layer call, and each
-    // of those is under /expenses/.
+    // same-origin too, and so is the Quotations pane's one read (D31); every
+    // OTHER same-origin request is a layer call, and each of those is under
+    // /expenses/.
     const pageFiles = /\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+)?$/;
     const toLayer = requested.filter(u => u.startsWith(pageOrigin)
-      && !pageFiles.test(new URL(u).pathname) && !u.startsWith(pageOrigin + '/auth/'));
+      && !pageFiles.test(new URL(u).pathname) && !u.startsWith(pageOrigin + '/auth/')
+      && u !== pageOrigin + '/quotations/open');
     for (const url of [
       pageOrigin + CATEGORIES,
       `${pageOrigin}${ENTRIES}?date=${TODAY}`

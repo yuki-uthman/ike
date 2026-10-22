@@ -61,12 +61,12 @@
   /* Sales fits the screen and scrolls its list inside the card. */
   .pane-sales { display: flex; flex-direction: column; overflow: hidden; outline: none; --accent: var(--sales); }
   /* Quotations is a long page of cards, so the pane itself scrolls. */
-  .pane-quotes { overflow-y: auto; overscroll-behavior-y: contain; --accent: var(--quotes); --accent-soft: rgba(154,91,18,0.12); --order: #2f5f8c; --order-soft: rgba(47,95,140,0.12); --warn: #8c2f2f; --warn-soft: rgba(140,47,47,0.10); --rule: #e8edeb; }
+  .pane-quotes { overflow-y: auto; overscroll-behavior-y: contain; --accent: var(--quotes); --accent-soft: rgba(154,91,18,0.12); --warn: #8c2f2f; --warn-soft: rgba(140,47,47,0.10); --rule: #e8edeb; }
   /* Expenses is a fixed-height pane: the hero, the categories and the day's
      entries scroll inside it, so the Add button can sit still over the corner. */
   .pane-expenses { position: relative; display: flex; flex-direction: column; overflow: hidden; --accent: var(--expenses); --accent-soft: rgba(138,63,100,0.12); --wait: #7a4809; --wait-soft: rgba(154,91,18,0.12); --ok: #0b5750; --ok-soft: rgba(15,111,104,0.12); --bad: #8c2f2f; --bad-soft: rgba(140,47,47,0.10); --rule: #e8edeb; }
   @media (prefers-color-scheme: dark) {
-    .pane-quotes { --accent-soft: rgba(224,164,88,0.14); --order: #7fb0de; --order-soft: rgba(127,176,222,0.14); --warn: #e08585; --warn-soft: rgba(224,133,133,0.12); --rule: #1e2d2a; }
+    .pane-quotes { --accent-soft: rgba(224,164,88,0.14); --warn: #e08585; --warn-soft: rgba(224,133,133,0.12); --rule: #1e2d2a; }
     .pane-expenses { --accent-soft: rgba(217,138,176,0.16); --wait: #e0a458; --wait-soft: rgba(224,164,88,0.14); --ok: #29b3a6; --ok-soft: rgba(41,179,166,0.14); --bad: #e08585; --bad-soft: rgba(224,133,133,0.12); --rule: #1e2d2a; }
   }
 
@@ -1490,8 +1490,10 @@ window.ikeAuth = (function () {
   var DAYN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  var DATA_URL = 'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/quotations.json';
-  var REFRESH_MS = 60000; // ike-data itself refreshes every 15 min; this just keeps the page honest
+  // The Worker builds this feed itself every 15 minutes (D31) and serves it
+  // behind the sign-in, from this page's own origin.
+  var DATA_URL = window.ikeAuth.base + '/quotations/open';
+  var REFRESH_MS = 60000; // the feed itself is rebuilt every 15 min; this just keeps the page honest
   var STORE_KEY = 'ike-quotations:dismissed';
 
   function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
@@ -1955,10 +1957,7 @@ window.ikeAuth = (function () {
 
   function render(animate) {
     var rows = selected();
-    var quotes = rows.filter(function (q) { return q.kind === 'quotation'; });
-    var orders = rows.filter(function (q) { return q.kind === 'order'; });
-    var byValue = function (a, b) { return b.outstanding - a.outstanding; };
-    quotes.sort(byValue); orders.sort(byValue);
+    var quotes = rows.slice().sort(function (a, b) { return b.outstanding - a.outstanding; });
 
     if (state.day) {
       var dt = parseDay(state.day);
@@ -1976,8 +1975,7 @@ window.ikeAuth = (function () {
 
     heroValueEl.textContent = fmt(sum(rows));
     sublineEl.textContent = rows.length + (rows.length === 1 ? ' record' : ' records') +
-      ' still owing · ' + quotes.length + ' quotation' + (quotes.length === 1 ? '' : 's') +
-      ' · ' + orders.length + ' unpaid order' + (orders.length === 1 ? '' : 's');
+      ' still owing';
 
     renderChart();
     updatePills();
@@ -1986,9 +1984,7 @@ window.ikeAuth = (function () {
     var open = openRowKeys();
     var animClass = animate ? ((++state.tick) % 2 ? 'q-rise-b' : 'q-rise-a') : null;
     rowSeq = 0;
-    contentEl.innerHTML =
-      cardHtml('Quotations', 'var(--accent)', quotes, animClass) +
-      cardHtml('Unpaid orders', 'var(--order)', orders, animClass);
+    contentEl.innerHTML = cardHtml('Quotations', 'var(--accent)', quotes, animClass);
     restoreOpen(open);
     renderBin();
   }
@@ -2100,18 +2096,53 @@ window.ikeAuth = (function () {
   });
 
   // ---- Boot ----
+  // A message stands in for the pane until the first feed arrives. The shell
+  // underneath is kept, so a later refresh that brings the feed can show it.
+  var shellEl = document.getElementById('q-shell');
+  var msgEl = null;
   function showMessage(msg) {
-    document.getElementById('q-shell').innerHTML = '<div class="state-msg">' + escapeHtml(msg) + '</div>';
+    if (!msgEl) {
+      msgEl = document.createElement('div');
+      msgEl.className = 'state-msg';
+      shellEl.parentNode.insertBefore(msgEl, shellEl);
+    }
+    msgEl.textContent = msg;
+    shellEl.style.display = 'none';
+  }
+  function clearMessage() {
+    if (!msgEl) return;
+    msgEl.parentNode.removeChild(msgEl);
+    msgEl = null;
+    shellEl.style.display = '';
+  }
+
+  // Signed out (D28): the feed is read again once the person is back in. One
+  // resume is enough, however many refreshes hit the 401 meanwhile.
+  var awaitingSignin = false;
+  function resumeAfterSignin() {
+    awaitingSignin = false;
+    load(payload !== null);
   }
 
   function load(isRefresh) {
     return fetch(DATA_URL, { cache: 'no-store' })
       .then(function (res) {
-        if (res.status === 404) throw new Error('not-yet');
+        if (res.status === 401) {
+          if (!awaitingSignin) { awaitingSignin = true; window.ikeAuth.signedOut(resumeAfterSignin); }
+          return null;
+        }
+        if (res.status === 503) {
+          // Before the Worker's first build there is no feed yet (D31).
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            throw new Error(body && body.error === 'not_ready' ? 'not-yet' : 'HTTP 503');
+          });
+        }
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
+        if (data === null) return;
+        clearMessage();
         var first = payload === null;
         payload = data;
         if (data.generatedAt) {
@@ -2137,10 +2168,11 @@ window.ikeAuth = (function () {
         render(first);
       })
       .catch(function (err) {
-        if (isRefresh) return;
+        // A refresh never replaces quotations already on screen with an error.
+        if (payload !== null) return;
         if (err.message === 'not-yet') {
-          showMessage('No quotation data yet — run the “Refresh sales + expenses + today + quotations data” workflow in ike-data once to seed it.');
-        } else {
+          showMessage('Quotations appear after the next refresh, within 15 minutes.');
+        } else if (!isRefresh) {
           showMessage('Could not load open quotations (' + err.message + '). Try refreshing in a minute.');
         }
       });

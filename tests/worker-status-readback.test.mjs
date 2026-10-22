@@ -300,8 +300,8 @@ async function startFakeOdoo() {
 
 async function readConfig() {
   const cfg = JSON.parse(await fs.readFile(path.join(WORKER, 'wrangler.json'), 'utf8'));
-  assert.deepEqual(cfg.triggers && cfg.triggers.crons, [CRON],
-    "the read-back runs on D13's existing 15-minute schedule; V5 adds no second cron");
+  assert.deepEqual(cfg.triggers && cfg.triggers.crons, [CRON, '7-59/15 * * * *'],
+    "the read-back runs on D13's existing 15-minute schedule; the only other cron is D31's quotations build");
   assert.equal((cfg.d1_databases || []).length, 1);
   return cfg;
 }
