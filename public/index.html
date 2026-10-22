@@ -12,11 +12,6 @@
 <meta name="apple-mobile-web-app-title" content="Ike">
 <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<!-- The expenses service's public base URL, filled in once by the owner after
-     `wrangler deploy` (D9: no build step; D10: no secret in the page — a URL is
-     not a secret and no PIN or key is ever placed here). While it is empty the
-     Expenses pane makes no service call and says so plainly. -->
-<meta name="ike-expenses-service" content="https://odoo.ike-mrh.workers.dev">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
@@ -502,6 +497,31 @@
     .e-sheet { border-radius: 24px; margin-bottom: 24px; }
     .e-overlay { align-items: center; }
   }
+
+  /* ---- Sign-in (D28). One full-screen layer over the whole app, in the house
+     style: the page background, a white card with 18px corners, the Manrope
+     title. It is opaque, so nothing of the app shows behind it. While the
+     session is being checked it shows the brand alone (.is-checking), so a
+     signed-in phone never sees the form flash. */
+  .signin { position: fixed; inset: 0; z-index: 80; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 24px 16px; overflow-y: auto; --e-fieldline: rgba(13,31,28,0.18); --accent: var(--sales); --accent-soft: rgba(15,111,104,0.12); --bad: #8c2f2f; }
+  @media (prefers-color-scheme: dark) {
+    .signin { --e-fieldline: rgba(255,255,255,0.24); --accent-soft: rgba(41,179,166,0.16); --bad: #e08585; }
+  }
+  .signin[hidden] { display: none; }
+  .signin-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 22px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .signin-brand { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .signin-brand img { width: 64px; height: 64px; border-radius: 16px; }
+  .signin-eyebrow { font-family: Manrope, sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink3); }
+  .signin-title { margin: 0; font-family: Manrope, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.01em; color: var(--ink); }
+  .signin-form { display: flex; flex-direction: column; gap: 14px; margin: 0; }
+  .signin.is-checking .signin-form { display: none; }
+  .signin .e-input[type="password"] { letter-spacing: normal; }
+  .signin-go { height: 56px; border: 0; border-radius: 16px; background: var(--sales); color: #ffffff; font-family: Manrope, sans-serif; font-weight: 800; font-size: 17px; cursor: pointer; }
+  .signin-go:disabled { opacity: 0.6; cursor: default; }
+  .signin-error { margin: 0; text-align: center; font-size: 14px; font-weight: 600; color: var(--bad); }
+  .signin-error:empty { display: none; }
+  .pane-expenses .e-signout { margin: 0; text-align: center; font-size: 13px; color: var(--ink3); }
+  .pane-expenses .e-signout button { border: 0; background: none; padding: 8px 4px; font: inherit; font-weight: 700; color: var(--accent); cursor: pointer; }
 </style>
 </head>
 <body>
@@ -585,6 +605,8 @@
           <div class="legend">
             <span class="w">Waiting</span><span aria-hidden="true">›</span><span class="d">Draft</span><span aria-hidden="true">›</span><span class="a">Approved</span>
           </div>
+
+          <p class="e-signout" id="e-signout" hidden>Signed in as <span id="e-whoami"></span> · <button type="button" id="e-signoutBtn">Sign out</button></p>
         </div>
       </div>
       <button class="fab" type="button" id="e-add" aria-label="Add expense">
@@ -654,11 +676,6 @@
         <span class="e-lbl e-opt" id="e-receiptName"></span>
       </div>
 
-      <div class="e-field">
-        <label class="e-lbl" for="e-pin">Your PIN</label>
-        <input class="e-input" id="e-pin" type="password" inputmode="numeric" autocomplete="off">
-      </div>
-
       <button class="e-post" type="button" id="e-postBtn">Post expense</button>
       <span class="e-note" id="e-note"></span>
     </div>
@@ -668,6 +685,32 @@
       <div class="e-fldots"><i></i><i></i><i></i></div>
       <div class="e-fltitle">Processing</div>
       <div class="e-flwhat"></div>
+    </div>
+  </div>
+
+  <!-- Sign-in (D28): the whole app sits behind it. Opaque and above every other
+       layer, so a signed-out phone sees this and nothing else. A real <form>
+       with username / current-password autocomplete, so Chrome offers to save
+       the password. Every id here is signin- prefixed. -->
+  <div class="signin is-checking" id="signin" role="dialog" aria-modal="true" aria-labelledby="signin-title">
+    <div class="signin-card">
+      <div class="signin-brand">
+        <img src="icons/icon-192.png" alt="" width="64" height="64">
+        <span class="signin-eyebrow">MRH Investment</span>
+        <h1 class="signin-title" id="signin-title">Ike</h1>
+      </div>
+      <form class="signin-form" id="signin-form" method="post" action="auth/signin" novalidate>
+        <div class="e-field">
+          <label class="e-lbl" for="signin-username">Username</label>
+          <input class="e-input" id="signin-username" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+        </div>
+        <div class="e-field">
+          <label class="e-lbl" for="signin-password">Password</label>
+          <input class="e-input" id="signin-password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="signin-go" type="submit" id="signin-go">Sign in</button>
+        <p class="signin-error" id="signin-error" role="alert"></p>
+      </form>
     </div>
   </div>
 </div>
@@ -686,6 +729,149 @@ window.ikeDay = (function () {
       subs.forEach(function (s) { if (s.from !== from) s.fn(d); });
     },
     on: function (from, fn) { subs.push({ from: from, fn: fn }); }
+  };
+})();
+</script>
+<script>
+// ---- The sign-in gate (D27, D28) ----
+// The page and the Worker share one origin, so the session is an HttpOnly
+// cookie this script never sees: it only learns "signed in" or "signed out"
+// from the Worker's answers. One object, read by every pane that calls the
+// Worker:
+//   ikeAuth.base          the Worker's base ('' = this origin; see serviceBase)
+//   ikeAuth.signedOut(fn) a call came back 401: show the sign-in screen, and
+//                         run fn once the person has signed in again
+//   ikeAuth.onSignedIn(fn) run fn on every sign-in (fn(username))
+window.ikeAuth = (function () {
+  // The Worker is this page's own origin. A loopback page — and only a loopback
+  // page — may point at another one with ?api=, so a crafted
+  // https://…/?api=<attacker> link can never receive a typed password.
+  function serviceBase() {
+    var host = location.hostname;
+    if (host === '127.0.0.1' || host === 'localhost') {
+      var m = /[?&]api=([^&]*)/.exec(location.search);
+      if (m) return decodeURIComponent(m[1]).replace(/\/+$/, '');
+    }
+    return '';
+  }
+  var BASE = serviceBase();
+  var AUTH = BASE + '/auth';
+
+  var screen = document.getElementById('signin');
+  var form = document.getElementById('signin-form');
+  var userEl = document.getElementById('signin-username');
+  var passEl = document.getElementById('signin-password');
+  var goEl = document.getElementById('signin-go');
+  var errorEl = document.getElementById('signin-error');
+  var app = document.getElementById('app');
+
+  var username = null;
+  var resumes = [];
+  var listeners = [];
+
+  // Everything but this layer is inert while it shows: no tap, no focus and no
+  // screen-reader reach behind it.
+  function cover(on) {
+    Array.prototype.forEach.call(app.children, function (el) {
+      if (el === screen) return;
+      if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    });
+  }
+
+  function showForm() {
+    username = null;
+    screen.classList.remove('is-checking');
+    screen.hidden = false;
+    cover(true);
+    goEl.disabled = false;
+    passEl.value = '';
+    try { (userEl.value ? passEl : userEl).focus(); } catch (e) {}
+  }
+
+  function admit(name) {
+    username = name;
+    screen.hidden = true;
+    screen.classList.remove('is-checking');
+    errorEl.textContent = '';
+    passEl.value = '';
+    cover(false);
+    if (name) listeners.forEach(function (fn) { fn(name); });
+    var waiting = resumes;
+    resumes = [];
+    waiting.forEach(function (fn) { fn(); });
+  }
+
+  // HH:MM on the Maldives clock (UTC+5), wherever the phone thinks it is.
+  function maldivesHHMM(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return String(iso);
+    var m = new Date(d.getTime() + 5 * 3600 * 1000);
+    return ('0' + m.getUTCHours()).slice(-2) + ':' + ('0' + m.getUTCMinutes()).slice(-2);
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (goEl.disabled) return;
+    goEl.disabled = true;
+    errorEl.textContent = '';
+    fetch(AUTH + '/signin', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ username: userEl.value.trim(), password: passEl.value })
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; })
+          .then(function (body) { return { status: res.status, body: body }; });
+      })
+      .then(function (r) {
+        goEl.disabled = false;
+        if (r.status === 200 && r.body && r.body.signed_in) {
+          admit(r.body.username);
+          return;
+        }
+        passEl.value = '';
+        errorEl.textContent = r.status === 429
+          ? 'Too many tries. Try again at ' + maldivesHHMM(r.body && r.body.retry_at) + '.'
+          : 'Wrong username or password.';
+      })
+      .catch(function () {
+        goEl.disabled = false;
+        errorEl.textContent = 'Could not reach the service. Try again.';
+      });
+  });
+
+  // The first answer decides what this open shows. A phone with no network
+  // opens the app it has (the service worker's shell), as it always did; the
+  // first call that does reach the Worker brings the form if the session is gone.
+  fetch(AUTH + '/session', { cache: 'no-store', credentials: 'same-origin' })
+    .then(function (res) {
+      return res.json().catch(function () { return {}; })
+        .then(function (body) { return { status: res.status, body: body }; });
+    })
+    .then(function (r) {
+      if (r.status === 200 && r.body && r.body.signed_in) admit(r.body.username);
+      else showForm();
+    })
+    .catch(function () { admit(null); });
+
+  return {
+    base: BASE,
+    username: function () { return username; },
+    signedOut: function (resume) {
+      if (typeof resume === 'function') resumes.push(resume);
+      if (screen.hidden || screen.classList.contains('is-checking')) showForm();
+    },
+    onSignedIn: function (fn) {
+      listeners.push(fn);
+      if (username) fn(username);
+    },
+    signOut: function () {
+      var done = function () { showForm(); };
+      fetch(AUTH + '/signout', { method: 'POST', credentials: 'same-origin' })
+        .then(done, done);
+    }
   };
 })();
 </script>
@@ -2023,25 +2209,12 @@ window.ikeDay = (function () {
     return DAYN[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()];
   }
 
-  // The page learns the service's base URL from one declarative line. A
-  // loopback page — and only a loopback page — may override it with ?api=, so a
-  // crafted https://…/?api=<attacker> link can never receive a typed PIN.
-  function serviceBase() {
-    var host = location.hostname;
-    if (host === '127.0.0.1' || host === 'localhost') {
-      var m = /[?&]api=([^&]*)/.exec(location.search);
-      return m ? decodeURIComponent(m[1]).replace(/\/+$/, '') : '';
-    }
-    var meta = document.querySelector('meta[name="ike-expenses-service"]');
-    return ((meta && meta.getAttribute('content')) || '').trim().replace(/\/+$/, '');
-  }
-  var BASE = serviceBase();
-
-  // BASE stays the layer ROOT, because it is the single 'is the service
-  // configured' fact every gate below reads. The expenses area lives one
-  // segment in (decision 17), and this is the only place that segment is
-  // written on the calling side.
-  var EXPENSES = BASE + '/expenses';
+  // The Worker is this page's own origin (D27), so the service is always
+  // there: the sign-in gate owns the one loopback-only ?api= override. The
+  // expenses area lives one segment in (decision 17), and this is the only
+  // place that segment is written on the calling side.
+  var EXPENSES = window.ikeAuth.base + '/expenses';
+  var auth = window.ikeAuth;
 
   // One in-closure state object; the renderers read nothing else.
   var state = {
@@ -2052,12 +2225,12 @@ window.ikeDay = (function () {
     entries: null,     // null = not read yet
     entriesError: null,
     posting: false,
-    // The sheet's category list: 'unset' (no service configured), 'loading',
-    // 'ready' or 'error'. No copy of D7's 21 names lives in this page, so until
-    // the service's own list is read there is nothing to choose and Post is
-    // disabled — an entry whose category the service never offered cannot be
-    // sent at all, rather than merely being discouraged by a message.
-    catsState: BASE ? 'loading' : 'unset',
+    // The sheet's category list: 'loading', 'ready' or 'error'. No copy of
+    // D7's 21 names lives in this page, so until the service's own list is read
+    // there is nothing to choose and Post is disabled — an entry whose category
+    // the service never offered cannot be sent at all, rather than merely being
+    // discouraged by a message.
+    catsState: 'loading',
     catsReason: null,
     // D12's Retry press: the client_entry_id whose call is in flight, so the
     // disabled flag survives every re-render, and one note keyed by row, so a
@@ -2067,7 +2240,6 @@ window.ikeDay = (function () {
   };
 
   var CATS_MESSAGE = {
-    unset: 'The expenses service is not set up yet.',
     loading: 'Loading the categories…',
     ready: ''
   };
@@ -2093,7 +2265,6 @@ window.ikeDay = (function () {
   var amountEl = document.getElementById('e-amount');
   var descriptionEl = document.getElementById('e-description');
   var categoryEl = document.getElementById('e-category');
-  var pinEl = document.getElementById('e-pin');
   var noteEl = document.getElementById('e-note');
   var receiptNameEl = document.getElementById('e-receiptName');
   var cameraEl = document.getElementById('e-camera');
@@ -2173,10 +2344,6 @@ window.ikeDay = (function () {
   function renderEntries() {
     entriesLabelEl.textContent = 'Entries · ' + fullLabel(state.day);
 
-    if (!BASE) {
-      entriesEl.innerHTML = '<div class="empty">The expenses service is not set up yet.</div>';
-      return;
-    }
     if (state.entriesError) {
       entriesEl.innerHTML = '<div class="empty">Could not load today\'s entries (' +
         esc(state.entriesError) + '). Nothing is shown as saved.</div>';
@@ -2223,7 +2390,6 @@ window.ikeDay = (function () {
     if (state.catsState === 'ready') {
       // Do not speak over a post outcome: clear only our own words.
       if (noteEl.textContent === CATS_MESSAGE.loading
-          || noteEl.textContent === CATS_MESSAGE.unset
           || noteEl.textContent.indexOf('Could not load the categories (') === 0) {
         noteEl.textContent = '';
       }
@@ -2279,7 +2445,6 @@ window.ikeDay = (function () {
   }
 
   function loadEntries() {
-    if (!BASE) { renderEntries(); return Promise.resolve(); }
     var asked = state.day;
     return fetch(EXPENSES + '/entries?date=' + encodeURIComponent(asked), { cache: 'no-store' })
       .then(function (res) {
@@ -2287,6 +2452,8 @@ window.ikeDay = (function () {
           .then(function (body) { return { status: res.status, body: body }; });
       })
       .then(function (r) {
+        // Signed out (D28): the list is read again once the person is back in.
+        if (r.status === 401) { auth.signedOut(loadEntries); return; }
         if (asked !== state.day) return;
         if (r.status === 200 && r.body && r.body.entries) {
           state.entries = r.body.entries;
@@ -2310,7 +2477,7 @@ window.ikeDay = (function () {
   // Worker's words; this never patches a chip and never reasons about a status.
   // One press at a time, and no reload.
   function retryEntry(id) {
-    if (!BASE || !id || state.retrying) return Promise.resolve();
+    if (!id || state.retrying) return Promise.resolve();
     state.retrying = id;
     state.retryNote = null;
     renderEntries();
@@ -2333,6 +2500,12 @@ window.ikeDay = (function () {
           .then(function (body) { return { status: res.status, body: body }; });
       })
       .then(function (r) {
+        if (r.status === 401) {
+          // The press was not heard; the person presses again once signed in.
+          done(null);
+          auth.signedOut(loadEntries);
+          return;
+        }
         if (r.status === 200 && r.body && r.body.entry) {
           var fresh = r.body.entry;
           state.entries = (state.entries || []).map(function (e) {
@@ -2355,12 +2528,6 @@ window.ikeDay = (function () {
   });
 
   function loadCategories() {
-    if (!BASE) {
-      state.catsState = 'unset';
-      state.catsReason = null;
-      renderCategories();
-      return Promise.resolve();
-    }
     if (state.catsState !== 'ready') {
       // 'Loading…' exists so a fast FAB tap cannot show a failure that has not
       // happened yet.
@@ -2369,12 +2536,15 @@ window.ikeDay = (function () {
     }
     return fetch(EXPENSES + '/categories', { cache: 'no-store' })
       .then(function (res) {
+        // Signed out (D28): the list is read again once the person is back in.
+        if (res.status === 401) { auth.signedOut(loadCategories); return null; }
         // A rejected fetch and an origin refusal are the one event (decision
         // 12); a non-200 names its status instead.
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (body) {
+        if (body === null) return;
         var cats = (body && body.categories) || [];
         if (!cats.length) throw new Error('no categories');
         // A re-read must not speak over a choice already made: the list is
@@ -2422,7 +2592,7 @@ window.ikeDay = (function () {
   }
 
   // The id of the entry currently typed in the sheet, minted once and kept
-  // across a lost answer; the PIN itself is never stored anywhere.
+  // across a lost answer and across a sign-in in the middle of a save.
   var pendingId = null;
 
   function openSheet() {
@@ -2434,7 +2604,6 @@ window.ikeDay = (function () {
     loadCategories();
     amountEl.value = '';
     descriptionEl.value = '';
-    pinEl.value = '';
     cameraEl.value = '';
     galleryEl.value = '';
     categoryEl.selectedIndex = 0;
@@ -2454,7 +2623,6 @@ window.ikeDay = (function () {
   amountEl.addEventListener('input', sizeAmount);
   function closeSheet() {
     pendingId = null;
-    pinEl.value = '';
     sheet.hidden = true;
     document.getElementById('e-add').focus();
   }
@@ -2527,12 +2695,6 @@ window.ikeDay = (function () {
 
   function refusalMessage(status, body) {
     var error = (body && body.error) || '';
-    if (status === 403 && error === 'wrong_pin') {
-      return 'That PIN was not accepted. Check it and try again.';
-    }
-    if (status === 429) {
-      return 'Too many wrong PINs. Try again after ' + hhmm(body && body.retry_at) + '.';
-    }
     if (error === 'unknown_category') return 'Choose one of the listed categories.';
     if (error === 'amount_not_positive_mvr') {
       return 'Enter the amount in MVR as a positive number.';
@@ -2649,7 +2811,6 @@ window.ikeDay = (function () {
     // become a second entry.
     if (!pendingId) pendingId = crypto.randomUUID();
     var body = {
-      pin: pinEl.value,
       category: categoryEl.value,
       // Posted exactly as typed: the Worker trims, collapses and judges it.
       description: descriptionEl.value,
@@ -2668,6 +2829,15 @@ window.ikeDay = (function () {
           .then(function (b) { return { status: res.status, body: b }; });
       })
       .then(function (r) {
+        if (r.status === 401) {
+          // Signed out mid-save (D28): nothing was saved. The sheet keeps what
+          // was typed under the sign-in screen, and the SAME entry — the same
+          // client_entry_id — is sent again once the person is back in, so the
+          // second send cannot become a second entry.
+          flightBack(flight);
+          auth.signedOut(function () { flightStart(); send(base64); });
+          return;
+        }
         state.posting = false;
         postBtn.disabled = false;
         if (r.status === 200 && r.body && r.body.saved === true && r.body.entry) {
@@ -2714,15 +2884,6 @@ window.ikeDay = (function () {
       amountEl.focus();
       return;
     }
-    if (!pinEl.value) {
-      noteEl.textContent = 'Enter your PIN.';
-      pinEl.focus();
-      return;
-    }
-    if (!BASE) {
-      noteEl.textContent = 'The expenses service is not set up yet.';
-      return;
-    }
     state.posting = true;
     postBtn.disabled = true;
     noteEl.textContent = '';
@@ -2740,6 +2901,18 @@ window.ikeDay = (function () {
   // leaves it where it is rather than blanking.
   window.ikeDay.on('expenses', function (date) {
     selectDay(date, false);
+  });
+
+  // "Signed in as <username> · Sign out", under the legend (D28). Pressing it
+  // asks nothing, ends this phone's session only and brings the sign-in screen.
+  var signoutEl = document.getElementById('e-signout');
+  auth.onSignedIn(function (name) {
+    document.getElementById('e-whoami').textContent = name;
+    signoutEl.hidden = false;
+  });
+  document.getElementById('e-signoutBtn').addEventListener('click', function () {
+    signoutEl.hidden = true;
+    auth.signOut();
   });
 
   var start = window.ikeDay.get();

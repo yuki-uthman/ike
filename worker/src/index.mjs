@@ -1,21 +1,33 @@
 // The HTTP boundary: the only module that knows Request, Response, headers and
-// status codes (decision 17). Every answer is JSON; every answer except the
-// origin refusal carries Access-Control-Allow-Origin and Vary: Origin; and
-// `saved: true` occurs in exactly one place — the 200 answer to a save, built
-// only after the store has already awaited the entry and its receipt.
+// status codes (decision 17). Every answer is JSON, and `saved: true` occurs in
+// exactly one place — the 200 answer to a save, built only after the store has
+// already awaited the entry and its receipt.
+//
+// Since D27 the Worker also SERVES the page (the static-assets binding, public/),
+// so the page and this boundary share one origin. There are no CORS headers any
+// more: nothing is meant to call this from another origin. Two gates stand in
+// front of every route this Worker runs for, in this order (D27):
+//   1. every non-GET must carry an Origin equal to the Worker's own, or 403;
+//   2. every data route (/expenses/*, /quotations/*) needs a session, or 401.
+// /auth/* is the only area open without a session.
 
 import { isKnownCategory, listCategories } from './categories.mjs';
 import { parseMvrToLaari } from './mvr.mjs';
 import {
-  listDay,
-  maldivesDate,
-  recordWrongPin,
-  saveEntry,
-  windowEnd,
-  windowIndex,
-  wrongPinMisses,
-  WRONG_PIN_LIMIT
-} from './save.mjs';
+  checkPassword,
+  clearedSessionCookie,
+  endSession,
+  recordSigninFailure,
+  sessionCookie,
+  sessionToken,
+  sessionUser,
+  signinFailures,
+  signinWindow,
+  signinWindowEnd,
+  SIGNIN_LIMIT,
+  startSession
+} from './auth.mjs';
+import { listDay, maldivesDate, saveEntry } from './save.mjs';
 import { runReadBack } from './readback.mjs';
 import { runSync, syncEntry } from './sync.mjs';
 
@@ -27,42 +39,29 @@ const RETRY_PATH = /^\/entries\/([^/]+)\/retry$/;
 // is one more constant and one more gate rather than a rewrite of a handler.
 const AREA = '/expenses';
 
+// The areas that need a session (D27). Quotations has no route yet — it is the
+// next issue's — but it is gated now, so its first route cannot be born open.
+const SIGNED_IN_AREAS = [AREA, '/quotations'];
+const AUTH = '/auth';
+
 const RECEIPT_CAP_BYTES = 1000000; // the Worker's own declared cap (decision 16)
 const BASE64 = /^[A-Za-z0-9+/]*={0,2}$/;
 
-function corsHeaders(env) {
-  return {
-    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN,
-    'Vary': 'Origin'
-  };
-}
-
-function json(status, body, env, { cors = true } = {}) {
+// A signed-in answer is about one person's session and must never be kept by a
+// cache between the phone and this Worker.
+function json(status, body, headers = {}) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: {
-      'content-type': 'application/json',
-      ...(cors ? corsHeaders(env) : { 'Vary': 'Origin' })
-    }
+    headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...headers }
   });
 }
 
-function refuse(status, error, env, extra = {}, headers = {}) {
-  const res = json(status, { saved: false, error, ...extra }, env,
-    { cors: error !== 'origin_not_allowed' });
-  for (const [k, v] of Object.entries(headers)) res.headers.set(k, v);
-  return res;
+function refuse(status, error, extra = {}, headers = {}) {
+  return json(status, { saved: false, error, ...extra }, headers);
 }
 
-function preflight(env) {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      ...corsHeaders(env),
-      'Access-Control-Allow-Headers': 'content-type',
-      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS'
-    }
-  });
+function inArea(pathname, area) {
+  return pathname === area || pathname.startsWith(area + '/');
 }
 
 /** Decode a base64 receipt strictly; null means "not base64". */
@@ -97,81 +96,95 @@ function normaliseDescription(value) {
   return value.trim().replace(/\s+/g, ' ');
 }
 
-/** Constant-time PIN comparison over UTF-8 bytes; the secret is never stored. */
-function pinMatches(given, secret) {
-  if (typeof given !== 'string' || typeof secret !== 'string') return false;
-  const encoder = new TextEncoder();
-  const a = encoder.encode(given);
-  const b = encoder.encode(secret);
-  if (a.byteLength !== b.byteLength) return false;
-  return crypto.subtle.timingSafeEqual(a, b);
-}
-
-async function handleSave(request, env) {
-  const source = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const now = Date.now();
-  const index = windowIndex(now);
-
-  // The wrong-PIN budget is read before the comparison, so an exhausted window
-  // answers Retry even to a correct PIN, and nothing is saved (decision 11).
-  const misses = await wrongPinMisses(env.DB, source, index);
-  if (misses >= WRONG_PIN_LIMIT) {
-    const end = windowEnd(index);
-    const seconds = Math.max(0, Math.ceil((end.getTime() - now) / 1000));
-    return refuse(429, 'too_many_wrong_pins', env,
-      { retry_at: end.toISOString() }, { 'Retry-After': String(seconds) });
-  }
-
+async function readJsonObject(request) {
   let body;
   try {
     body = await request.json();
   } catch {
-    return refuse(422, 'bad_json', env);
+    return null;
   }
-  if (body === null || typeof body !== 'object' || Array.isArray(body)) {
-    return refuse(422, 'bad_json', env);
+  return body !== null && typeof body === 'object' && !Array.isArray(body) ? body : null;
+}
+
+// ---- /auth: the one area open without a session (D23-D25) ----
+
+/**
+ * Sign-in. The failure budget is read BEFORE the password is checked, so an
+ * exhausted window answers 429 even to the right password, and an unknown
+ * username and a wrong password are one answer with one message (D25).
+ */
+async function handleSignin(request, env) {
+  const source = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const now = Date.now();
+  const index = signinWindow(now);
+
+  if (await signinFailures(env.DB, source, index) >= SIGNIN_LIMIT) {
+    const end = signinWindowEnd(index);
+    const seconds = Math.max(0, Math.ceil((end.getTime() - now) / 1000));
+    return refuse(429, 'too_many_attempts',
+      { retry_at: end.toISOString() }, { 'Retry-After': String(seconds) });
   }
 
-  if (!pinMatches(body.pin, env.EXPENSE_PIN)) {
-    await recordWrongPin(env.DB, source, index);
-    return refuse(403, 'wrong_pin', env);
+  const body = await readJsonObject(request);
+  if (!body) return refuse(422, 'bad_json');
+
+  const user = await checkPassword(env.DB, body.username, body.password);
+  if (!user) {
+    await recordSigninFailure(env.DB, source, index);
+    return refuse(401, 'wrong_username_or_password');
   }
+  const token = await startSession(env.DB, user.id, now);
+  return json(200, { signed_in: true, username: user.username },
+    { 'Set-Cookie': sessionCookie(token) });
+}
+
+/** Sign-out ends THIS phone's session only; `signout` in the script ends them all. */
+async function handleSignout(request, env) {
+  await endSession(env.DB, sessionToken(request.headers.get('Cookie')));
+  return json(200, { signed_in: false }, { 'Set-Cookie': clearedSessionCookie() });
+}
+
+// ---- /expenses ----
+
+async function handleSave(request, env) {
+  const now = Date.now();
+
+  const body = await readJsonObject(request);
+  if (!body) return refuse(422, 'bad_json');
 
   if (!isKnownCategory(body.category)) {
-    return refuse(422, 'unknown_category', env);
+    return refuse(422, 'unknown_category');
   }
 
   const amountLaari = parseMvrToLaari(body.amount);
   if (amountLaari === null) {
-    return refuse(422, 'amount_not_positive_mvr', env);
+    return refuse(422, 'amount_not_positive_mvr');
   }
 
   const clientEntryId = typeof body.client_entry_id === 'string'
     ? body.client_entry_id.trim()
     : '';
   if (clientEntryId === '') {
-    return refuse(422, 'invalid_client_entry_id', env);
+    return refuse(422, 'invalid_client_entry_id');
   }
 
-  // D19's optional description, judged after the PIN, the category, the amount
-  // and the id, so a wrong PIN still answers wrong_pin first and an over-long
-  // description cannot reveal which other field was also wrong. Absent, null and
-  // whitespace-only all mean "none" and are stored as ''.
+  // D19's optional description, judged after the category, the amount and the
+  // id, so an over-long description cannot reveal which other field was also
+  // wrong. Absent, null and whitespace-only all mean "none" and are stored as ''.
   const description = normaliseDescription(body.description);
   if (description === null) {
-    return refuse(422, 'description_not_text', env);
+    return refuse(422, 'description_not_text');
   }
   if ([...description].length > DESCRIPTION_LIMIT_CHARS) {
-    return refuse(422, 'description_too_long', env,
-      { limit_chars: DESCRIPTION_LIMIT_CHARS });
+    return refuse(422, 'description_too_long', { limit_chars: DESCRIPTION_LIMIT_CHARS });
   }
 
   const receipt = decodeReceipt(body.receipt);
   if (receipt === null) {
-    return refuse(422, 'bad_receipt_base64', env);
+    return refuse(422, 'bad_receipt_base64');
   }
   if (receipt.length > RECEIPT_CAP_BYTES) {
-    return refuse(413, 'receipt_too_large', env,
+    return refuse(413, 'receipt_too_large',
       { receipt_bytes: receipt.length, limit_bytes: RECEIPT_CAP_BYTES });
   }
 
@@ -187,11 +200,11 @@ async function handleSave(request, env) {
       saved_at: new Date(now).toISOString()
     });
   } catch (err) {
-    return refuse(503, 'not_stored', env, { detail: String(err && err.message || err) });
+    return refuse(503, 'not_stored', { detail: String(err && err.message || err) });
   }
 
   // Nothing above was deferred: the row is durable before this is written.
-  return json(200, { saved: true, entry }, env);
+  return json(200, { saved: true, entry });
 }
 
 async function handleDay(url, env) {
@@ -199,68 +212,93 @@ async function handleDay(url, env) {
   const date = asked && /^\d{4}-\d{2}-\d{2}$/.test(asked) ? asked : maldivesDate();
   try {
     const entries = await listDay(env.DB, date);
-    return json(200, { date, entries }, env);
+    return json(200, { date, entries });
   } catch (err) {
-    return refuse(503, 'not_read', env, { detail: String(err && err.message || err) });
+    return refuse(503, 'not_read', { detail: String(err && err.message || err) });
   }
 }
 
 /**
  * D12's Retry button. It creates no new data and discloses nothing beyond what
- * GET /entries already serves, so it needs no PIN; it is origin-gated like every
- * other port. `saved: true` still occurs in exactly one place: the save answer.
+ * GET /entries already serves; like every data route it needs a session and,
+ * being a POST, the Worker's own Origin. `saved: true` still occurs in exactly
+ * one place: the save answer.
  */
 async function handleRetry(clientEntryId, env) {
   let entry;
   try {
     entry = await syncEntry(env, clientEntryId);
   } catch (err) {
-    return refuse(503, 'not_read', env, { detail: String(err && err.message || err) });
+    return refuse(503, 'not_read', { detail: String(err && err.message || err) });
   }
-  if (!entry) return refuse(404, 'not_found', env);
-  return json(200, { entry }, env);
+  if (!entry) return refuse(404, 'not_found');
+  return json(200, { entry });
+}
+
+/** The data routes, reached only past both gates. */
+async function route(request, url, env) {
+  if (!inArea(url.pathname, AREA)) return refuse(404, 'not_found');
+  const path = url.pathname.slice(AREA.length);
+
+  if (request.method === 'GET' && path === '/categories') {
+    return json(200, { categories: listCategories() });
+  }
+  if (request.method === 'GET' && path === '/entries') {
+    return handleDay(url, env);
+  }
+  if (request.method === 'POST' && path === '/entries') {
+    return handleSave(request, env);
+  }
+  if (request.method === 'POST') {
+    const retry = RETRY_PATH.exec(path);
+    if (retry) return handleRetry(decodeURIComponent(retry[1]), env);
+  }
+  return refuse(404, 'not_found');
 }
 
 export default {
   async fetch(request, env) {
-    // Decided before the body is read and before the PIN is read, on every
-    // method and path (decision 9). This is the one answer with no CORS header.
-    if (request.headers.get('Origin') !== env.ALLOWED_ORIGIN) {
-      return refuse(403, 'origin_not_allowed', env);
-    }
-
-    if (request.method === 'OPTIONS') return preflight(env);
-
     const url = new URL(request.url);
 
-    // Everything this layer serves lives under the area prefix. An old
-    // unprefixed path is not redirected and not dual-mounted: it joins the
-    // refusal this Worker already gives any unknown path, so a page still
-    // calling one fails loudly. The gate sits BELOW the origin check and the
-    // OPTIONS preflight above, which is what keeps 'OPTIONS answers 204 on any
-    // path' and 'the origin check applies on every path' true by construction —
-    // an unknown path never discloses which prefix exists.
-    if (url.pathname !== AREA && !url.pathname.startsWith(AREA + '/')) {
-      return refuse(404, 'not_found', env);
-    }
-    const route = url.pathname.slice(AREA.length);
-
-    if (request.method === 'GET' && route === '/categories') {
-      return json(200, { categories: listCategories() }, env);
-    }
-    if (request.method === 'GET' && route === '/entries') {
-      return handleDay(url, env);
-    }
-    if (request.method === 'POST' && route === '/entries') {
-      return handleSave(request, env);
+    // GATE 1 (D27), decided before any body is read, on every path. A browser
+    // sends Origin on every cross-origin request and on every same-origin
+    // non-GET, so a non-GET without OUR origin is a forged or foreign call.
+    // Reads are left to gate 2: a same-origin GET or navigation carries no
+    // Origin at all.
+    const reads = request.method === 'GET' || request.method === 'HEAD';
+    if (!reads && request.headers.get('Origin') !== url.origin) {
+      return refuse(403, 'origin_not_allowed');
     }
 
-    if (request.method === 'POST') {
-      const retry = RETRY_PATH.exec(route);
-      if (retry) return handleRetry(decodeURIComponent(retry[1]), env);
+    if (inArea(url.pathname, AUTH)) {
+      const route = url.pathname.slice(AUTH.length);
+      if (request.method === 'POST' && route === '/signin') return handleSignin(request, env);
+      if (request.method === 'POST' && route === '/signout') return handleSignout(request, env);
+      if (request.method === 'GET' && route === '/session') {
+        const user = await sessionUser(env.DB, sessionToken(request.headers.get('Cookie')),
+          Date.now());
+        return user
+          ? json(200, { signed_in: true, username: user.username })
+          : refuse(401, 'signed_out');
+      }
+      return refuse(404, 'not_found');
     }
 
-    return refuse(404, 'not_found', env);
+    // Everything else this layer serves lives under an area prefix. An unknown
+    // path is the plain 404; with the static-assets binding in front, the
+    // Worker only sees a path here when no page file answered it.
+    if (!SIGNED_IN_AREAS.some(area => inArea(url.pathname, area))) {
+      return refuse(404, 'not_found');
+    }
+
+    // GATE 2 (D27): every data route needs a live session.
+    const token = sessionToken(request.headers.get('Cookie'));
+    const user = await sessionUser(env.DB, token, Date.now());
+    if (!user) return refuse(401, 'signed_out');
+    const res = await route(request, url, env);
+    // A renewed session hands the phone the new lifetime with this answer.
+    if (user.renewed) res.headers.append('Set-Cookie', sessionCookie(token));
+    return res;
   },
 
   // The cron driving port (D13). Both steps are AWAITED rather than deferred to
