@@ -2,11 +2,15 @@
 
 A small, free dashboard of daily takings at MRH Investment — the money that
 actually arrived each day, counted once each — with a follow-up list of open
-quotations and a way for staff to record expenses. The page itself is **static**:
-one `index.html`, no secret, no build step. It reads its data live from
-[ike-data](https://github.com/yuki-uthman/ike-data), the shared Odoo pipeline.
-The one exception is the Expenses pane, which saves through a small Cloudflare
-Worker kept in this repo (see below).
+quotations and a way for managers to record expenses. The page itself is
+**static**: `public/index.html`, no secret, no build step. It reads its figures
+live from [ike-data](https://github.com/yuki-uthman/ike-data), the shared Odoo
+pipeline.
+
+Since 2026-10 the page is served by the `odoo` Cloudflare Worker kept in this
+repo, at **https://odoo.ike-mrh.workers.dev**, and the whole app sits behind
+**one shared sign-in** (see below). The Worker also saves the Expenses pane's
+entries.
 
 ## Three panes: Sales, Quotations and Expenses
 
@@ -33,29 +37,71 @@ follow. (Quotations' **All** stays local to that pane.)
 
 ## One-time setup
 
-**Enable GitHub Pages**: Settings → Pages → Source: "Deploy from a branch" →
-Branch: `main`, folder `/ (root)`. The page will be at
-`https://<your-username>.github.io/ike/`.
+Everything is deployed from `worker/` with the pinned wrangler (the owner does
+this; nothing deploys on its own):
 
-For the Sales and Quotations panes that's it — there's nothing else to configure
-here. Data freshness, the Odoo credential, and the de-duplication logic all live
-in [ike-data](https://github.com/yuki-uthman/ike-data). The Expenses pane also
-needs the Worker deployed (see below).
+```
+cd worker
+npx wrangler@4.148.0 d1 migrations apply ike-odoo --remote
+npx wrangler@4.148.0 deploy
+```
+
+`deploy` uploads the Worker **and** the page: `worker/wrangler.json` names
+`../public` as the Worker's static assets, and runs the Worker first only for
+`/auth/*`, `/expenses/*` and `/quotations/*`. Every other path is a page file.
+
+Then create the shared account (see *Signing in*). Data freshness, the read-side
+Odoo credential and the de-duplication logic live in
+[ike-data](https://github.com/yuki-uthman/ike-data). GitHub Pages is no longer
+used: turn it off (Settings → Pages → Source: None) once the Worker serves the
+app.
+
+## Signing in
+
+The app opens on a sign-in screen. Sales, Quotations and Expenses appear only
+after a username and password are accepted. There is **one shared account** for
+all managers; nothing records who posted an expense.
+
+- **Passwords are generated, never chosen**: five random words from the
+  7,776-word list in `worker/scripts/`, joined by `-`. Only a PBKDF2-SHA256 hash
+  (10,000 rounds) is stored.
+- **Accounts are managed with one script**, which prints the SQL to run and
+  touches no database itself:
+
+  ```
+  node worker/scripts/user.mjs add <name>       # new account, or a new password
+  node worker/scripts/user.mjs signout <name>   # ends every phone's session
+  node worker/scripts/user.mjs remove <name>    # ends the sessions, deletes the account
+  npx wrangler@4.148.0 d1 execute ike-odoo --remote --command "<the printed SQL>"
+  ```
+
+  `add` prints the new password once. To take someone off: `add` (a new
+  password) then `signout`, and give the new password to the others.
+- **A sign-in lasts 30 days after the phone last used it.** Sign out (at the
+  bottom of Expenses) ends that phone's session only.
+- **Five wrong tries from one connection in 15 minutes** lock it out until the
+  window ends; the screen says at what time (Maldives time).
+
+What the sign-in does **not** hide: the Sales and Expenses totals still come from
+ike-data's public files (see *Visibility*).
 
 ## Installing it on Android
 
-The page is an installable web app. Open the Pages URL in Chrome on the phone,
-tap the ⋮ menu, then **Install app** (or **Add to Home screen**). It gets the
-Ike icon and opens full-screen with no browser bar.
+The page is an installable web app. Open https://odoo.ike-mrh.workers.dev in
+Chrome on the phone, sign in, tap the ⋮ menu, then **Install app** (or **Add to
+Home screen**). It gets the Ike icon and opens full-screen with no browser bar.
+An app installed from the old github.io address must be uninstalled first; its
+"Not interested" marks and remembered views do not carry over.
 
-- `manifest.webmanifest` names the app and lists the icons in `icons/`. The
-  `maskable-*` icons are full-bleed so Android can cut them to any shape; the
-  `icon-*` ones keep the rounded tile.
-- `sw.js` exists to make the app installable and to open the shell with no
-  signal. It never caches data: JSON and Expenses calls go straight to the
-  network, and the page itself is fetched network-first.
-- To change the icon, replace the files in `icons/` (192 and 512 px, plain and
-  maskable) and keep the paths in the manifest.
+- `public/manifest.webmanifest` names the app and lists the icons in
+  `public/icons/`. The `maskable-*` icons are full-bleed so Android can cut them
+  to any shape; the `icon-*` ones keep the rounded tile.
+- `public/sw.js` exists to make the app installable and to open the shell with
+  no signal. It never caches data: the JSON feeds, `/auth/`, `/expenses/` and
+  `/quotations/` go straight to the network, and the page itself is fetched
+  network-first.
+- To change the icon, replace the files in `public/icons/` (192 and 512 px,
+  plain and maskable) and keep the paths in the manifest.
 
 ## What a day's number means
 
@@ -82,7 +128,7 @@ meaning at the same time, so the chart is comparable end to end.
 
 ## How it gets its data
 
-`index.html` fetches
+`public/index.html` fetches
 `https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/sales.json`
 directly in the browser on every page load (`cache: 'no-store'`) — GitHub
 serves raw file content with `Access-Control-Allow-Origin: *`, so this works
@@ -124,9 +170,9 @@ it in full.
 
 ## The Expenses pane
 
-Staff record a **bank-transfer expense** from a phone: pick a category, enter
-the amount in MVR, optionally type a description and attach a receipt photo,
-then enter the shared PIN and save. The day's entries are listed under day pills
+The manager records a **bank-transfer expense** from a phone: pick a category,
+enter the amount in MVR, optionally type a description and attach a receipt
+photo, and save. The day's entries are listed under day pills
 (oldest on the left, today on the right), each with a status chip.
 
 What it does and does not do, by design:
@@ -139,9 +185,9 @@ What it does and does not do, by design:
 - **Status chips** say where an entry stands: *Waiting to send*, *Not sent*
   (with the next retry time and a Retry button), *Draft* (in Odoo, not yet
   confirmed) and the confirmed states read back from Odoo.
-- **The PIN is one shared key.** It authorises saving; it does not identify a
-  person. The owner changes it in the Cloudflare dashboard, and wrong guesses
-  are rate-limited.
+- **The sign-in is the gate** (there is no PIN any more). If a phone's session
+  has ended, a save brings the sign-in screen; the typed entry waits in the
+  sheet and is sent once after sign-in, never twice.
 - **The expense date is the Maldives date it was saved**, not the date it
   reached Odoo.
 - The description Odoo shows is exactly what staff typed, or the category when
@@ -155,20 +201,30 @@ and retry go to the Worker.
 ### The Worker
 
 `worker/` is a Cloudflare Worker (name `odoo`) with a D1 database (`ike-odoo`).
-It is the only part of the three ike repos that writes to Odoo, and it holds the
-Odoo key as a Worker secret; the page never sees it. It checks the PIN and the
-page's origin, and a Cloudflare cron every 15 minutes retries unsent entries and
-reads their status back from Odoo (that read is read-only).
+It serves the page (`public/`) and its own routes from one origin. It is the only
+part of the ike repos that writes to Odoo, and it holds the Odoo key as a Worker
+secret; the page never sees it. Every data route (`/expenses/*`, `/quotations/*`)
+needs a signed-in session, and every request that is not a read must carry the
+Worker's own origin. A Cloudflare cron every 15 minutes retries unsent entries
+and reads their status back from Odoo (that read is read-only).
 
 The decisions behind all of this are in `docs/product/brief.md` and
 `docs/product/architecture/brief.md`; `worker/migrations/` is the database
 schema. `npm test` runs the acceptance tests in `tests/` against the page in a
-real browser and the Worker under Miniflare, with no call to the real Odoo.
-Deploying the Worker is a manual step by the owner.
+real browser and the Worker under Miniflare — both served together, exactly as
+Cloudflare does — with no call to the real Odoo. Deploying the Worker is a
+manual step by the owner.
 
 ## Visibility
 
-GitHub Pages on a free plan requires a **public** repository, so this page
-is technically reachable by anyone with the exact URL, though it isn't
-linked or indexed anywhere. If that's ever a concern, GitHub Pages on
-private repos requires GitHub Pro or higher.
+The app itself is behind the sign-in: without it, only the sign-in screen
+loads, and every Worker data route answers 401. What the sign-in does not
+protect:
+
+- **The page's source** (`public/`) is served to anyone, signed in or not; it
+  holds no secret.
+- **The figures come from ike-data's public files** on
+  raw.githubusercontent.com. The sign-in hides them behind the screen but does
+  not make them secret: anyone who knows the file URLs can read them, and the
+  ike-data history keeps old ones, until that repo is made private.
+- ike-pos and ike-po have no sign-in, by design (staff use them on PCs).
