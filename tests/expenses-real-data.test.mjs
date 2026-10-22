@@ -43,20 +43,19 @@ const PHONE = { width: 390, height: 844 };
 const FEED_URL =
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/expenses.json';
 
-// The off-origin requests the page may make: two font hosts and ike-data's three
-// feeds. On its own origin it may ask for its files, /auth/ and /expenses/.
+// The off-origin requests the page may make: two font hosts and ike-data's two
+// feeds. On its own origin it may ask for its files, /auth/, /expenses/ and
+// /quotations/open.
 // Anything else is off limits.
 const PRE_EXISTING = [
   'https://fonts.googleapis.com/',
   'https://fonts.gstatic.com/',
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/sales.json',
-  'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/quotations.json',
   FEED_URL
 ];
 
 const EMPTY_FEEDS = {
-  'sales.json': '{"days":[]}',
-  'quotations.json': '{"records":[],"days":[]}'
+  'sales.json': '{"days":[]}'
 };
 
 /** D16 / decision 21: the Maldives (UTC+5) date, the page's TODAY. */
@@ -106,7 +105,7 @@ function feedWithoutToday() {
   return feedDocument([DAY_EMPTY, DAY_FULL]);
 }
 
-const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*|quotations\/open)?$/;
 
 /**
  * Open the page from the app, signed in, with every request accounted for.

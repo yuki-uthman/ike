@@ -64,13 +64,12 @@ const PLUM_LIGHT = 'rgb(138, 63, 100)';   // #8a3f64
 const PLUM_DARK = 'rgb(217, 138, 176)';   // #d98ab0
 
 // The off-origin requests the page makes on load: two Google Fonts hosts and
-// ike-data's three feeds, so the claim is checked as "no off-origin request
+// ike-data's two feeds, so the claim is checked as "no off-origin request
 // outside this set".
 const PRE_EXISTING = [
   'https://fonts.googleapis.com/',
   'https://fonts.gstatic.com/',
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/sales.json',
-  'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/quotations.json',
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/expenses.json'
 ];
 
@@ -79,13 +78,13 @@ function maldivesToday() {
   return new Date(Date.now() + 5 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
-// Sales and Quotations are answered with empty payloads, which index.html
-// already handles through its own .catch/empty-days message. The expenses feed
+// Sales is answered with an empty payload, which index.html already handles
+// through its own .catch/empty-days message; Quotations comes from the Worker,
+// which has no feed yet and says so. The expenses feed
 // carries one day in the shape measured from the live document, so the pane's
 // figures region has something to render.
 const EMPTY_FEEDS = {
   'sales.json': '{"days":[]}',
-  'quotations.json': '{"records":[],"days":[]}',
   'expenses.json': JSON.stringify({
     company: 'MRH Investment',
     currency: 'MVR',
@@ -103,9 +102,9 @@ const EMPTY_FEEDS = {
   })
 };
 
-// The page's own origin answers only these: its files, the sign-in area and
-// the expenses area of the Worker (D17, D27).
-const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
+// The page's own origin answers only these: its files, the sign-in area, the
+// expenses area and the open quotations of the Worker (D17, D27, D31).
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*|quotations\/open)?$/;
 
 /** Open index.html in one colour scheme, with every request accounted for. */
 async function openPage(browser, app, colorScheme) {
