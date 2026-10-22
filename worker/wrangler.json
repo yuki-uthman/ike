@@ -2,6 +2,14 @@
   "name": "odoo",
   "main": "src/index.mjs",
   "compatibility_date": "2026-07-30",
+  "assets": {
+    "directory": "../public",
+    "run_worker_first": [
+      "/auth/*",
+      "/expenses/*",
+      "/quotations/*"
+    ]
+  },
   "d1_databases": [
     {
       "binding": "DB",
@@ -11,10 +19,11 @@
     }
   ],
   "triggers": {
-    "crons": ["*/15 * * * *"]
+    "crons": [
+      "*/15 * * * *"
+    ]
   },
   "vars": {
-    "ALLOWED_ORIGIN": "https://yuki-uthman.github.io",
     "ODOO_URL": "https://mrh-investment.odoo.com",
     "ODOO_DB": "mrh-investment",
     "ODOO_EMPLOYEE_ID": "1",

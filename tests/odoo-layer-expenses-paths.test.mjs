@@ -6,12 +6,12 @@
 //
 // Driving ports, both real:
 //   * HTTP — the actual worker/src/index.mjs on a real workerd (miniflare) over
-//     a real loopback socket, started FROM worker/wrangler.json, with the schema
-//     SSOT worker/migrations/0001_init.sql applied through the declared D1
-//     binding. Spoken to with plain `fetch`.
+//     a real loopback socket, started FROM worker/wrangler.json with every
+//     migration applied through the declared D1 binding (tests/support/app.mjs).
+//     Spoken to with plain `fetch`.
 //   * a real browser (Playwright/Chromium) at the phone viewport, loading the
-//     deployed artefact index.html over HTTP from a local static server, which
-//     is how GitHub Pages serves it.
+//     page from that same Worker's own origin — since D27 the Worker serves it
+//     (the static-assets binding over public/) — already signed in.
 //
 // Nothing is imported from worker/src or from the page, and no expected path is
 // read out of either: every path literal below is written out from D17.
@@ -21,9 +21,11 @@
 // Vb to D18's configured bank-transfer line id; that narrowing touches no path,
 // so nothing below depends on it.
 //
-// ALLOWED_ORIGIN is bound to the page's own loopback origin — deployment
-// configuration, exactly as the committed V3 harness does — while the NAME of
-// the configured origin is still asserted from wrangler.json, the config SSOT.
+// Narrowed by D27 (2026-10-22): ALLOWED_ORIGIN, the CORS headers and the
+// preflight are gone — the page and the layer share one origin. What replaced
+// the origin check: every non-GET must carry the layer's own Origin (asserted
+// in §4 below on every path), and every data route needs a session
+// (tests/worker-signin.test.mjs). The PIN is gone from the save.
 //
 // Narrowed at Vc: migrations_dir is read from d1_databases[0], where wrangler's
 // own schema places it (wrangler 4.148.0 rejects the top-level key). Only the
@@ -32,12 +34,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { Miniflare } from 'miniflare';
+
+import { signedInContext, startApp } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WORKER = path.join(REPO, 'worker');
@@ -55,12 +57,7 @@ const retryPath = id => AREA + '/entries/' + id + '/retry';
 // The addresses the Worker answered before Va, and answers no longer.
 const OLD_PATHS = ['/entries', '/categories'];
 
-// D9: the deployed page's origin, which lives in config and never in code.
-const EXPECTED_ALLOWED_ORIGIN = 'https://yuki-uthman.github.io';
 const CRON = ['*/15 * * * *'];
-
-// The shared PIN exists only as a Worker secret (D14).
-const PIN = '482913';
 
 // The design screens are drawn at 390x844 — "on a phone".
 const PHONE = { width: 390, height: 844 };
@@ -100,91 +97,15 @@ async function readConfig() {
     'wrangler.json still declares a compatibility date');
   assert.ok(typeof cfg.d1_databases[0].migrations_dir === 'string',
     'wrangler.json still declares migrations_dir, so deploy and this oracle read one schema');
-  assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, EXPECTED_ALLOWED_ORIGIN,
-    'ALLOWED_ORIGIN still lives in config, not as a literal in code (D9)');
+  assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, undefined,
+    'ALLOWED_ORIGIN is gone from config: nothing calls the layer from another origin (D27)');
   assert.deepEqual((cfg.triggers || {}).crons, CRON,
     'the config still declares exactly the */15 cron trigger (D13)');
   return cfg;
 }
 
-/** The real Worker on a real workerd, over its own fresh persisted store. */
-async function startLayer(cfg, { allowedOrigin, persist }) {
-  const binding = cfg.d1_databases[0].binding;
-  const mf = new Miniflare({
-    scriptPath: path.join(WORKER, cfg.main),
-    modules: true,
-    modulesRoot: WORKER,
-    compatibilityDate: cfg.compatibility_date,
-    compatibilityFlags: cfg.compatibility_flags || [],
-    d1Databases: { [binding]: cfg.d1_databases[0].database_id },
-    d1Persist: persist,
-    bindings: {
-      ...(cfg.vars || {}),
-      ALLOWED_ORIGIN: allowedOrigin,
-      EXPENSE_PIN: PIN,
-      // Va moves addresses; it sends nothing to Odoo. ODOO_URL is bound to a
-      // closed loopback port so that no call in this file can reach
-      // mrh-investment.odoo.com, whatever a route decides to attempt.
-      ODOO_URL: 'http://127.0.0.1:1'
-    },
-    host: '127.0.0.1',
-    port: 0
-  });
-  const url = await mf.ready;
-  const db = await mf.getD1Database(binding);
-  const base = url.origin.replace(/\/$/, '');
-
-  const call = async (method, pathname, { origin = allowedOrigin, body } = {}) => {
-    const headers = { 'CF-Connecting-IP': '127.0.0.1' };
-    if (origin !== null) headers.Origin = origin;
-    if (body !== undefined) headers['content-type'] = 'application/json';
-    const res = await fetch(base + pathname, {
-      method, headers, body: body === undefined ? undefined : JSON.stringify(body)
-    });
-    const text = await res.text();
-    let json = null;
-    try { json = JSON.parse(text); } catch { /* asserted by the caller */ }
-    return { res, text, json };
-  };
-
-  return { mf, db, base, call };
-}
-
-async function applySchema(db, cfg) {
-  // Every migration, in file-name order, as `wrangler d1 migrations apply` runs them.
-  const dir = path.join(WORKER, cfg.d1_databases[0].migrations_dir);
-  const files = (await fs.readdir(dir)).filter(f => f.endsWith('.sql')).sort();
-  const sql = (await Promise.all(files.map(f => fs.readFile(path.join(dir, f), 'utf8')))).join('\n');
-  const statements = sql
-    .split('\n').map(l => l.replace(/--.*$/, '')).join('\n')
-    .split(';').map(s => s.trim()).filter(Boolean);
-  await db.batch(statements.map(s => db.prepare(s)));
-}
-
 const entryCount = async db =>
   (await db.prepare('SELECT COUNT(*) AS n FROM entry').first()).n;
-
-// =========================================================================
-// the page, served the way Pages serves it
-// =========================================================================
-
-async function startStaticServer() {
-  const html = await fs.readFile(path.join(REPO, 'index.html'));
-  const server = http.createServer((req, res) => {
-    const only = (req.url || '/').split('?')[0];
-    if (only === '/' || only === '/index.html') {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', resolve);
-  });
-  return { server, origin: 'http://127.0.0.1:' + server.address().port };
-}
 
 /** A feed document in the shape the live feed has, carrying TODAY. */
 function feedWithToday(today) {
@@ -242,28 +163,34 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
   const cfg = await readConfig();
 
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'ike-va-'));
-  const { server, origin: pageOrigin } = await startStaticServer();
-  const layer = await startLayer(cfg, {
-    allowedOrigin: pageOrigin, persist: path.join(root, 'main')
+  // Va moves addresses; it sends nothing to Odoo. ODOO_URL is bound to a closed
+  // loopback port so that no call in this file can reach mrh-investment.odoo.com,
+  // whatever a route decides to attempt.
+  const app = await startApp({
+    bindings: { ODOO_URL: 'http://127.0.0.1:1' }, persist: path.join(root, 'main')
   });
-  await applySchema(layer.db, cfg);
+  const cookie = await app.signIn();
+  const layer = {
+    db: app.db,
+    call: (method, pathname, o = {}) => app.call(method, pathname, { cookie, ...o })
+  };
   const browser = await chromium.launch();
 
   t.after(async () => {
     await browser.close();
-    await layer.mf.dispose();
-    server.close();
+    await app.close();
     await fs.rm(root, { recursive: true, force: true });
   });
 
-  const base = layer.base;
+  // The page and the layer are ONE origin now (D27).
+  const base = app.origin;
 
   // ===================================================================== §1
   // Obligation D: a person makes the save, through the moved path, in a real
   // browser — and obligation C records every URL the page asks for.
   const requested = [];
   const crashes = [];
-  const context = await browser.newContext({
+  const context = await signedInContext(browser, app, {
     viewport: PHONE, hasTouch: true, isMobile: true, deviceScaleFactor: 3
   });
   const page = await context.newPage();
@@ -272,8 +199,7 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
   await context.route('**/*', async route => {
     const url = route.request().url();
     requested.push(url);
-    if (url.startsWith(pageOrigin)) return route.continue();
-    // The layer is real: its requests go over the socket, untouched.
+    // The page and the layer are real: their requests go over the socket, untouched.
     if (url.startsWith(base)) return route.continue();
     if (url.startsWith(EXPENSES_FEED)) {
       return route.fulfill({
@@ -288,7 +214,7 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
     return route.fulfill({ status: 200, contentType: 'text/plain', body: '' });
   });
 
-  await page.goto(`${pageOrigin}/?api=${encodeURIComponent(base)}`, { waitUntil: 'load' });
+  await page.goto(`${base}/`, { waitUntil: 'load' });
 
   const expensesTab = page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' });
   await expensesTab.click();
@@ -298,7 +224,6 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
   await page.locator('#pane-expenses [aria-label="Add expense"]').click();
   const amount = page.getByLabel('Amount');
   const category = page.getByLabel('Category');
-  const pin = page.getByLabel(/PIN/i);
   const post = page.getByRole('button', { name: 'Post expense' });
   await waitFor('the Add sheet to open', async () => await post.isVisible());
 
@@ -312,7 +237,6 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
 
   await amount.fill('137.50');
   await category.selectOption({ label: chosen });
-  await pin.fill(PIN);
   await post.click();
 
   await waitFor("the sheet to close on the layer's 200",
@@ -348,8 +272,12 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
   assert.deepEqual(crashes, [], `no script error: ${crashes.join(' | ')}`);
 
   // ===================================================================== §2
-  // Obligation C: the page calls only the /expenses/ paths — both halves.
-  const toLayer = requested.filter(u => u.startsWith(base));
+  // Obligation C: the page calls only the /expenses/ paths — both halves. The
+  // page's own files, its sign-in check (/auth/session) and the service
+  // worker's shell are the same origin and are not layer calls.
+  const pageFiles = /\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+)?$/;
+  const toLayer = requested.filter(u => u.startsWith(base)
+    && !pageFiles.test(new URL(u).pathname) && !u.startsWith(base + '/auth/'));
   for (const url of [
     `${base}${ENTRIES}?date=${TODAY}`,
     base + CATEGORIES,
@@ -376,38 +304,27 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
   ];
   for (const [method, pathname] of gone) {
     const answer = await layer.call(method, pathname, method === 'POST'
-      ? { body: { pin: PIN, category: chosen, amount: '9.00', client_entry_id: 'ce-old' } }
+      ? { body: { category: chosen, amount: '9.00', client_entry_id: 'ce-old' } }
       : {});
     assert.equal(answer.res.status, 404,
       `${method} ${pathname} is no longer answered`);
     assert.deepEqual(answer.json, { saved: false, error: 'not_found' },
       `${method} ${pathname} joins the Worker's existing not_found refusal, inventing nothing`);
-    assert.equal(answer.res.headers.get('access-control-allow-origin'), pageOrigin,
-      `${method} ${pathname} carries Access-Control-Allow-Origin like every non-origin answer`);
-    assert.match(answer.res.headers.get('vary') || '', /Origin/i,
-      `${method} ${pathname} carries Vary: Origin`);
+    assert.equal(answer.res.headers.get('access-control-allow-origin'), null,
+      `${method} ${pathname} carries no CORS: there is no other origin to allow (D27)`);
   }
   assert.equal(await entryCount(layer.db), 1,
     'the POST to an old path stored no row: there is no silent dual-mount');
 
   // ===================================================================== §4
-  // The two things Va promises not to move. OPTIONS still answers 204 on any
-  // path, including one no prefix claims.
-  for (const pathname of [ENTRIES, '/nowhere/at/all']) {
-    const pre = await layer.call('OPTIONS', pathname);
-    assert.equal(pre.res.status, 204, `OPTIONS ${pathname} is still 204`);
-    assert.equal(pre.text, '', `OPTIONS ${pathname} has an empty body`);
-    assert.equal(pre.res.headers.get('access-control-allow-origin'), pageOrigin);
-    assert.equal(pre.res.headers.get('access-control-allow-headers'), 'content-type');
-    assert.equal(pre.res.headers.get('access-control-allow-methods'), 'POST, GET, OPTIONS');
-    assert.match(pre.res.headers.get('vary') || '', /Origin/i);
-  }
-
-  // And the origin check still applies on every path — prefixed, old and
-  // unknown alike, OPTIONS included — so an unknown path never discloses which
-  // prefix exists.
+  // There is no preflight any more (D27): OPTIONS is a non-GET like any other.
+  // And the ORIGIN check still applies on every path — prefixed, old and
+  // unknown alike — now to every non-GET: one without the layer's own Origin is
+  // refused before anything else, so an unknown path never discloses which
+  // prefix exists. A read carries no Origin when it is same-origin, so reads are
+  // gated by the session instead (tests/worker-signin.test.mjs).
   for (const pathname of [ENTRIES, CATEGORIES, ...OLD_PATHS, '/nowhere/at/all']) {
-    for (const method of ['GET', 'POST', 'OPTIONS']) {
+    for (const method of ['POST', 'OPTIONS']) {
       for (const origin of ['https://evil.example', null]) {
         const refused = await layer.call(method, pathname, { origin });
         assert.equal(refused.res.status, 403,
@@ -415,7 +332,7 @@ test('odoo_layer_answers_expenses_only_under_the_expenses_prefix', async t => {
         assert.deepEqual(refused.json, { saved: false, error: 'origin_not_allowed' },
           `${method} ${pathname} names the origin refusal`);
         assert.equal(refused.res.headers.get('access-control-allow-origin'), null,
-          'the origin refusal is still the one answer carrying no Access-Control-Allow-Origin');
+          'and carries no Access-Control-Allow-Origin');
       }
     }
   }

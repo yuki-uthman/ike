@@ -7,61 +7,52 @@
 // by this file.
 //
 // WHAT THIS FILE JUDGES, AND WHAT IT DOES NOT.
-// Vc's value is mostly the owner's own acts on live systems: the deploy, the two
-// secrets, the Odoo read access for the layer's key, the 30-second entry from a
-// phone, the accountant's sighting, the 'Approved' chip within one schedule
-// interval and the PIN change. None of those change a repository byte, and this
-// oracle does not pretend to witness them: they stay Vc's human-observed part.
-// What IS in the repository is the configuration this slice ships:
-//   * worker/wrangler.json — the minted D1 id and migrations_dir where
-//     wrangler's own schema wants it;
-//   * index.html — the one declarative line that carries the deployed address.
+// Going live is mostly the owner's own acts on live systems: the deploy, the
+// secrets, the migration, the account, the phone check. None of those change a
+// repository byte, and this oracle does not pretend to witness them. What IS in
+// the repository is the configuration the owner deploys:
+//   * worker/wrangler.json — the Worker's name, the minted D1 id, migrations_dir
+//     where wrangler's own schema wants it, and (since D27) the static-assets
+//     binding that makes the same Worker serve the page from public/;
+//   * public/index.html — which, since D27, carries NO service address at all:
+//     it calls its own origin, and that origin is the Worker.
 // This file judges exactly those two, through public ports only.
 //
 // Driving ports, both real:
 //   * the browser (Playwright/Chromium) at the design's phone viewport, loading
-//     the SHIPPED index.html — meta line included, byte for byte — over HTTP
-//     from a local static server, which is how GitHub Pages serves it;
+//     the SHIPPED page from the real Worker (miniflare, static assets included)
+//     listening on [::1] — an address the page does NOT treat as loopback, so it
+//     behaves exactly as on https://odoo.ike-mrh.workers.dev;
 //   * at deploy only, wrangler itself: the real pinned CLI, run `--dry-run` on a
-//     COPY of worker/ outside this worktree, with an empty XDG_CONFIG_HOME and
-//     metrics off, so no login state is readable and no Cloudflare call is
-//     possible. The copy is the cwd because the run writes a .wrangler/
-//     directory there. wrangler is deliberately NOT added to package.json.
+//     COPY of worker/ AND public/ (the assets directory is ../public, beside
+//     worker/) outside this worktree, with an empty XDG_CONFIG_HOME and metrics
+//     off, so no login state is readable and no Cloudflare call is possible.
+//     wrangler is deliberately NOT added to package.json.
 //
-// The deployed host is never reached over the network. Every request the page
-// makes to https://odoo.ike-mrh.workers.dev is intercepted in the browser
-// context and answered from the real worker/src/index.mjs running on a real
-// workerd (miniflare) over its own socket, with ALLOWED_ORIGIN bound to the
-// page's origin and EXPENSE_PIN chosen here — deployment configuration only,
-// exactly as the committed V3 harness already does. An unintercepted call to the
-// live host, or ANY call to the crafted ?api= origin, fails the test.
+// Narrowed by D27 (2026-10-22): the page used to carry the deployed address in a
+// <meta> line and call it cross-origin; ALLOWED_ORIGIN and the PIN went with
+// that. The deployed address is still derived here — '<wrangler name>.<the
+// account's workers.dev subdomain>.workers.dev' — because it is now where the
+// APP lives (the owner opens it on the phone), not a line in the page.
 //
-// Nothing is imported from worker/src or from the page. The expected address is
-// derived, not copied from the page: '<wrangler name>.<the account's workers.dev
-// subdomain>.workers.dev', with the name read from wrangler.json and the
-// measured subdomain written out from the DESIGN section.
-//
-// SUPPORTS NARROWED BY THIS SLICE. migrations_dir now lives inside
-// d1_databases[0], where wrangler's own schema wants it, so every support that
-// reads it reads it from there. Va's oracle (tests/odoo-layer-expenses-paths
-// .test.mjs) and Vb's oracle (tests/odoo-live-schema-retry.test.mjs) each carry
-// the matching "Narrowed at Vc: migrations_dir is read from d1_databases[0] ..."
-// header note recording that narrowing; no assertion of theirs changed, and the
-// retired top-level read is not restored anywhere.
+// SUPPORTS NARROWED BY Vc. migrations_dir lives inside d1_databases[0], where
+// wrangler's own schema wants it, so every support that reads it reads it from
+// there.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { Miniflare } from 'miniflare';
+
+import { signedInContext, startApp } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WORKER = path.join(REPO, 'worker');
+const PUBLIC = path.join(REPO, 'public');
 
 // D17: the layer is named 'odoo', its database 'ike-odoo', and it answers under
 // one area prefix.
@@ -72,8 +63,8 @@ const CATEGORIES = AREA + '/categories';
 const ENTRIES = AREA + '/entries';
 const CRON = ['*/15 * * * *'];
 
-// D9: the deployed page's origin lives in config, never in code.
-const EXPECTED_ALLOWED_ORIGIN = 'https://yuki-uthman.github.io';
+// D27: the areas the Worker runs first for; every other path is a page file.
+const RUN_WORKER_FIRST = ['/auth/*', '/expenses/*', '/quotations/*'];
 
 // The account's workers.dev subdomain, measured at deploy and recorded in the
 // DESIGN section. D17 defers the final URL to deploy, so this is where it is
@@ -82,16 +73,12 @@ const EXPECTED_ALLOWED_ORIGIN = 'https://yuki-uthman.github.io';
 const WORKERS_DEV_SUBDOMAIN = 'ike-mrh';
 const LIVE_BASE = `https://${LAYER_NAME}.${WORKERS_DEV_SUBDOMAIN}.workers.dev`;
 
-// The pinned real CLI. Not a dependency of the product: the craft targets are
-// worker/wrangler.json and index.html.
+// The pinned real CLI. Not a dependency of the product.
 const WRANGLER = 'wrangler@4.148.0';
 
 // A crafted ?api= target. It must receive nothing at all; the hostname is
 // deliberately unresolvable so that a leak cannot quietly succeed either.
 const CRAFTED_BASE = 'https://crafted-attacker.invalid';
-
-// The shared PIN exists only as a Worker secret (D14).
-const PIN = '482913';
 
 // The design screens are drawn at 390x844 — "on a phone".
 const PHONE = { width: 390, height: 844 };
@@ -121,17 +108,19 @@ function run(file, args, options) {
 }
 
 /**
- * Copy worker/ to a fresh directory under the OS temp dir and ask the real
- * wrangler to prepare a deploy from it without contacting Cloudflare. The copy
- * is the cwd (the run writes .wrangler/ there), the account is unreadable, and
- * the only fact taken from the run is "this config is one wrangler accepts
- * cleanly": exit 0, with no 'Unexpected fields' complaint.
+ * Copy worker/ and public/ side by side to a fresh directory under the OS temp
+ * dir and ask the real wrangler to prepare a deploy from it without contacting
+ * Cloudflare. The copy is the cwd (the run writes .wrangler/ there), the account
+ * is unreadable, and the only fact taken from the run is "this config is one
+ * wrangler accepts cleanly": exit 0, with no 'Unexpected fields' complaint, and
+ * the page files read as the Worker's assets.
  */
 async function wranglerDryRun(root) {
   const copy = path.join(root, 'worker');
   const outdir = path.join(root, 'out');
   const emptyConfigHome = path.join(root, 'xdg');
   await fs.cp(WORKER, copy, { recursive: true });
+  await fs.cp(PUBLIC, path.join(root, 'public'), { recursive: true });
   await fs.mkdir(emptyConfigHome, { recursive: true });
 
   return run('npx', ['--yes', WRANGLER, 'deploy', '--dry-run', '--outdir', outdir], {
@@ -147,29 +136,6 @@ async function wranglerDryRun(root) {
   });
 }
 
-// =========================================================================
-// the page, served the way Pages serves it — shipped bytes, nothing rewritten
-// =========================================================================
-
-async function startStaticServer(host) {
-  const html = await fs.readFile(path.join(REPO, 'index.html'));
-  const server = http.createServer((req, res) => {
-    const only = (req.url || '/').split('?')[0];
-    if (only === '/' || only === '/index.html') {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, host, resolve);
-  });
-  const authority = host.includes(':') ? `[${host}]` : host;
-  return { server, origin: `http://${authority}:${server.address().port}` };
-}
-
 /** A feed document in the shape the live feed has, carrying TODAY. */
 const feedWithToday = today => JSON.stringify({
   company: 'MRH Investment', currency: 'MVR',
@@ -180,62 +146,6 @@ const feedWithToday = today => JSON.stringify({
     categories: [{ name: 'Fuel / Petrol', count: 1, total: 50.0 }]
   }]
 });
-
-// =========================================================================
-// the real layer, on a real workerd
-// =========================================================================
-
-async function startLayer(cfg, { allowedOrigin, persist }) {
-  const binding = cfg.d1_databases[0].binding;
-  const mf = new Miniflare({
-    scriptPath: path.join(WORKER, cfg.main),
-    modules: true,
-    modulesRoot: WORKER,
-    compatibilityDate: cfg.compatibility_date,
-    compatibilityFlags: cfg.compatibility_flags || [],
-    d1Databases: { [binding]: cfg.d1_databases[0].database_id },
-    d1Persist: persist,
-    bindings: {
-      ...(cfg.vars || {}),
-      ALLOWED_ORIGIN: allowedOrigin,
-      EXPENSE_PIN: PIN,
-      // Vc moves an address; it sends nothing to Odoo. ODOO_URL is bound to a
-      // closed loopback port so no call in this file can reach the live Odoo.
-      ODOO_URL: 'http://127.0.0.1:1'
-    },
-    host: '127.0.0.1',
-    port: 0
-  });
-  const url = await mf.ready;
-  const base = url.origin.replace(/\/$/, '');
-  const db = await mf.getD1Database(binding);
-
-  const call = async (method, pathname, { origin = allowedOrigin, body } = {}) => {
-    const headers = { 'CF-Connecting-IP': '127.0.0.1' };
-    if (origin !== null) headers.Origin = origin;
-    if (body !== undefined) headers['content-type'] = 'application/json';
-    const res = await fetch(base + pathname, {
-      method, headers, body: body === undefined ? undefined : JSON.stringify(body)
-    });
-    const text = await res.text();
-    let json = null;
-    try { json = JSON.parse(text); } catch { /* asserted by the caller */ }
-    return { res, text, json };
-  };
-
-  return { mf, db, base, call };
-}
-
-async function applySchema(db, cfg) {
-  // Every migration, in file-name order, as `wrangler d1 migrations apply` runs them.
-  const dir = path.join(WORKER, cfg.d1_databases[0].migrations_dir);
-  const files = (await fs.readdir(dir)).filter(f => f.endsWith('.sql')).sort();
-  const sql = (await Promise.all(files.map(f => fs.readFile(path.join(dir, f), 'utf8')))).join('\n');
-  const statements = sql
-    .split('\n').map(l => l.replace(/--.*$/, '')).join('\n')
-    .split(';').map(s => s.trim()).filter(Boolean);
-  await db.batch(statements.map(s => db.prepare(s)));
-}
 
 async function waitFor(what, fn, timeout = 20000) {
   const deadline = Date.now() + timeout;
@@ -275,7 +185,7 @@ function readEntries(page) {
 
 // =========================================================================
 
-test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_wrangler_accepts_its_config',
+test('the_shipped_page_off_loopback_calls_only_its_own_origin_and_wrangler_accepts_its_config',
   async t => {
     const TODAY = maldivesToday();
     const cfg = await readConfig();
@@ -294,8 +204,12 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
       "the layer's database is named 'ike-odoo' (D17)");
     assert.deepEqual((cfg.triggers || {}).crons, CRON,
       "the config still declares exactly D13's */15 cron trigger");
-    assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, EXPECTED_ALLOWED_ORIGIN,
-      'ALLOWED_ORIGIN still lives in config, not as a literal in code (D9)');
+    assert.equal((cfg.vars || {}).ALLOWED_ORIGIN, undefined,
+      'ALLOWED_ORIGIN is gone: the page shares the Worker\'s origin (D27)');
+    assert.equal(cfg.assets && cfg.assets.directory, '../public',
+      'the same Worker serves the page: its assets are public/, beside worker/ (D27)');
+    assert.deepEqual(cfg.assets.run_worker_first, RUN_WORKER_FIRST,
+      'the Worker runs first for exactly its three areas; every other path is a page file');
     assert.equal(String((cfg.vars || {}).ODOO_PAYMENT_METHOD_LINE_ID), '2',
       "D18's bank-transfer payment method line id is still configuration");
 
@@ -325,38 +239,44 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
     assert.ok(output.includes(`env.${cfg.d1_databases[0].binding} (${DATABASE_NAME})`),
       `the prepared deploy still binds ${cfg.d1_databases[0].binding} to `
       + `${DATABASE_NAME}: ${output}`);
+    assert.match(output, /Read \d+ files? from the assets directory/,
+      `the prepared deploy carries the page as the Worker's assets: ${output}`);
     for (const name of Object.keys(cfg.vars || {})) {
       assert.ok(output.includes(name),
         `the prepared deploy still carries the var ${name}: ${output}`);
     }
 
     // The deployed address is derived from the shipped name and the account's
-    // measured subdomain — this is the address §2 demands the page carry.
+    // measured subdomain — this is where the app lives once deployed (D27).
     assert.equal(LIVE_BASE, `https://${cfg.name}.${WORKERS_DEV_SUBDOMAIN}.workers.dev`,
       "the deployed address is '<wrangler name>.<the account's subdomain>.workers.dev'");
 
     // =================================================================== §2
-    // The shipped page, off loopback, in a real browser: it calls the deployed
-    // layer and nothing else — and the crafted ?api= link gets nothing.
-    const { server, origin: pageOrigin } = await startStaticServer('::1');
-    const layer = await startLayer(cfg, {
-      allowedOrigin: pageOrigin, persist: path.join(root, 'd1')
+    // The shipped page, off loopback, in a real browser: it calls its own origin
+    // — the Worker — and nothing else, and the crafted ?api= link gets nothing.
+    // '::1' is the one address that is local to this machine yet is not one of
+    // the two names the page treats as loopback.
+    const app = await startApp({
+      bindings: { ODOO_URL: 'http://127.0.0.1:1' }, persist: path.join(root, 'd1'), host: '::1'
     });
-    await applySchema(layer.db, cfg);
+    const cookie = await app.signIn();
+    const layer = {
+      db: app.db,
+      call: (method, pathname, o = {}) => app.call(method, pathname, { cookie, ...o })
+    };
+    const pageOrigin = app.origin;
+    assert.ok(new URL(pageOrigin).hostname === '[::1]',
+      'the page is served from an address it does not treat as loopback');
     const browser = await chromium.launch();
     t.after(async () => {
       await browser.close();
-      await layer.mf.dispose();
-      server.close();
+      await app.close();
     });
 
     // One entry already recorded by the layer, placed through the layer's own
     // public HTTP contract, so the day has a row to render.
     const seeded = await layer.call('POST', ENTRIES, {
-      body: {
-        pin: PIN, category: 'Fuel / Petrol', amount: '137.50',
-        client_entry_id: 'vc-seed-1'
-      }
+      body: { category: 'Fuel / Petrol', amount: '137.50', client_entry_id: 'vc-seed-1' }
     });
     assert.equal(seeded.res.status, 200, 'the layer accepted the seeded entry');
     assert.equal(seeded.json.saved, true);
@@ -364,7 +284,7 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
     const requested = [];
     const unintercepted = [];
     const crashes = [];
-    const context = await browser.newContext({
+    const context = await signedInContext(browser, app, {
       viewport: PHONE, hasTouch: true, isMobile: true, deviceScaleFactor: 3
     });
     const page = await context.newPage();
@@ -374,22 +294,9 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
     await context.route('**/*', async route => {
       const url = route.request().url();
       requested.push(url);
+      // The page and the layer are one origin: the real Worker over its own
+      // socket answers both, untouched.
       if (url.startsWith(pageOrigin)) return route.continue();
-
-      // The deployed host is answered by the real Worker over its own socket,
-      // never by the network.
-      if (url.startsWith(LIVE_BASE)) {
-        const request = route.request();
-        const answer = await layer.call(
-          request.method(), url.slice(LIVE_BASE.length),
-          { origin: pageOrigin, body: undefined });
-        return route.fulfill({
-          status: answer.res.status,
-          headers: Object.fromEntries(
-            [...answer.res.headers].filter(([k]) => k !== 'content-encoding')),
-          body: answer.text
-        });
-      }
 
       if (url.startsWith(EXPENSES_FEED)) {
         return route.fulfill({
@@ -420,7 +327,7 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
     await waitFor('the Expenses tab to be selected',
       async () => await expensesTab.getAttribute('aria-selected') === 'true');
 
-    // The day's row is the deployed layer's own row, read over the live address.
+    // The day's row is the layer's own row, read over the page's own origin.
     const rows = await waitFor("the deployed layer's row in the day's list", async () => {
       const got = await readEntries(page);
       return got.length ? got : null;
@@ -438,8 +345,8 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
       || rows[0].text.includes(entry.amount_mvr.replace(/\.00$/, '')),
       `the row carries the amount as the layer formatted it (${entry.amount_mvr})`);
 
-    // The sheet's select is the deployed layer's category list: the page is
-    // configured, so it says nothing about not being set up.
+    // The sheet's select is the layer's category list: the service is always
+    // there, so the page says nothing about not being set up.
     await page.locator('#pane-expenses [aria-label="Add expense"]').click();
     const post = page.getByRole('button', { name: 'Post expense' });
     await waitFor('the Add sheet to open', async () => await post.isVisible());
@@ -450,26 +357,32 @@ test('the_shipped_page_off_loopback_calls_only_the_deployed_ike_odoo_layer_and_w
     });
     const cats = await layer.call('GET', CATEGORIES);
     assert.deepEqual(offered, cats.json.categories,
-      "the select carries exactly the deployed layer's categories, in its order");
+      "the select carries exactly the layer's categories, in its order");
     assert.equal(offered.length, 21, "D7's 21 expensable categories, served by the layer");
     assert.equal(await post.isDisabled(), false,
-      'a configured page offers Post, so the owner can record an expense');
+      'the page offers Post, so the owner can record an expense');
     assert.ok(!flat(await page.locator('#e-note').innerText())
       .includes('not set up yet'),
       'the shipped page no longer says the service is not set up');
 
     // =================================================================== §3
-    // Where every request went. This is the guarantee the trade bought.
-    const toLive = requested.filter(u => u.startsWith(LIVE_BASE));
+    // Where every request went. The page's own files and its sign-in check are
+    // same-origin too; every OTHER same-origin request is a layer call, and each
+    // of those is under /expenses/.
+    const pageFiles = /\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+)?$/;
+    const toLayer = requested.filter(u => u.startsWith(pageOrigin)
+      && !pageFiles.test(new URL(u).pathname) && !u.startsWith(pageOrigin + '/auth/'));
     for (const url of [
-      LIVE_BASE + CATEGORIES,
-      `${LIVE_BASE}${ENTRIES}?date=${TODAY}`
+      pageOrigin + CATEGORIES,
+      `${pageOrigin}${ENTRIES}?date=${TODAY}`
     ]) {
-      assert.ok(toLive.includes(url), `the shipped page asked the deployed layer for ${url}`);
+      assert.ok(toLayer.includes(url), `the shipped page asked its own origin for ${url}`);
     }
-    const unprefixed = toLive.filter(u => !u.slice(LIVE_BASE.length).startsWith(AREA + '/'));
+    const unprefixed = toLayer.filter(u => !u.slice(pageOrigin.length).startsWith(AREA + '/'));
     assert.deepEqual(unprefixed, [],
       'every request to the layer is under /expenses/: ' + unprefixed.join(', '));
+    assert.ok(!requested.some(u => u.startsWith(LIVE_BASE)),
+      'the page names no deployed address: it never calls one, it calls its own origin');
     assert.deepEqual(requested.filter(u => u.startsWith(CRAFTED_BASE)), [],
       'the crafted ?api= origin off loopback receives nothing at all');
     assert.deepEqual(unintercepted, [],

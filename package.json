@@ -1,9 +1,9 @@
 {
   "name": "ike-sales-expenses",
   "private": true,
-  "description": "Static single-file dashboard for GitHub Pages. This manifest exists only so the acceptance oracles can drive a real browser; nothing here is deployed.",
+  "description": "The Worker and its page (public/), served together by the odoo Cloudflare Worker. This manifest exists only so the acceptance oracles can drive a real workerd and a real browser; nothing here is deployed.",
   "scripts": {
-    "test": "node --test tests/"
+    "test": "node --test 'tests/*.test.mjs'"
   },
   "devDependencies": {
     "miniflare": "4.20260730.0",

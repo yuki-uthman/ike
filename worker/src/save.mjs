@@ -34,18 +34,6 @@ export function maldivesDate(at = Date.now()) {
   return new Date(at + 5 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
-/** The wrong-PIN window index (decision 11): fixed 10-second windows. */
-export const WINDOW_MS = 10000;
-export const WRONG_PIN_LIMIT = 5;
-
-export function windowIndex(at = Date.now()) {
-  return Math.floor(at / WINDOW_MS);
-}
-
-export function windowEnd(index) {
-  return new Date((index + 1) * WINDOW_MS);
-}
-
 /**
  * Project a stored row onto the seven members the contract declares, used by the
  * save answer, the day list and the single-entry answer alike, so the three
@@ -237,25 +225,5 @@ export async function markFailed(db, { clientEntryId, attempts, nextRetryAt, cod
       + ' next_retry_at = ?, last_error = ? WHERE client_entry_id = ?'
     )
     .bind(attempts, nextRetryAt, code, clientEntryId)
-    .run();
-}
-
-/** Misses already recorded for this source in this window. */
-export async function wrongPinMisses(db, source, index) {
-  const row = await db
-    .prepare('SELECT misses FROM pin_attempt WHERE source = ? AND "window" = ?')
-    .bind(source, index)
-    .first();
-  return row ? Number(row.misses) : 0;
-}
-
-/** Only a failed comparison consumes budget (decision 11). */
-export async function recordWrongPin(db, source, index) {
-  await db
-    .prepare(
-      'INSERT INTO pin_attempt (source, "window", misses) VALUES (?, ?, 1)'
-      + ' ON CONFLICT(source, "window") DO UPDATE SET misses = misses + 1'
-    )
-    .bind(source, index)
     .run();
 }

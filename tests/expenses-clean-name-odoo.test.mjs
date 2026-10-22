@@ -27,11 +27,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Miniflare } from 'miniflare';
+import { signInAt } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WORKER = path.join(REPO, 'worker');
 
-const PIN = '4821';
 const CRON = '*/15 * * * *';
 
 const EMPLOYEE_ID = 1;
@@ -293,7 +293,6 @@ async function startWorker(cfg, { persist, odooUrl }) {
     unsafeTriggerHandlers: true,
     bindings: {
       ...(cfg.vars || {}),
-      EXPENSE_PIN: PIN,
       ODOO_URL: odooUrl,
       ODOO_DB: ODOO_DB,
       ODOO_USERNAME: ODOO_USER,
@@ -306,10 +305,15 @@ async function startWorker(cfg, { persist, odooUrl }) {
   const url = await mf.ready;
   const db = await mf.getD1Database(binding);
   const base = url.origin;
-  const allowed = cfg.vars.ALLOWED_ORIGIN;
+  // The page shares the Worker's origin (D27), so its own origin is the one a
+  // browser puts on every POST, and every call below is signed in.
+  const allowed = base;
+  let session = null;
 
   const call = async (method, pathname, { body } = {}) => {
     const headers = { 'CF-Connecting-IP': '127.0.0.1', Origin: allowed };
+    if (!session) session = await signInAt(base, db);
+    headers.Cookie = session;
     if (body !== undefined) headers['content-type'] = 'application/json';
     const res = await fetch(base + pathname, {
       method, headers, body: body === undefined ? undefined : JSON.stringify(body)
@@ -372,7 +376,7 @@ test('the_odoo_description_is_only_what_staff_typed', async t => {
 
   const today = maldivesDate();
   const save = over => w.call('POST', '/expenses/entries', {
-    body: { pin: PIN, category: 'Water', amount: '250.50', ...over }
+    body: { category: 'Water', amount: '250.50', ...over }
   });
 
   const RECEIPT = JPEG(100);

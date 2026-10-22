@@ -5,10 +5,9 @@
 // "V1 Description saved". The brief is cited, never opened by this file.
 //
 // Driving port: a real browser (Playwright/Chromium) at the design's phone
-// viewport, loading the deployed artefact index.html over HTTP from a local
-// static server, exactly as GitHub Pages serves it, talking to the real
-// worker/src/index.mjs on a real workerd (miniflare) over a real socket with a
-// real D1. Nothing under worker/ is imported here, and nothing is read out of
+// viewport, loading the page from the real worker/src/index.mjs on a real
+// workerd (miniflare) over a real socket with a real D1 — since D27 the Worker
+// serves the page itself (tests/support/app.mjs) — signed in. Nothing under worker/ is imported here, and nothing is read out of
 // the page: every fact below comes through the DOM a phone would get, through
 // the service's own HTTP contract, or out of the declared driven port (the D1
 // binding), which is read back directly because D19's description is
@@ -22,29 +21,27 @@
 //
 // Every handle below is public: the pane id #pane-expenses and the e- prefixed
 // ids already in index.html's markup, the FAB's aria-label "Add expense", the
-// field labels "Amount" / "Description (optional)" / "Category" / "Receipt" /
-// "Your PIN", the "Post expense" button, and the service's own JSON members and
-// error codes. No id, class or wording is invented here.
+// field labels "Amount" / "Description (optional)" / "Category" / "Receipt",
+// the "Post expense" button, and the service's own JSON members and error
+// codes. No id, class or wording is invented here.
+//
+// Narrowed by D27 (2026-10-22): the PIN field and its wrong-PIN arm are gone,
+// and so are the CORS headers; the forged-Origin refusal still comes first.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { Miniflare } from 'miniflare';
+
+import { addUser, signedInContext, startApp } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MIGRATIONS = path.join(REPO, 'worker/migrations');
 
 // The design screens are drawn at 390x844 — "on a phone".
 const PHONE = { width: 390, height: 844 };
-
-// The shared PIN exists only as a Worker secret (D14); the oracle chooses it for
-// this instance and the page never holds it.
-const PIN = '482913';
-const WRONG_PIN = '000000';
 
 // D19's limit, counted in Unicode code points after normalisation.
 const LIMIT_CHARS = 200;
@@ -58,7 +55,7 @@ const ENTRY_MEMBERS = [
 
 // The sheet's fields, in the order D19 asks for: the description right after the
 // amount and before the category.
-const SHEET_FIELDS = ['Amount', 'Description', 'Category', 'Receipt', 'Your PIN'];
+const SHEET_FIELDS = ['Amount', 'Description', 'Category', 'Receipt'];
 
 // What the page says when the Worker refuses an over-long description.
 const TOO_LONG_MESSAGE =
@@ -104,24 +101,6 @@ function feedWithToday(today) {
   });
 }
 
-/** Serves index.html as GitHub Pages does. */
-async function startStaticServer(host) {
-  const html = await fs.readFile(path.join(REPO, 'index.html'));
-  const server = http.createServer((req, res) => {
-    if ((req.url || '/').split('?')[0] === '/' || req.url.startsWith('/index.html')) {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, host, resolve);
-  });
-  return { server, origin: `http://${host}:${server.address().port}` };
-}
-
 async function migrationNames() {
   return (await fs.readdir(MIGRATIONS)).filter(f => f.endsWith('.sql')).sort();
 }
@@ -137,60 +116,29 @@ async function applyMigrations(db, names) {
   }
 }
 
-/**
- * The real Worker on a real workerd, with an empty D1 the caller migrates
- * itself. ALLOWED_ORIGIN is deployment configuration: in production it is the
- * Pages host, here it is the page under test. EXPENSE_PIN is the Worker secret.
- */
-async function startService(allowedOrigin, dbName) {
-  const wrangler = JSON.parse(
-    await fs.readFile(path.join(REPO, 'worker/wrangler.json'), 'utf8'));
-  const mf = new Miniflare({
-    scriptPath: path.join(REPO, 'worker/src/index.mjs'),
-    modules: true,
-    modulesRoot: path.join(REPO, 'worker/src'),
-    compatibilityDate: wrangler.compatibility_date,
-    d1Databases: { DB: dbName },
-    bindings: { ALLOWED_ORIGIN: allowedOrigin, EXPENSE_PIN: PIN },
-    host: '127.0.0.1',
-    port: 0
-  });
-  const url = await mf.ready;
-  return { mf, origin: url.origin.replace(/\/$/, ''), db: await mf.getD1Database('DB') };
-}
-
-/** Ask the service directly, as the page's own origin would. */
-async function service(serviceOrigin, pageOrigin, pathAndQuery, init = {}) {
-  const res = await fetch(serviceOrigin + pathAndQuery, {
-    ...init,
-    headers: { Origin: pageOrigin, ...(init.headers || {}) }
-  });
-  let body = null;
-  try { body = await res.json(); } catch { /* asserted by the caller */ }
-  return { status: res.status, body, headers: res.headers };
+/** Ask the service directly, as the signed-in page's own origin would. */
+async function service(app, cookie, method, pathAndQuery, { body, origin, ip } = {}) {
+  const r = await app.call(method, pathAndQuery, { cookie, body, origin, ip });
+  return { status: r.res.status, body: r.json, headers: r.res.headers };
 }
 
 /** POST one entry body directly, each from its own source address. */
 let sources = 0;
-function post(serviceOrigin, pageOrigin, body) {
+function post(app, cookie, body) {
   sources += 1;
-  return service(serviceOrigin, pageOrigin, '/expenses/entries', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'CF-Connecting-IP': `198.51.100.${sources}`
-    },
-    body: JSON.stringify(body)
-  });
+  return service(app, cookie, 'POST', '/expenses/entries', { body, ip: `198.51.100.${sources}` });
 }
 
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
+
 /** Open index.html, with every request accounted for and every POST recorded. */
-async function openPage(browser, { pageOrigin, api, feed }) {
+async function openPage(browser, app, { feed }) {
+  const api = app.origin;
   const offLimits = [];
   const crashes = [];
   const sent = [];
   const answers = [];
-  const context = await browser.newContext({
+  const context = await signedInContext(browser, app, {
     viewport: PHONE, colorScheme: 'light', hasTouch: true, isMobile: true,
     deviceScaleFactor: 3
   });
@@ -215,9 +163,11 @@ async function openPage(browser, { pageOrigin, api, feed }) {
 
   await context.route('**/*', async route => {
     const url = route.request().url();
-    if (url.startsWith(pageOrigin)) return route.continue();
-    // The service is real: its requests go over the socket, untouched.
-    if (api && url.startsWith(api)) return route.continue();
+    // The page and the service are one real origin: untouched, over the socket.
+    if (url.startsWith(api)) {
+      if (!OWN_PATHS.test(new URL(url).pathname)) offLimits.push(url);
+      return route.continue();
+    }
     if (url.startsWith(FEED_URL)) {
       return route.fulfill({ status: 200, contentType: 'application/json', body: feed });
     }
@@ -231,7 +181,7 @@ async function openPage(browser, { pageOrigin, api, feed }) {
     return route.fulfill({ status: 200, contentType: 'text/plain', body: '' });
   });
 
-  await page.goto(`${pageOrigin}/?api=${encodeURIComponent(api)}`, { waitUntil: 'load' });
+  await page.goto(`${api}/`, { waitUntil: 'load' });
   return { page, context, offLimits, crashes, sent, answers };
 }
 
@@ -258,7 +208,6 @@ async function openSheet(page) {
     amount: page.getByLabel('Amount'),
     description: page.getByLabel(/Description/i),
     category: page.getByLabel('Category'),
-    pin: page.getByLabel(/PIN/i),
     post: page.getByRole('button', { name: 'Post expense' }),
     note: page.locator('#e-note')
   };
@@ -286,14 +235,13 @@ async function rowCount(db, clientEntryId) {
 test('description_is_saved_with_the_entry', async t => {
   const TODAY = maldivesToday();
 
-  const { server, origin: pageOrigin } = await startStaticServer('127.0.0.1');
-  const { mf, origin: serviceOrigin, db } =
-    await startService(pageOrigin, 'ike-sales-expenses-description-oracle');
+  // The store is migrated by THIS file, in place, so the app starts empty.
+  const app = await startApp({ schema: false, user: false });
+  const db = app.db;
   const browser = await chromium.launch();
   t.after(async () => {
     await browser.close();
-    await mf.dispose();
-    server.close();
+    await app.close();
   });
 
   // ===== 1. The column arrives through a NEW migration, over a live 0001 store =
@@ -318,9 +266,13 @@ test('description_is_saved_with_the_entry', async t => {
   assert.equal(await storedDescription(db, 'ce-legacy'), '',
     'a row saved before the migration reads as no description, not as null');
 
+  // With every migration applied, the account the page signs in with (D26).
+  await addUser(db);
+  const cookie = await app.signIn();
+
   // ===== 2. The field is on the sheet, right after the amount, and starts empty =
   const { page, offLimits, crashes, sent, answers } =
-    await openPage(browser, { pageOrigin, api: serviceOrigin, feed: feedWithToday(TODAY) });
+    await openPage(browser, app, { feed: feedWithToday(TODAY) });
   const sheet = await openSheet(page);
 
   assert.equal(await sheet.description.count(), 1,
@@ -357,7 +309,7 @@ test('description_is_saved_with_the_entry', async t => {
     });
   });
   assert.deepEqual(order,
-    ['Amount', 'Description (optional)', 'Category', 'Your PIN'],
+    ['Amount', 'Description (optional)', 'Category'],
     'the description is the field directly after the amount and directly before '
     + 'the category; nothing was inserted between them');
 
@@ -376,11 +328,13 @@ test('description_is_saved_with_the_entry', async t => {
   await reopened.amount.fill('137.50');
   await reopened.description.fill(TYPED);
   await reopened.category.selectOption({ label: 'Fuel / Petrol' });
-  await reopened.pin.fill(PIN);
   await reopened.post.click();
   await waitFor('the sheet to close on the service\'s 200',
     async () => !(await reopened.post.isVisible()));
 
+  // `answers` is filled by an async response listener, which may still be
+  // reading the body when the page has already acted on it: wait for it.
+  await waitFor('the save\'s answer to be recorded', async () => answers.length >= 1);
   assert.equal(sent.length, 1, 'the save was posted once');
   assert.equal(sent[0].description, TYPED,
     'the page posts the description exactly as typed; the Worker normalises it');
@@ -410,13 +364,13 @@ test('description_is_saved_with_the_entry', async t => {
   await second.amount.fill('42');
   await second.description.fill(long);
   await second.category.selectOption({ label: 'Water' });
-  await second.pin.fill(PIN);
   const before = Number(
     (await db.prepare('SELECT COUNT(*) AS n FROM entry').first()).n);
   await second.post.click();
 
   await waitFor('the plain over-long message',
     async () => flat(await second.note.innerText()) === TOO_LONG_MESSAGE);
+  await waitFor('the refusal to be recorded', async () => answers.length >= 2);
   assert.equal(answers.length, 2, 'the over-long entry was answered once');
   assert.equal(answers[1].status, 422,
     'an over-long description is refused 422, before anything is saved');
@@ -440,6 +394,7 @@ test('description_is_saved_with_the_entry', async t => {
   await second.post.click();
   await waitFor('the sheet to close on the emptied description',
     async () => !(await second.post.isVisible()));
+  await waitFor('the third answer to be recorded', async () => answers.length >= 3);
   assert.equal(answers.length, 3);
   assert.equal(answers[2].status, 200, 'an empty description is not refused');
   assert.equal(answers[2].body.saved, true);
@@ -456,9 +411,9 @@ test('description_is_saved_with_the_entry', async t => {
   assert.deepEqual(crashes, [], `no script error: ${crashes.join(' | ')}`);
 
   // ===== 6. The contract itself: absent, null, non-text, and the exact limit ===
-  const direct = body => post(serviceOrigin, pageOrigin, body);
+  const direct = body => post(app, cookie, body);
   const entry = (id, over = {}) => ({
-    pin: PIN, category: 'Meals', amount: '10.00', client_entry_id: id, ...over
+    category: 'Meals', amount: '10.00', client_entry_id: id, ...over
   });
 
   // Absent and null are the same as none: saved exactly as before.
@@ -479,8 +434,8 @@ test('description_is_saved_with_the_entry', async t => {
     assert.equal(answer.status, 422, `a description of ${JSON.stringify(value)} is refused`);
     assert.equal(answer.body.saved, false);
     assert.equal(answer.body.error, 'description_not_text');
-    assert.equal(answer.headers.get('access-control-allow-origin'), pageOrigin,
-      'the new refusals carry CORS like every other refusal');
+    assert.equal(answer.headers.get('access-control-allow-origin'), null,
+      'and carries no CORS, like every answer since D27');
     assert.equal(await rowCount(db, id), 0, 'and wrote no row');
   }
 
@@ -511,15 +466,9 @@ test('description_is_saved_with_the_entry', async t => {
   assert.equal(squeezedText, 'y'.repeat(LIMIT_CHARS - 2) + ' z',
     'every run of whitespace — spaces, tabs and newlines alike — becomes one space');
 
-  // ===== 7. Save-first, PIN, origin, rate limit and idempotency are unchanged ==
-  // The description is judged after the PIN, the category and the amount, so a
-  // wrong PIN still answers wrong_pin first and an over-long description cannot
-  // reveal which other field was also wrong.
-  const wrongPin = await direct(entry('d-pin', { pin: WRONG_PIN, description: long }));
-  assert.equal(wrongPin.status, 403, 'a wrong PIN is still answered first');
-  assert.equal(wrongPin.body.error, 'wrong_pin');
-  assert.equal(await rowCount(db, 'd-pin'), 0);
-
+  // ===== 7. Save-first, origin and idempotency are unchanged =================
+  // The description is judged after the category and the amount, so an
+  // over-long description cannot reveal which other field was also wrong.
   const badCategory = await direct(entry('d-cat', { category: 'Mileage', description: long }));
   assert.equal(badCategory.body.error, 'unknown_category',
     'the category is still judged before the description');
@@ -531,10 +480,8 @@ test('description_is_saved_with_the_entry', async t => {
     'the client entry id is still judged before the description');
 
   // The origin check still comes before everything.
-  const badOrigin = await service(serviceOrigin, 'https://evil.example', '/expenses/entries', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(entry('d-origin', { description: TYPED }))
+  const badOrigin = await service(app, cookie, 'POST', '/expenses/entries', {
+    origin: 'https://evil.example', body: entry('d-origin', { description: TYPED })
   });
   assert.equal(badOrigin.status, 403);
   assert.equal(badOrigin.body.error, 'origin_not_allowed');
@@ -554,7 +501,7 @@ test('description_is_saved_with_the_entry', async t => {
 
   // The day's list and the single-entry answer still carry the seven members and
   // no description anywhere in the JSON the page is served.
-  const day = await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`);
+  const day = await service(app, cookie, 'GET', `/expenses/entries?date=${TODAY}`);
   assert.equal(day.status, 200);
   assert.ok(day.body.entries.length >= 3, "the day's entries are still served");
   for (const e of day.body.entries) {
