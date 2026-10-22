@@ -47,9 +47,11 @@ export async function addUser(db, username = USERNAME, password = PASSWORD, opti
  * Start the app. `bindings` adds to (or overrides) wrangler.json's vars — the
  * Odoo suites point ODOO_URL at their fake and add ODOO_API_KEY. `schema: false`
  * leaves the D1 empty (a suite that wants to see the missing-schema answer).
- * `user: false` creates no account.
+ * `user: false` creates no account. `host` is the address to listen on
+ * (default loopback 127.0.0.1).
  */
-export async function startApp({ bindings = {}, persist, schema = true, user = true } = {}) {
+export async function startApp({ bindings = {}, persist, schema = true, user = true,
+  host } = {}) {
   const cfg = await readConfig();
   const binding = cfg.d1_databases[0].binding;
   const mf = new Miniflare({
@@ -68,6 +70,7 @@ export async function startApp({ bindings = {}, persist, schema = true, user = t
         static_routing: { user_worker: cfg.assets.run_worker_first }
       }
     },
+    ...(host ? { host } : {}),
     port: 0
   });
   const url = await mf.ready;
@@ -151,4 +154,26 @@ export async function signInAt(base, db, { username = USERNAME, password = PASSW
   });
   if (res.status !== 200) throw new Error(`sign-in at ${base} answered ${res.status}`);
   return sessionCookieOf(res);
+}
+
+/** The miniflare `assets` option for wrangler.json's static-assets binding. */
+export function assetsOptions(cfg) {
+  return {
+    directory: path.resolve(WORKER, cfg.assets.directory),
+    routerConfig: {
+      has_user_worker: true,
+      static_routing: { user_worker: cfg.assets.run_worker_first }
+    }
+  };
+}
+
+/** `signedInContext` for a suite that started its own miniflare at `base`. */
+export async function signedInContextAt(browser, base, db, contextOptions = {}) {
+  const cookie = await signInAt(base, db);
+  const [name, value] = cookie.split('=');
+  const context = await browser.newContext(contextOptions);
+  await context.addCookies([{
+    name, value, url: base, httpOnly: true, secure: true, sameSite: 'Strict'
+  }]);
+  return context;
 }

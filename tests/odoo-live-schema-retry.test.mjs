@@ -12,8 +12,8 @@
 //     SSOT worker/migrations/0001_init.sql applied through the declared D1
 //     binding;
 //   * a real browser (Playwright/Chromium) at the phone viewport, loading the
-//     deployed artefact index.html over HTTP from a local static server, which
-//     is how GitHub Pages serves it.
+//     page from the very layer it talks to — since D27 the Worker serves it
+//     (the static-assets binding over public/) — already signed in.
 //
 // Driven ports: the D1 binding (read back directly) and Odoo's XML-RPC
 // endpoint, which here is a LOCAL FAKE on loopback speaking the same wire
@@ -24,6 +24,9 @@
 // read out of either: every literal below — the line id 2, the two 'Transfer'
 // lines, the field names total_amount / total_amount_currency / price_unit, the
 // closed code, the path shape — is written out from D18.
+//
+// Narrowed by D27 (2026-10-22): no ALLOWED_ORIGIN, no PIN; the page is served
+// by the layer and every call is a signed-in, same-origin one.
 //
 // Narrowed at Vc: migrations_dir is read from d1_databases[0], where
 // wrangler's own schema places it (wrangler 4.148.0 rejects the top-level
@@ -38,6 +41,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { Miniflare } from 'miniflare';
+
+import { assetsOptions, signInAt, signedInContextAt } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WORKER = path.join(REPO, 'worker');
@@ -81,7 +86,6 @@ const NOT_SENT = 'Not sent';
 const DRAFT = 'Draft';
 
 const CRON = '*/15 * * * *';
-const PIN = '482913';
 const AMOUNT_TYPED = '250.50';
 const AMOUNT_LAARI = 25050;
 // D7 names this category; the fake seeds an expensable product for whichever
@@ -378,7 +382,7 @@ async function readConfig() {
  * `lineId: null` means the var is ABSENT — the misconfiguration this value is
  * about; any other value is bound verbatim, exactly as a dashboard would.
  */
-async function startLayer(cfg, { allowedOrigin, persist, odooUrl, lineId }) {
+async function startLayer(cfg, { persist, odooUrl, lineId }) {
   const binding = cfg.d1_databases[0].binding;
   const vars = { ...(cfg.vars || {}) };
   delete vars[LINE_ID_VAR];
@@ -396,23 +400,26 @@ async function startLayer(cfg, { allowedOrigin, persist, odooUrl, lineId }) {
     bindings: {
       ...vars,
       ...(lineId === null ? {} : { [LINE_ID_VAR]: lineId }),
-      ALLOWED_ORIGIN: allowedOrigin,
-      EXPENSE_PIN: PIN,
       ODOO_URL: odooUrl,
       ODOO_DB: ODOO_DB,
       ODOO_USERNAME: ODOO_USER,
       ODOO_API_KEY: ODOO_KEY,
       ODOO_EMPLOYEE_ID: String(EMPLOYEE_ID)
     },
+    assets: assetsOptions(cfg),
     host: '127.0.0.1',
     port: 0
   });
   const url = await mf.ready;
   const db = await mf.getD1Database(binding);
   const base = url.origin.replace(/\/$/, '');
+  let session = null;
 
+  // The page's own calls: same origin, signed in (D27).
   const call = async (method, pathname, { body } = {}) => {
-    const headers = { 'CF-Connecting-IP': '127.0.0.1', Origin: allowedOrigin };
+    const headers = { 'CF-Connecting-IP': '127.0.0.1', Origin: base };
+    if (!session) session = await signInAt(base, db);
+    headers.Cookie = session;
     if (body !== undefined) headers['content-type'] = 'application/json';
     const res = await fetch(base + pathname, {
       method, headers, body: body === undefined ? undefined : JSON.stringify(body)
@@ -462,29 +469,6 @@ function assertFirstRetryTime(entry, after) {
     `the next try is about ${BACKOFF_MINUTES[0]} minutes out, not ${minutes.toFixed(1)}`);
 }
 
-// ===========================================================================
-// the page, served the way Pages serves it
-// ===========================================================================
-
-async function startStaticServer() {
-  const html = await fs.readFile(path.join(REPO, 'index.html'));
-  const server = http.createServer((req, res) => {
-    const only = (req.url || '/').split('?')[0];
-    if (only === '/' || only === '/index.html') {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', resolve);
-  });
-  return { server, origin: 'http://127.0.0.1:' + server.address().port };
-}
-
-/** A feed document in the shape the live feed has, carrying TODAY. */
 function feedWithToday(today) {
   return JSON.stringify({
     company: 'MRH Investment', currency: 'MVR',
@@ -558,21 +542,17 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'ike-vb-'));
     const store = path.join(root, 'main');
     const odoo = await startFakeOdoo();
-    const { server, origin: pageOrigin } = await startStaticServer();
     const browser = await chromium.launch();
     const running = [];
     t.after(async () => {
       await browser.close();
       for (const mf of running) { try { await mf.dispose(); } catch { /* done */ } }
       await odoo.close();
-      server.close();
       await fs.rm(root, { recursive: true, force: true });
     });
 
     const start = async opts => {
-      const layer = await startLayer(cfg, {
-        allowedOrigin: pageOrigin, odooUrl: odoo.url, ...opts
-      });
+      const layer = await startLayer(cfg, { odooUrl: odoo.url, ...opts });
       running.push(layer.mf);
       return layer;
     };
@@ -583,10 +563,10 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
      * aborted or held, which is how a failed press and an in-flight press are
      * made to happen.
      */
-    const openPage = async base => {
-      const seen = { urls: [], retries: [], crashes: [] };
+    const openPage = async (base, db) => {
+      const seen = { urls: [], navigations: [], retries: [], crashes: [] };
       const control = { mode: 'pass', release: null };
-      const context = await browser.newContext({
+      const context = await signedInContextAt(browser, base, db, {
         viewport: PHONE, hasTouch: true, isMobile: true, deviceScaleFactor: 3
       });
       const page = await context.newPage();
@@ -594,6 +574,9 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       await context.route('**/*', async route => {
         const url = route.request().url();
         seen.urls.push(url);
+        // A page load is a NAVIGATION. Since D27 the page's own service worker
+        // also fetches '/' to cache its shell, which is not a reload.
+        if (route.request().isNavigationRequest()) seen.navigations.push(url);
         if (url.startsWith(base)) {
           if (url.slice(base.length).includes('/retry')) {
             seen.retries.push({ url, method: route.request().method() });
@@ -604,7 +587,6 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
           }
           return route.continue();
         }
-        if (url.startsWith(pageOrigin)) return route.continue();
         if (url.startsWith(EXPENSES_FEED)) {
           return route.fulfill({
             status: 200, contentType: 'application/json', body: feedWithToday(TODAY)
@@ -617,7 +599,7 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
         }
         return route.fulfill({ status: 200, contentType: 'text/plain', body: '' });
       });
-      await page.goto(`${pageOrigin}/?api=${encodeURIComponent(base)}`, { waitUntil: 'load' });
+      await page.goto(`${base}/`, { waitUntil: 'load' });
       const expensesTab = page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' });
       await expensesTab.click();
       await waitFor('the Expenses tab to be selected',
@@ -630,7 +612,6 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       await page.locator('#pane-expenses [aria-label="Add expense"]').click();
       const amount = page.getByLabel('Amount');
       const category = page.getByLabel('Category');
-      const pin = page.getByLabel(/PIN/i);
       const post = page.getByRole('button', { name: 'Post expense' });
       await waitFor('the Add sheet to open', async () => await post.isVisible());
       const offered = await waitFor("the category list the layer serves", async () => {
@@ -640,7 +621,6 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       const chosen = offered.includes(HTTP_CATEGORY) ? HTTP_CATEGORY : offered[0];
       await amount.fill(AMOUNT_TYPED);
       await category.selectOption({ label: chosen });
-      await pin.fill(PIN);
       await post.click();
       await waitFor("the sheet to close on the layer's 200",
         async () => !(await post.isVisible()));
@@ -654,7 +634,7 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
     const missing = await start({ persist: store, lineId: null });
     await applySchema(missing.db, cfg);
 
-    const first = await openPage(missing.base);
+    const first = await openPage(missing.base, missing.db);
     const chosen = await saveThroughTheSheet(first.page);
     // The product the chosen category resolves to by name exists, so the ONLY
     // thing standing between this entry and a draft expense is the line id.
@@ -717,7 +697,7 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       await applySchema(bad.db, cfg);
       const id = 'ce-cfg-' + n;
       const saved = await bad.call('POST', '/expenses/entries', {
-        body: { pin: PIN, category: chosen, amount: '31.00', client_entry_id: id }
+        body: { category: chosen, amount: '31.00', client_entry_id: id }
       });
       assert.equal(saved.res.status, 200, `the save is unaffected by ${JSON.stringify(value)}`);
       const createsBefore = odoo.expenseCreates().length;
@@ -759,7 +739,7 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       'configuring the id does not retro-send anything: the row is still Not sent');
     assert.ok(persisted.next_retry_at, 'and still carries its next try time');
 
-    const { context, page, seen, control } = await openPage(fixed.base);
+    const { context, page, seen, control } = await openPage(fixed.base, fixed.db);
     await waitFor("the reopened page's row to read 'Not sent'", async () => {
       const got = await readEntries(page);
       return got.length === 1 && got[0].chip === NOT_SENT ? got : null;
@@ -823,8 +803,8 @@ test('retry_sends_the_configured_bank_transfer_line_id_with_both_mvr_amounts_and
       'a sent row offers no Retry bar, because there is no next try');
     assert.ok(sent.text.includes(chosen) && sent.text.includes(AMOUNT_TYPED),
       'and it is still the same entry');
-    const documentLoads = seen.urls.filter(u => u.split('?')[0] === `${pageOrigin}/`
-      || u.split('?')[0] === `${pageOrigin}/index.html`).length;
+    const documentLoads = seen.navigations.filter(u => u.split('?')[0] === `${fixed.base}/`
+      || u.split('?')[0] === `${fixed.base}/index.html`).length;
     assert.equal(documentLoads, 1,
       'the row changed with NO page reload between the press and the observation: '
       + `the document was fetched ${documentLoads} times`);
