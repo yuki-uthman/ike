@@ -4,13 +4,14 @@
 // design/expenses-tab/ (the approved screens, read as acceptance supports).
 //
 // Driving port: a real browser (Playwright/Chromium) at the design's phone
-// viewport, loading the deployed artefact index.html over HTTP from a local
-// static server, exactly as GitHub Pages serves it. Nothing is imported from
-// the page; every fact below is read through the DOM a phone would get.
+// viewport, loading the page from the real Worker that serves it since D27
+// (tests/support/app.mjs: the static-assets binding over public/), already
+// signed in. Nothing is imported from the page; every fact below is read
+// through the DOM a phone would get.
 //
 // Every selector is a public, authority-named handle: the pane id #pane-expenses
 // (decision 1), the tab's visible word "Expenses", the FAB's aria-label
-// "Add expense" and the field labels "Amount" / "Category" / "Your PIN" and the
+// "Add expense" and the field labels "Amount" / "Category" and the
 // "Post expense" button from design/expenses-tab/AddSheet.dc.html and Main.dc.html,
 // and the words D12 retires. No id, class or wording is invented here.
 //
@@ -19,16 +20,23 @@
 // the dummy figures, and a post that becomes 'Waiting to send' with no service —
 // were V1-increment-only and are now owned by tests/expenses-real-data.test.mjs,
 // where the categories, the entries and the save all come from the service. What
-// remains here is the pane's shape, its accent, its scoping and the fact that
-// with no service configured it reads only ike-data's feeds.
+// remains here is the pane's shape, its accent, its scoping and where it sends
+// its requests.
+//
+// Narrowed by D27 (2026-10-22): the PIN field is gone, and there is no "no
+// service configured" state any more — the page always calls its own origin,
+// which is the Worker. The request claim is therefore "the page's own origin
+// for its files, /auth/ and /expenses/, and off-origin only the pre-existing
+// five".
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+
+import { signedInContext, startApp } from './support/app.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -55,10 +63,9 @@ const RETIRED_WORDS = ['Posted', 'Posts straight to Odoo'];
 const PLUM_LIGHT = 'rgb(138, 63, 100)';   // #8a3f64
 const PLUM_DARK = 'rgb(217, 138, 176)';   // #d98ab0
 
-// The requests index.html makes on load: two Google Fonts hosts and ike-data's
-// three feeds. With no expenses service configured the pane reads ike-data's
-// expenses feed and nothing else, so the claim is checked as "no request outside
-// this set".
+// The off-origin requests the page makes on load: two Google Fonts hosts and
+// ike-data's three feeds, so the claim is checked as "no off-origin request
+// outside this set".
 const PRE_EXISTING = [
   'https://fonts.googleapis.com/',
   'https://fonts.gstatic.com/',
@@ -96,24 +103,15 @@ const EMPTY_FEEDS = {
   })
 };
 
-async function startServer() {
-  const html = await fs.readFile(path.join(REPO, 'index.html'));
-  const server = http.createServer((req, res) => {
-    if ((req.url || '/').split('?')[0] === '/' || req.url.startsWith('/index.html')) {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise(r => server.listen(0, '127.0.0.1', r));
-  return { server, origin: `http://127.0.0.1:${server.address().port}/` };
-}
+// The page's own origin answers only these: its files, the sign-in area and
+// the expenses area of the Worker (D17, D27).
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
 
 /** Open index.html in one colour scheme, with every request accounted for. */
-async function openPage(browser, origin, colorScheme) {
+async function openPage(browser, app, colorScheme) {
+  const origin = app.origin + '/';
   const offLimits = [];
-  const context = await browser.newContext({
+  const context = await signedInContext(browser, app, {
     viewport: PHONE, colorScheme, hasTouch: true, isMobile: true,
     deviceScaleFactor: 3
   });
@@ -123,7 +121,10 @@ async function openPage(browser, origin, colorScheme) {
 
   await context.route('**/*', async route => {
     const url = route.request().url();
-    if (url.startsWith(origin)) return route.continue();
+    if (url.startsWith(origin)) {
+      if (!OWN_PATHS.test(new URL(url).pathname)) offLimits.push(url);
+      return route.continue();
+    }
     const feed = Object.keys(EMPTY_FEEDS).find(f => url.endsWith(f));
     if (feed) {
       return route.fulfill({ status: 200, contentType: 'application/json', body: EMPTY_FEEDS[feed] });
@@ -147,11 +148,11 @@ async function waitFor(what, fn, timeout = 5000) {
 }
 
 test('expenses_pane_shell_is_the_third_tab_on_a_phone', async t => {
-  const { server, origin } = await startServer();
+  const app = await startApp();
   const browser = await chromium.launch();
-  t.after(async () => { await browser.close(); server.close(); });
+  t.after(async () => { await browser.close(); await app.close(); });
 
-  const { page, offLimits, crashes } = await openPage(browser, origin, 'light');
+  const { page, offLimits, crashes } = await openPage(browser, app, 'light');
 
   const tabs = page.locator('#tabs [role="tab"]');
   const expensesTab = tabs.filter({ hasText: 'Expenses' });
@@ -235,12 +236,11 @@ test('expenses_pane_shell_is_the_third_tab_on_a_phone', async t => {
   }
 
   // ---- The Add sheet: amount (MVR), a category, optional receipt from camera
-  //      or gallery, and the PIN (D2) ----
+  //      or gallery — and no PIN any more (D27) ----
   await pane.locator('[aria-label="Add expense"]').click();
 
   const amount = page.getByLabel('Amount');
   const category = page.getByLabel('Category');
-  const pin = page.getByLabel(/PIN/i);
   const post = page.getByRole('button', { name: 'Post expense' });
   await waitFor('the Add sheet to open', async () => await post.isVisible());
 
@@ -254,24 +254,26 @@ test('expenses_pane_shell_is_the_third_tab_on_a_phone', async t => {
   assert.ok(
     await page.locator('input[type=file][accept*="image"]:not([capture])').count() >= 1,
     'Gallery offers a plain image pick');
-  assert.ok(await amount.count() === 1 && await pin.count() === 1,
-    'the sheet takes an amount and the PIN');
+  assert.equal(await amount.count(), 1, 'the sheet takes an amount');
+  assert.equal(await page.getByLabel(/PIN/i).count(), 0,
+    'the sheet asks for no PIN: the sign-in is the gate now (D27)');
   assert.ok(!(await post.locator('xpath=ancestor::*[1]').innerText())
     .includes('Posts straight to Odoo'), 'D12 drops the Odoo promise under the button');
 
   await amount.fill('137');
-  await pin.fill('1234');
 
-  // ---- With no service configured it calls only ike-data's expenses feed ----
+  // ---- It calls its own origin for its files, /auth/ and /expenses/, and
+  //      nothing off-origin beyond the pre-existing five ----
   assert.deepEqual(offLimits, [],
-    `the page requested nothing beyond its pre-existing five: ${offLimits.join(', ')}`);
+    `the page requested nothing beyond its own areas and the pre-existing five: `
+    + offLimits.join(', '));
 
   // ---- ids and classes scoped to the pane; Sales and Quotations behave as before ----
   const scoping = await page.evaluate(() => {
     const pane = document.getElementById('pane-expenses');
     // The Add sheet is scoped too, but it lives outside #pager. Find it without
     // assuming any implementation id: climb from the Post button to the nearest
-    // ancestor that also holds the sheet's Amount, Category and PIN fields, then
+    // ancestor that also holds the sheet's Amount and Category fields, then
     // keep climbing to the LARGEST such ancestor that is still only the sheet —
     // i.e. one that does not yet contain the pager. A sheet is commonly an inner
     // panel inside its own overlay/backdrop root, and both belong to the sheet.
@@ -279,7 +281,7 @@ test('expenses_pane_shell_is_the_third_tab_on_a_phone', async t => {
     const norm = s => (s || '').replace(/\s+/g, ' ').trim();
     const holdsFields = el => {
       const t = norm(el.textContent);
-      return /Amount/i.test(t) && /Category/i.test(t) && /PIN/i.test(t);
+      return /Amount/i.test(t) && /Category/i.test(t);
     };
     const sheetRoots = Array.from(document.querySelectorAll('button'))
       .filter(b => norm(b.textContent) === 'Post expense')
@@ -317,7 +319,7 @@ test('expenses_pane_shell_is_the_third_tab_on_a_phone', async t => {
   assert.deepEqual(crashes, [], `no script error anywhere on the page: ${crashes.join(' | ')}`);
 
   // ---- Dark: the same pane, the same D12 words, the dark plum ----
-  const dark = await openPage(browser, origin, 'dark');
+  const dark = await openPage(browser, app, 'dark');
   const darkTab = dark.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' });
   await darkTab.click();
   await waitFor('the Expenses tab in dark', async () => await darkTab.getAttribute('aria-selected') === 'true');

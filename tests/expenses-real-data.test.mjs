@@ -5,52 +5,47 @@
 // data". The brief is cited, never opened by this file.
 //
 // Driving port: a real browser (Playwright/Chromium) at the design's phone
-// viewport, loading the deployed artefact index.html over HTTP from a local
-// static server, exactly as GitHub Pages serves it. Nothing is imported from the
-// page; every fact below is read through the DOM a phone would get, or through
-// the service's own HTTP contract.
+// viewport, loading the page from the real Worker that serves it since D27
+// (tests/support/app.mjs). Nothing is imported from the page; every fact below
+// is read through the DOM a phone would get, or through the service's own HTTP
+// contract.
 //
 // The service is NOT a stub: it is the real worker/src/index.mjs running on a
 // real workerd (miniflare) over a real socket with a real D1, because the whole
-// point of this observation is that the pane speaks to the actual V2 contract.
-// Its ALLOWED_ORIGIN is bound to the page's own loopback origin — deployment
-// configuration, not code; no byte of worker/ is read differently because of it.
+// point of this observation is that the pane speaks to the actual contract.
 //
 // ike-data's expenses.json is answered by Playwright routing with a payload in
 // the shape measured from the live feed, so the oracle does not depend on the
-// live internet. The page learns the service's base URL the only way a loopback
-// page may: the ?api= query parameter (on a non-loopback hostname that
-// parameter must be ignored, which is checked here too).
+// live internet. An unreachable service is made by refusing the page's calls to
+// its own /expenses/ area at the network edge — a same-origin page cannot be
+// pointed at a dead port any more.
 //
 // Every handle below is public: the pane id #pane-expenses and the e- prefixed
-// ids already in index.html's markup, the FAB's aria-label "Add expense", the
-// field labels "Amount" / "Category" / "Your PIN", the "Post expense" button,
-// D12's chip words, and the service's own JSON members.
+// ids already in the page's markup, the FAB's aria-label "Add expense", the
+// field labels "Amount" / "Category", the "Post expense" button, the sign-in
+// screen's "Username" / "Password" / "Sign in", D12's chip words, and the
+// service's own JSON members.
+//
+// Narrowed by D27 (2026-10-22): the wrong-PIN arm became the signed-out save
+// (D28: the sheet keeps what was typed and the SAME entry is resent after
+// sign-in); "no service configured" is gone, because the page always calls its
+// own origin; and "?api= is loopback-only" is tests/odoo-layer-go-live's now.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import http from 'node:http';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { Miniflare } from 'miniflare';
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+import { PASSWORD, USERNAME, signedInContext, startApp } from './support/app.mjs';
 
 // The design screens are drawn at 390x844 — "on a phone".
 const PHONE = { width: 390, height: 844 };
 
-// The shared PIN exists only as a Worker secret (D14); the oracle chooses it for
-// this instance and the page never holds it.
-const PIN = '482913';
-const WRONG_PIN = '000000';
-
 const FEED_URL =
   'https://raw.githubusercontent.com/yuki-uthman/ike-data/main/data/expenses.json';
 
-// The requests index.html may make: two font hosts, ike-data's three feeds, its
-// own origin, and the service it was told about. Anything else is off limits.
+// The off-origin requests the page may make: two font hosts and ike-data's three
+// feeds. On its own origin it may ask for its files, /auth/ and /expenses/.
+// Anything else is off limits.
 const PRE_EXISTING = [
   'https://fonts.googleapis.com/',
   'https://fonts.gstatic.com/',
@@ -111,96 +106,18 @@ function feedWithoutToday() {
   return feedDocument([DAY_EMPTY, DAY_FULL]);
 }
 
-/**
- * Serves index.html as GitHub Pages does.
- *
- * `blankServiceMeta` exists for section 7 alone. That section's claim is "?api=
- * is ignored off loopback", and it reads that ignoring through the only words a
- * page with no service configured can say. Now that the shipped page carries the
- * deployed layer's address in its meta line, an off-loopback page would read
- * that address instead of saying nothing — so this server blanks that one
- * attribute for that one section, leaving the claim word for word. The shipped
- * bytes, meta included, are the new Vc oracle's business
- * (tests/odoo-layer-go-live.test.mjs). Sections 1-6 run on 127.0.0.1, where the
- * meta is never read, and are served verbatim.
- */
-async function startStaticServer(host, { blankServiceMeta = false } = {}) {
-  let html = await fs.readFile(path.join(REPO, 'index.html'));
-  if (blankServiceMeta) {
-    const before = html.toString('utf8');
-    const after = before.replace(
-      /(<meta name="ike-expenses-service" content=")[^"]*(">)/, '$1$2');
-    assert.notEqual(after, before,
-      'the shipped page carries the one meta line this section blanks');
-    html = Buffer.from(after, 'utf8');
-  }
-  const server = http.createServer((req, res) => {
-    if ((req.url || '/').split('?')[0] === '/' || req.url.startsWith('/index.html')) {
-      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-      res.end(html);
-    } else {
-      res.writeHead(404).end();
-    }
-  });
-  await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, host, resolve);
-  });
-  const { port } = server.address();
-  const authority = host.includes(':') ? `[${host}]` : host;
-  return { server, origin: `http://${authority}:${port}` };
-}
-
-/** The real Worker on a real workerd, with the schema this repo declares. */
-async function startService(allowedOrigin) {
-  const wrangler = JSON.parse(
-    await fs.readFile(path.join(REPO, 'worker/wrangler.json'), 'utf8'));
-  // Every migration, in file-name order, as `wrangler d1 migrations apply` runs them.
-  const migrations = path.join(REPO, 'worker/migrations');
-  const schema = (await Promise.all((await fs.readdir(migrations))
-    .filter(f => f.endsWith('.sql')).sort()
-    .map(f => fs.readFile(path.join(migrations, f), 'utf8')))).join('\n');
-
-  const mf = new Miniflare({
-    scriptPath: path.join(REPO, 'worker/src/index.mjs'),
-    modules: true,
-    modulesRoot: path.join(REPO, 'worker/src'),
-    compatibilityDate: wrangler.compatibility_date,
-    d1Databases: { DB: 'ike-sales-expenses-v3-oracle' },
-    // ALLOWED_ORIGIN is deployment configuration: in production it is the Pages
-    // host, here it is the page under test. EXPENSE_PIN is the Worker secret.
-    bindings: { ALLOWED_ORIGIN: allowedOrigin, EXPENSE_PIN: PIN },
-    host: '127.0.0.1',
-    port: 0
-  });
-  const url = await mf.ready;
-
-  const db = await mf.getD1Database('DB');
-  for (const statement of schema.split(';')) {
-    const sql = statement.replace(/^\s*--.*$/gm, '').trim();
-    if (sql) await db.prepare(sql).run();
-  }
-  return { mf, origin: url.origin.replace(/\/$/, '') };
-}
-
-/** Ask the service directly, as the page's own origin, to compare against. */
-async function service(serviceOrigin, pageOrigin, pathAndQuery, init = {}) {
-  const res = await fetch(serviceOrigin + pathAndQuery, {
-    ...init,
-    headers: { Origin: pageOrigin, ...(init.headers || {}) }
-  });
-  return { status: res.status, body: await res.json() };
-}
+const OWN_PATHS = /^\/(index\.html|sw\.js|manifest\.webmanifest|icons\/[^/]+|auth\/.*|expenses\/.*)?$/;
 
 /**
- * Open index.html, with every request accounted for. `api` is the service base
- * the page is told about through the loopback-only ?api= parameter; null means
- * "no service configured".
+ * Open the page from the app, signed in, with every request accounted for.
+ * `control.down` makes every call to /expenses/ fail at the network edge — the
+ * page's view of an unreachable service.
  */
-async function openPage(browser, { pageOrigin, api, feed, colorScheme = 'light' }) {
+async function openPage(browser, app, { feed, colorScheme = 'light' }) {
   const offLimits = [];
   const requested = [];
-  const context = await browser.newContext({
+  const control = { down: false };
+  const context = await signedInContext(browser, app, {
     viewport: PHONE, colorScheme, hasTouch: true, isMobile: true,
     deviceScaleFactor: 3
   });
@@ -211,9 +128,12 @@ async function openPage(browser, { pageOrigin, api, feed, colorScheme = 'light' 
   await context.route('**/*', async route => {
     const url = route.request().url();
     requested.push(url);
-    if (url.startsWith(pageOrigin)) return route.continue();
-    // The service is real: its requests go over the socket, untouched.
-    if (api && url.startsWith(api)) return route.continue();
+    if (url.startsWith(app.origin)) {
+      const at = new URL(url).pathname;
+      if (!OWN_PATHS.test(at)) offLimits.push(url);
+      if (control.down && at.startsWith('/expenses/')) return route.abort('connectionrefused');
+      return route.continue();
+    }
     if (url.startsWith(FEED_URL)) {
       return route.fulfill({ status: 200, contentType: 'application/json', body: feed });
     }
@@ -227,11 +147,25 @@ async function openPage(browser, { pageOrigin, api, feed, colorScheme = 'light' 
     return route.fulfill({ status: 200, contentType: 'text/plain', body: '' });
   });
 
-  const target = api
-    ? `${pageOrigin}/?api=${encodeURIComponent(api)}`
-    : `${pageOrigin}/`;
-  await page.goto(target, { waitUntil: 'load' });
-  return { page, context, offLimits, requested, crashes };
+  await page.goto(`${app.origin}/`, { waitUntil: 'load' });
+  return { page, context, offLimits, requested, crashes, control };
+}
+
+/** Open the pane and the Add sheet, and hand back its public handles. */
+async function openSheet(page) {
+  const expensesTab = page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' });
+  await expensesTab.click();
+  await waitFor('the Expenses tab to be selected',
+    async () => await expensesTab.getAttribute('aria-selected') === 'true');
+  await page.locator('#pane-expenses [aria-label="Add expense"]').click();
+  const handles = {
+    amount: page.getByLabel('Amount'),
+    category: page.getByLabel('Category'),
+    post: page.getByRole('button', { name: 'Post expense' }),
+    note: page.locator('#e-note')
+  };
+  await waitFor('the Add sheet to open', async () => await handles.post.isVisible());
+  return handles;
 }
 
 async function waitFor(what, fn, timeout = 15000) {
@@ -291,49 +225,27 @@ async function regionText(page, id) {
   return flat(await page.locator('#' + id).innerText());
 }
 
-/** Open the pane and the Add sheet, and hand back its public handles. */
-async function openSheet(page) {
-  const expensesTab = page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' });
-  await expensesTab.click();
-  await waitFor('the Expenses tab to be selected',
-    async () => await expensesTab.getAttribute('aria-selected') === 'true');
-  await page.locator('#pane-expenses [aria-label="Add expense"]').click();
-  const handles = {
-    amount: page.getByLabel('Amount'),
-    category: page.getByLabel('Category'),
-    pin: page.getByLabel(/PIN/i),
-    post: page.getByRole('button', { name: 'Post expense' }),
-    note: page.locator('#e-note')
-  };
-  await waitFor('the Add sheet to open', async () => await handles.post.isVisible());
-  return handles;
-}
-
 test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t => {
   const TODAY = maldivesToday();
 
-  const { server, origin: pageOrigin } = await startStaticServer('127.0.0.1');
-  const { mf, origin: serviceOrigin } = await startService(pageOrigin);
+  const app = await startApp();
+  const cookie = await app.signIn();
+  const service = async pathAndQuery => {
+    const r = await app.call('GET', pathAndQuery, { cookie });
+    return { status: r.res.status, body: r.json };
+  };
   const browser = await chromium.launch();
-
-  // A port nothing listens on: an unreachable service, which is also how an
-  // origin refusal looks to the page (decision 12).
-  const dead = await startStaticServer('127.0.0.1');
-  const deadOrigin = dead.origin;
-  await new Promise(r => dead.server.close(r));
 
   t.after(async () => {
     await browser.close();
-    await mf.dispose();
-    server.close();
+    await app.close();
   });
 
   // ================= 1. The service is the only author of the entry list ======
-  const { page, offLimits, requested, crashes } = await openPage(browser, {
-    pageOrigin, api: serviceOrigin, feed: feedWithToday(TODAY)
+  const { page, offLimits, requested, crashes } = await openPage(browser, app, {
+    feed: feedWithToday(TODAY)
   });
 
-  const pane = page.locator('#pane-expenses');
   await page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
 
   // The day's figures come from ike-data's feed, rendered as the feed gives them.
@@ -365,14 +277,14 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
     'every feed day is a selectable pill, oldest left, today rightmost');
 
   // The entries card is the service's rows and nothing else: the store is empty.
-  const emptyDay = await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`);
+  const emptyDay = await service(`/expenses/entries?date=${TODAY}`);
   assert.equal(emptyDay.status, 200);
   assert.deepEqual(emptyDay.body.entries, [], 'the service holds nothing for today yet');
   assert.deepEqual(await readEntries(page), [],
     'the pane shows no entry when the service has none');
 
   // The sheet's select is the service's category list, in the service's order.
-  const cats = await service(serviceOrigin, pageOrigin, '/expenses/categories');
+  const cats = await service('/expenses/categories');
   assert.equal(cats.status, 200);
   assert.equal(cats.body.categories.length, 21, 'D7: the service serves 21 categories');
   const sheet = await openSheet(page);
@@ -381,45 +293,59 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
     cats.body.categories,
     'the select carries exactly the service\'s categories, in the service\'s order');
 
-  // ================= 2. A wrong PIN keeps the typed entry in the sheet =======
+  // ================= 2. Signed out mid-save: the entry waits, then goes ONCE ==
+  // The phone's session is ended behind its back (the owner's `signout`). The
+  // press meets a 401: the sign-in screen comes over the app, the sheet keeps
+  // what was typed underneath, and after sign-in the SAME entry is sent again
+  // (D28) — one row, never two.
   await sheet.amount.fill('137.50');
   await sheet.category.selectOption({ label: 'Fuel / Petrol' });
-  await sheet.pin.fill(WRONG_PIN);
+  await app.db.prepare('DELETE FROM session').run();
   await sheet.post.click();
 
-  await waitFor('the wrong-PIN message',
-    async () => flat(await sheet.note.innerText())
-      === 'That PIN was not accepted. Check it and try again.');
-  assert.ok(await sheet.post.isVisible(), 'the sheet stays open on a wrong PIN');
-  assert.equal(await sheet.amount.inputValue(), '137.50', 'the typed amount is still there');
-  assert.equal(await sheet.category.inputValue(), 'Fuel / Petrol',
-    'the chosen category is still there');
-  assert.deepEqual(await readEntries(page), [], 'a refused entry adds no row');
+  const signin = page.locator('#signin');
+  await waitFor('the sign-in screen over the app', async () =>
+    await signin.isVisible() && await page.getByLabel('Password').isVisible());
   assert.deepEqual(
-    (await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`)).body.entries, [],
-    'and the service stored nothing');
+    (await service(`/expenses/entries?date=${TODAY}`)).status, 401,
+    'the old session is gone for every caller');
+  assert.equal(await sheet.amount.inputValue(), '137.50',
+    'the typed amount is still in the sheet under the sign-in screen');
+  assert.equal(await sheet.category.inputValue(), 'Fuel / Petrol',
+    'and the chosen category');
+  assert.equal(await app.db.prepare('SELECT COUNT(*) AS n FROM entry').first()
+    .then(r => r.n), 0, 'the signed-out press stored nothing');
 
-  // ================= 3. The right PIN saves through the service =============
-  await sheet.pin.fill(PIN);
+  await page.getByLabel('Username').fill(USERNAME);
+  await page.getByLabel('Password').fill(PASSWORD);
   const started = Date.now();
-  await sheet.post.click();
-  await waitFor('the sheet to close on the service\'s 200',
-    async () => !(await sheet.post.isVisible()));
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  // Read the layers themselves: while the sign-in screen covers the app, the
+  // sheet's controls are hidden from the accessibility tree, so a role locator
+  // on them would read "not visible" at once and prove nothing.
+  await waitFor('the sign-in screen to go once signed in', async () => await signin.isHidden());
+  await waitFor('the sheet to close on the resent save\'s 200',
+    async () => await page.locator('#e-sheet').isHidden());
   const elapsed = Date.now() - started;
   assert.ok(elapsed < 30000,
     `the save closes the sheet inside the 30-second budget (took ${elapsed} ms)`);
 
+  const fresh = await app.signIn();
+  const serviceNow = async pathAndQuery => {
+    const r = await app.call('GET', pathAndQuery, { cookie: fresh });
+    return { status: r.res.status, body: r.json };
+  };
+
+  // ================= 3. What the service holds is what the page shows =======
   const saved = await waitFor('the saved entry to appear in the day\'s list', async () => {
     const rows = await readEntries(page);
     return rows.length ? rows : null;
   });
-
-  // What the service holds is what the page shows — member by member.
-  const day = await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`);
+  const day = await serviceNow(`/expenses/entries?date=${TODAY}`);
   assert.equal(day.body.entries.length, 1, 'the service stored exactly one entry');
   const entry = day.body.entries[0];
   assert.equal(entry.status, 'Waiting to send',
-    "V2's only status word, and the chip the pane must show");
+    "the save-first status word, and the chip the pane must show");
   assert.equal(saved.length, 1, 'the page shows exactly the one row the service holds');
   assert.equal(saved[0].chip, entry.status,
     'the chip is the service\'s own word for the entry');
@@ -429,23 +355,26 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
     || saved[0].text.includes(entry.amount_mvr.replace(/\.00$/, '')),
     `the row carries the amount as the service formatted it (${entry.amount_mvr})`);
   assert.ok(!saved[0].hasRetryButton,
-    'no row offers Retry in V3: the contract carries no next-retry time');
+    'a waiting entry offers no Retry: the contract carries no next-retry time');
   assert.equal(entry.amount_mvr, '137.50', 'the amount reached the store as typed MVR');
 
-  // The entry was posted as the contract declares, with a minted client entry id,
-  // and the PIN is nowhere in the page afterwards.
-  const posts = requested.filter(u => u.startsWith(serviceOrigin) && u.endsWith('/expenses/entries'));
-  assert.ok(posts.length >= 1, 'the save went to the service');
+  // Both presses carried ONE minted id: the resend is the same entry.
+  const posts = requested.filter(u => u === app.origin + '/expenses/entries');
+  assert.ok(posts.length >= 2, 'the refused press and the resend both went to the service');
   assert.match(entry.client_entry_id, /^[0-9a-f-]{36}$/,
     'the entry carries the id the page minted');
   const stored = await page.evaluate(() => ({
     local: Object.entries(localStorage).map(([k, v]) => k + '=' + v).join('|'),
-    session: Object.entries(sessionStorage).map(([k, v]) => k + '=' + v).join('|')
+    session: Object.entries(sessionStorage).map(([k, v]) => k + '=' + v).join('|'),
+    cookie: document.cookie
   }));
-  assert.ok(!stored.local.includes(PIN) && !stored.session.includes(PIN),
-    'the PIN is never stored in the browser');
+  assert.ok(!stored.local.includes(PASSWORD) && !stored.session.includes(PASSWORD),
+    'the password is never stored in the browser');
+  assert.ok(!stored.cookie.includes('ike_session'),
+    'the session cookie is HttpOnly: no script on the page can read it');
 
-  // A reload can add nothing: the list is re-read from the service.
+  // A reload can add nothing: the list is re-read from the service, and the
+  // phone is still signed in.
   await page.reload({ waitUntil: 'load' });
   await page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
   const afterReload = await waitFor('the list after a reload', async () => {
@@ -454,18 +383,17 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   });
   assert.equal(afterReload.length, 1,
     'a reload shows the one entry the service holds, not one the page remembered');
+  assert.ok(await signin.isHidden(), 'a reload keeps the phone signed in');
 
   assert.deepEqual(offLimits, [],
-    `the page contacted nothing beyond its feeds and its service: ${offLimits.join(', ')}`);
+    `the page contacted nothing beyond its feeds and its own areas: ${offLimits.join(', ')}`);
   assert.deepEqual(crashes, [], `no script error: ${crashes.join(' | ')}`);
 
   // ================= 4. The two regions fail independently ==================
   // The feed has no record for TODAY yet (the ordinary state between Maldives
   // midnight and the next rebuild): the figures say so, and the entries card,
   // which reads the service, keeps showing the day's row.
-  const noFeedDay = await openPage(browser, {
-    pageOrigin, api: serviceOrigin, feed: feedWithoutToday()
-  });
+  const noFeedDay = await openPage(browser, app, { feed: feedWithoutToday() });
   await noFeedDay.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
   await waitFor('the figures to name the missing day', async () => {
     const text = flat(await noFeedDay.page.locator('#pane-expenses').innerText());
@@ -473,7 +401,10 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
       && text.includes(TODAY)
       && text.includes('Try refreshing in a minute.');
   });
-  const stillListed = await readEntries(noFeedDay.page);
+  const stillListed = await waitFor('the entries card to read the service', async () => {
+    const rows = await readEntries(noFeedDay.page);
+    return rows.length ? rows : null;
+  });
   assert.equal(stillListed.length, 1,
     'a feed without the day does not blank the service-backed entries card');
   assert.ok(await noFeedDay.page.locator('#pane-expenses [aria-label="Add expense"]').isVisible(),
@@ -481,9 +412,9 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   assert.deepEqual(noFeedDay.crashes, [], noFeedDay.crashes.join(' | '));
 
   // ================= 5. An unreachable service =============================
-  const down = await openPage(browser, {
-    pageOrigin, api: deadOrigin, feed: feedWithToday(TODAY)
-  });
+  const down = await openPage(browser, app, { feed: feedWithToday(TODAY) });
+  down.control.down = true;
+  await down.page.reload({ waitUntil: 'load' });
   await down.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
   await waitFor('the entries card to say it could not load', async () => {
     const text = await regionText(down.page, 'e-entries');
@@ -513,10 +444,8 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
 
   // Typed fields are never cleared or rewritten by that rendering.
   await downSheet.amount.fill('80');
-  await downSheet.pin.fill(PIN);
   await new Promise(r => setTimeout(r, 1000));
   assert.equal(await downSheet.amount.inputValue(), '80', 'the typed amount is kept');
-  assert.equal(await downSheet.pin.inputValue(), PIN, 'and so is the typed PIN');
   assert.equal(await downSheet.post.isDisabled(), true, 'Post is still disabled');
   assert.ok(await down.page.locator('#pane-expenses [aria-label="Add expense"]').isVisible(),
     'the FAB and the sheet stay reachable while the service is down');
@@ -524,10 +453,6 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
     'and the figures region kept reading the feed');
   assert.deepEqual(await readEntries(down.page), [],
     'nothing the service did not confirm is ever shown as saved');
-  assert.deepEqual(
-    down.requested.filter(u => u.startsWith(deadOrigin) && u.includes('/expenses/entries')
-      && !u.includes('?date=')), [],
-    'the page issued no POST at all to a service it could not read');
   assert.deepEqual(down.crashes, [], down.crashes.join(' | '));
 
   // ========== 5c. A category list re-read while the sheet is open ===========
@@ -537,20 +462,14 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   // choice must survive it: "keeps the typed entry in the sheet" covers the
   // category as much as the amount. The re-read is held at the network edge
   // until the choice is made, so the order is fixed, not raced.
-  const third = await startService(pageOrigin);
-  const held = await openPage(browser, {
-    pageOrigin, api: third.origin, feed: feedWithToday(TODAY)
-  });
-  t.after(async () => {
-    await held.context.close().catch(() => {});
-    await third.mf.dispose().catch(() => {});
-  });
+  const held = await openPage(browser, app, { feed: feedWithToday(TODAY) });
+  t.after(async () => { await held.context.close().catch(() => {}); });
   await waitFor('the first category read to fill the select', async () =>
     (await held.page.getByLabel('Category').locator('option').count()) === 21);
   let release;
   const gate = new Promise(r => { release = r; });
   let heldReads = 0;
-  await held.page.route(third.origin + '/expenses/categories', async route => {
+  await held.page.route(app.origin + '/expenses/categories', async route => {
     heldReads++;
     await gate;
     await route.continue();
@@ -559,8 +478,7 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   await waitFor('the open-sheet re-read to be in flight', async () => heldReads >= 1);
   await heldSheet.amount.fill('80');
   await heldSheet.category.selectOption({ label: 'Meals' });
-  await heldSheet.pin.fill(PIN);
-  const reread = held.page.waitForResponse(r => r.url().startsWith(third.origin + '/expenses/categories'));
+  const reread = held.page.waitForResponse(r => r.url().startsWith(app.origin + '/expenses/categories'));
   release();
   await reread;
   await held.page.evaluate(() => new Promise(r => setTimeout(r, 500)));
@@ -573,25 +491,25 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   assert.deepEqual(held.crashes, [], held.crashes.join(' | '));
 
   // ========== 5b. The service dies AFTER the select loaded ==================
-  // This is the stimulus V3's observation names with "an unreachable service
-  // keeps the typed entry in the sheet with a plain message": a SECOND real
-  // workerd fills the select with the service's own 21 names, then its socket
-  // really dies, and only then is Post pressed.
-  const second = await startService(pageOrigin);
-  const dying = await openPage(browser, {
-    pageOrigin, api: second.origin, feed: feedWithToday(TODAY)
-  });
+  // This is the stimulus the observation names with "an unreachable service
+  // keeps the typed entry in the sheet with a plain message": the select is
+  // filled with the service's own 21 names, then the service becomes
+  // unreachable, and only then is Post pressed.
+  const dying = await openPage(browser, app, { feed: feedWithToday(TODAY) });
   await dying.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
   const dyingSheet = await openSheet(dying.page);
-  await waitFor('the select to fill from the live second service', async () =>
+  await waitFor('the select to fill from the live service', async () =>
     (await dyingSheet.category.locator('option').count()) === 21);
   assert.equal(await dyingSheet.post.isDisabled(), false,
     'with the list read, Post is enabled');
   await dyingSheet.amount.fill('80');
   await dyingSheet.category.selectOption({ label: 'Meals' });
-  await dyingSheet.pin.fill(PIN);
+  const rowsBefore = await waitFor('the day\'s row on the dying page', async () => {
+    const rows = await readEntries(dying.page);
+    return rows.length ? rows : null;
+  });
 
-  await second.mf.dispose();          // the socket really dies
+  dying.control.down = true;          // the service becomes unreachable
 
   await dyingSheet.post.click();
   await waitFor('the unreachable message',
@@ -601,88 +519,12 @@ test('pane_saves_through_the_service_and_shows_only_confirmed_entries', async t 
   assert.equal(await dyingSheet.amount.inputValue(), '80', 'the typed entry is still there');
   assert.equal(await dyingSheet.category.inputValue(), 'Meals',
     'including the chosen category');
-  assert.equal(await dyingSheet.pin.inputValue(), PIN, 'including the PIN');
-  assert.deepEqual(await readEntries(dying.page), [],
+  assert.deepEqual(await readEntries(dying.page), rowsBefore,
     'no row is appended on any non-200 path');
   assert.deepEqual(dying.crashes, [], dying.crashes.join(' | '));
 
-  // The real service still holds exactly the one entry: nothing leaked to it.
-  assert.equal(
-    (await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`)).body.entries.length,
-    1, 'the failed post created nothing anywhere');
-
-  // ================= 6. No service configured ==============================
-  const unset = await openPage(browser, {
-    pageOrigin, api: null, feed: feedWithToday(TODAY)
-  });
-  await unset.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
-  await waitFor('the honest not-set-up state',
-    async () => (await regionText(unset.page, 'e-entries'))
-      === 'The expenses service is not set up yet.');
-  assert.deepEqual(
-    unset.requested.filter(u => u.startsWith(serviceOrigin)), [],
-    'with no service configured the page makes no service call at all');
-  assert.equal(flat(await unset.page.locator('#e-heroTotal').innerText()), '208',
-    "the day's figures still come from the feed");
-
-  // The sheet says the same honest thing, with nothing to choose and Post
-  // disabled — asserted, never clicked.
-  const unsetSheet = await openSheet(unset.page);
-  await waitFor('the not-set-up note in the sheet',
-    async () => flat(await unsetSheet.note.innerText())
-      === 'The expenses service is not set up yet.');
-  assert.deepEqual(
-    await unsetSheet.category.locator('option').allTextContents(), [],
-    'an unconfigured service offers no category');
-  assert.equal(await unsetSheet.post.isDisabled(), true, 'and Post is disabled');
-  await unsetSheet.amount.fill('999');
-  await unsetSheet.pin.fill(PIN);
-  await new Promise(r => setTimeout(r, 1000));
-  assert.equal(await unsetSheet.amount.inputValue(), '999', 'the typed amount is kept');
-  assert.equal(await unsetSheet.pin.inputValue(), PIN, 'and the typed PIN is kept');
-  assert.deepEqual(
-    unset.requested.filter(u => u.startsWith(serviceOrigin)), [],
-    'and still not one service call was made');
-  assert.deepEqual(unset.offLimits, [], unset.offLimits.join(', '));
-  assert.deepEqual(unset.crashes, [], unset.crashes.join(' | '));
-
-  // ================= 7. ?api= is loopback-only =============================
-  // A crafted https://…/?api=<attacker> link must not redirect a typed PIN, so
-  // on any hostname other than 127.0.0.1 / localhost the parameter is ignored.
-  const v6 = await startStaticServer('::1', { blankServiceMeta: true });
-  try {
-    const crafted = await openPage(browser, {
-      pageOrigin: v6.origin, api: serviceOrigin, feed: feedWithToday(TODAY)
-    });
-    await crafted.page.locator('#tabs [role="tab"]').filter({ hasText: 'Expenses' }).click();
-    await waitFor('a non-loopback page to ignore ?api= entirely',
-      async () => (await regionText(crafted.page, 'e-entries'))
-        === 'The expenses service is not set up yet.');
-
-    const craftedSheet = await openSheet(crafted.page);
-    await waitFor('the not-set-up note on the crafted page',
-      async () => flat(await craftedSheet.note.innerText())
-        === 'The expenses service is not set up yet.');
-    await craftedSheet.amount.fill('999');
-    await craftedSheet.pin.fill(PIN);
-    // Structural denial: the typed PIN cannot even be offered to the crafted
-    // origin, because Post is disabled. Asserted, never clicked.
-    assert.deepEqual(
-      await craftedSheet.category.locator('option').allTextContents(), [],
-      'the crafted origin never filled the select');
-    assert.equal(await craftedSheet.post.isDisabled(), true,
-      'Post is disabled, so the crafted link is denied the PIN structurally too');
-    await new Promise(r => setTimeout(r, 1000));
-    assert.deepEqual(
-      crafted.requested.filter(u => u.startsWith(serviceOrigin)), [],
-      'a crafted ?api= link on a non-loopback host never receives the typed PIN');
-    assert.deepEqual(crafted.crashes, [], crafted.crashes.join(' | '));
-  } finally {
-    v6.server.close();
-  }
-
   // ================= 8. Nothing reached the service it should not have =====
-  const finalDay = await service(serviceOrigin, pageOrigin, `/expenses/entries?date=${TODAY}`);
+  const finalDay = await serviceNow(`/expenses/entries?date=${TODAY}`);
   assert.equal(finalDay.body.entries.length, 1,
     'across every path, exactly the one confirmed entry exists');
 });
