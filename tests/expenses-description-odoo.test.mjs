@@ -278,7 +278,7 @@ async function startFakeOdoo() {
 
 async function readConfig() {
   const cfg = JSON.parse(await fs.readFile(path.join(WORKER, 'wrangler.json'), 'utf8'));
-  assert.deepEqual(cfg.triggers && cfg.triggers.crons, [CRON],
+  assert.deepEqual(cfg.triggers && cfg.triggers.crons, [CRON, '7-59/15 * * * *'],
     'the config still declares the 15-minute schedule as the cron driving port');
   assert.equal((cfg.d1_databases || []).length, 1);
   return cfg;

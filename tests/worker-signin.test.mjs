@@ -174,8 +174,8 @@ test('every_data_route_refuses_without_a_session_and_the_shell_is_served_without
   const cookie = await app.signIn();
   assert.equal((await app.call('GET', '/nowhere', { cookie })).res.status, 404);
   assert.equal((await app.call('GET', '/auth/nowhere')).res.status, 404);
-  // The quotations area is gated but has no route yet: past the gate it is 404.
-  assert.equal((await app.call('GET', '/quotations/open', { cookie })).res.status, 404);
+  // Past the gate, the quotations area serves only GET /quotations/open (D31).
+  assert.equal((await app.call('GET', '/quotations/nowhere', { cookie })).res.status, 404);
 });
 
 test('a_non_get_without_the_workers_own_origin_is_refused_before_anything_else', async t => {
